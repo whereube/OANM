@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
+import './NewOfferForm.css'
 
 const NewOfferForm = () => {
 
@@ -67,10 +68,10 @@ const NewOfferForm = () => {
     return (
         <>
             <div className="newOfferPage">
-                <p>Skapa nytt erbjudande</p>
+                <h1>Skapa ett nytt erbjudande</h1>
                 <form onSubmit={handleSubmit} className="newOffer">
                     <div className='formDiv'>
-                        <label htmlFor="title">Title</label>
+                        <label htmlFor="title">Titel</label>
                         <input
                             className="input-fields"
                             type="text"
@@ -82,10 +83,9 @@ const NewOfferForm = () => {
                         />
                     </div>
                     <div className='formDiv'>
-                        <label htmlFor="description">Description</label>
-                        <input
+                        <label htmlFor="description">Beskrivning</label>
+                        <textarea
                             className="input-fields"
-                            type="text"
                             id="description"
                             name="description"
                             value={formData.description}
@@ -94,7 +94,7 @@ const NewOfferForm = () => {
                         />
                     </div>
                     <div className='formDiv'>
-                        <label htmlFor="available">Available</label>
+                        <label htmlFor="available">Tillgänglig</label>
                         <input
                             className="input-fields"
                             type="text"
@@ -106,7 +106,7 @@ const NewOfferForm = () => {
                         />
                     </div>
                     <div className='formDiv'>
-                        <label htmlFor="location">Location</label>
+                        <label htmlFor="location">Plats</label>
                         <input
                             className="input-fields"
                             type="text"
@@ -118,7 +118,7 @@ const NewOfferForm = () => {
                         />
                     </div>
                     <div className='formDiv'>
-                        <label htmlFor="price">Price</label>
+                        <label htmlFor="price">Pris</label>
                         <input
                             className="input-fields"
                             type="text"
@@ -130,7 +130,7 @@ const NewOfferForm = () => {
                         />
                     </div>
                     <div className='formDiv'>
-                        <label htmlFor="link">Link</label>
+                        <label htmlFor="link">Länk</label>
                         <input
                             className="input-fields"
                             type="text"

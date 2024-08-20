@@ -1,0 +1,15 @@
+.newOfferPage{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.formDiv{
+    display: flex;
+    flex-direction: column;
+}
+
+.input-fields {
+    height: 30px;
+    font-size: 20px;
+}
