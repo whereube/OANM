@@ -78,7 +78,7 @@ const NewOfferForm = () => {
     return (
         <>
             <div className="newOfferPage">
-                <h1>Skapa ett nytt erbjudande</h1>
+                <h1>Skapa erbjudande</h1>
                 <form onSubmit={handleSubmit} className="newOffer">
                     <div className='formFields'>
                         <div className='formDiv'>
@@ -118,7 +118,7 @@ const NewOfferForm = () => {
                                 <option value="alltid">Alltid</option>
                             </select>
                         </div>
-                        <div className='formDiv'>
+                        <div className='formDiv selectDiv'>
                             <label htmlFor="availableDigitaly">Plats</label>
                             <select
                                 className="input-fields"
@@ -171,7 +171,7 @@ const NewOfferForm = () => {
                         </div>
                     </div>
                     <button type="submit" className="button-small" role="button">
-                        Create
+                        Skapa
                     </button>
                 </form>
                 {status && (

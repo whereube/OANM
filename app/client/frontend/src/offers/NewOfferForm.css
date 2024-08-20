@@ -9,7 +9,6 @@
     justify-content: space-around;
     flex-direction: column;
     min-width: 700px;
-    border: 1px solid black;
     border-radius: 5px;
     padding: 20px;
     margin-bottom: 50px;
@@ -18,12 +17,20 @@
 .formDiv{
     display: flex;
     flex-direction: column;
+    margin-top: 5px;
+}
+
+.formDiv label {
+    margin-bottom: 3px;
+    font-weight: bold;
 }
 
 .input-fields {
     height: 30px;
     font-size: 20px;
 }
+
+
 
 .formFields{
     margin-bottom: 20px;
