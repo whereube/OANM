@@ -1,6 +1,5 @@
 import express from 'express';
-import { getRecipeRoutes } from './routes/recipeRoutes.js';
-
+import { getEndUserRoutes } from './routes/userRoutes.js';
 import { corsMiddleware } from './middleware/corsMiddleware.js';
 
 
@@ -11,7 +10,7 @@ export const createServer = () => {
   app.use(corsMiddleware);  // Use the CORS middleware globally
 //   app.use(authenticateUser);
   app.use('/recipe',  getRecipeRoutes());
-  app.use('/creator',  getCreatorRoutes());
+  app.use('/creator',  getUserRoutes());
   app.use('/step',  getStepRoutes());
   app.use('/ingredient',  getIngredientRoutes());
 

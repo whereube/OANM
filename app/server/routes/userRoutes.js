@@ -3,13 +3,13 @@ import * as object from '../models/objectIndex.js';
 import { v4 as uuidv4 } from 'uuid';
 import { hashPassword, checkPassword } from '../middleware/encrypt.js';
 
-export const getCreatorRoutes = () => {
+export const getUserRoutes = () => {
   const router = Router();
 
-    router.get('/getCreator', async (req, res, next) => {
-        const { creator_id } = req.body;
-        const creator = await object.creator.findByPk(creator_id);
-        res.status(200).send(creator);
+    router.get('/getUser', async (req, res, next) => {
+        const { id } = req.body;
+        const user = await object.end_user.findByPk(id);
+        res.status(200).send(user);
     });
 
     router.get('/getCreatorByUsername/:username', async (req, res, next) => {

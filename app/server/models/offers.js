@@ -2,8 +2,8 @@ import { DataTypes } from 'sequelize';
 import { db } from '../database/databaseConnection.js';
 import { category } from './category.js';
 
-export const needs = db.define(
-    'needs',
+export const offers = db.define(
+    'offers',
     {
       // Model attributes are defined here
       id: {
