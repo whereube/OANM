@@ -2,24 +2,24 @@ import { Router } from 'express';
 import * as object from '../models/objectIndex.js';
 import { v4 as uuidv4 } from 'uuid';
 
-export const getOfferRoutes = () => {
+export const getNeedRoutes = () => {
 
     const router = Router();
 
     router.get('/getAll', async (req, res, next) => {
-        const allOffers = await object.offers.findAll({
+        const allNeeds = await object.needs.findAll({
         });
-        res.status(200).send(allOffers);
+        res.status(200).send(allNeeds);
     });
 
     router.get('/byUserId/:userId', async (req, res, next) => {
         const userId  = req.params.userId; 
-        const offers = await object.offers.findOne({
+        const needs = await object.needs.findOne({
             where:{
                 user_id: userId
             }
         });
-        res.status(200).send(offers);
+        res.status(200).send(needs);
     });
 
 
@@ -31,8 +31,7 @@ export const getOfferRoutes = () => {
             description, 
             available, 
             location,
-            price,
-            link, 
+            price, 
             category_1,
             category_2,
             category_3,
@@ -42,7 +41,7 @@ export const getOfferRoutes = () => {
         const id = uuidv4();
 
         try {
-            const result = await object.offers.create({
+            const result = await object.needs.create({
                 id,
                 user_id: userId,
                 title,
@@ -50,7 +49,6 @@ export const getOfferRoutes = () => {
                 available, 
                 location,
                 price,
-                link, 
                 category_1,
                 category_2,
                 category_3,
@@ -58,13 +56,13 @@ export const getOfferRoutes = () => {
             });
             
             if (result === null) {
-                return res.status(404).json('No new offer created');
+                return res.status(404).json('No new need created');
             } else{
-                res.status(201).json({ message: 'New offer created'});
+                res.status(201).json({ message: 'New need created'});
             }
 
         } catch (error) {
-            console.error('Error creating offer', error);
+            console.error('Error creating need', error);
             res.status(500).json('Internal Server Error');
         }
 

@@ -1,5 +1,6 @@
 import express from 'express';
 import { getOfferRoutes } from './routes/offerRoutes.js';
+import { getNeedRoutes } from './routes/needRoutes.js';
 import { corsMiddleware } from './middleware/corsMiddleware.js';
 
 
@@ -10,6 +11,7 @@ export const createServer = () => {
   app.use(corsMiddleware);  // Use the CORS middleware globally
   //   app.use(authenticateUser);
   app.use('/offers',  getOfferRoutes());
+  app.use('/needs', getNeedRoutes());
 
   return app;
 };
