@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { validateInput, validateString, validateInteger } from '../middleware/routeFunctions.js';
 
 export const getOfferRoutes = () => {
-
     const router = Router();
 
     router.get('/getAll', async (req, res, next) => {
