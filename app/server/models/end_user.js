@@ -11,17 +11,29 @@ export const end_user = db.define(
         allowNull: false,
         primaryKey: true,
       },
-      username: {
-        type: DataTypes.STRING,
+      company_id: {
+        type: DataTypes.UUID,
         allowNull: false,
       },
-      password: {
+      user_name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
       email: {
         type: DataTypes.STRING,
         allowNull: true,
+      },
+      phone_number: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      link: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
       }
     },
     {
