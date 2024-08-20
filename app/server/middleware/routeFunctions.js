@@ -1,6 +1,5 @@
 import validate from 'uuid-validate';
 
-//Function for validating required input fields from request
 export const validateInput = (input) => {
     for (let key in input) {
       if (input.hasOwnProperty(key)) {

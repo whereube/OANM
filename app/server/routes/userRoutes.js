@@ -4,14 +4,24 @@ import { v4 as uuidv4 } from 'uuid';
 import { hashPassword, checkPassword } from '../middleware/encrypt.js';
 import { validateInput, validateString, validateInteger } from '../middleware/routeFunctions.js';
 
-
 export const getUserRoutes = () => {
   const router = Router();
 
-    router.get('/getUser', async (req, res, next) => {
-        const { id } = req.body;
-        const user = await object.end_user.findByPk(id);
-        res.status(200).send(user);
+    router.get('/getUser/:id', async (req, res, next) => {
+        const id = req.params.id;
+        const validate = validateInput({ id });
+
+        if (validate.valid) {
+            try {
+                const user = await object.end_user.findByPk(id);
+                res.status(200).send(user);
+            } catch (error) {
+                console.error('Error creating company', error);
+                res.status(500).json('Internal Server Error');
+            }
+        } else {
+            res.status(400).json({ uuidError: validate.message }); 
+        }
     });
 
     router.post('/login', async (req, res, next) => {
@@ -27,7 +37,7 @@ export const getUserRoutes = () => {
 
         if (!checkedPassword) {
             res.status(401).json('Login failed');
-        } else if (object.user.length !== 0) {
+        } else if (user.length !== 0) {
             res.status(200).send(user);
         }
     });
@@ -38,7 +48,6 @@ export const getUserRoutes = () => {
         res.status(200).send(allUsers);
     });
 
-    //Function for updating have based on singular article_id
     router.post('/createUser', async (req, res, next) => {
         const {
             company_name,
@@ -115,52 +124,52 @@ export const getUserRoutes = () => {
         }
     });
 
-    router.put('/update', async (req, res, next) => {
-        const {
-            creator_id,
-            username,
-            email,
-            password
-        } = req.body;
+    // router.put('/update', async (req, res, next) => {
+    //     const {
+    //         creator_id,
+    //         username,
+    //         email,
+    //         password
+    //     } = req.body;
 
-        const hashedPassword = await hashPassword(password);
+    //     const hashedPassword = await hashPassword(password);
 
-        try{
-            const creatorToUpdate = await object.creator.findByPk(creator_id);
+    //     try{
+    //         const creatorToUpdate = await object.creator.findByPk(creator_id);
 
-            creatorToUpdate.set({
-                username: username,
-                email: email,
-                password: hashedPassword
-            })
+    //         creatorToUpdate.set({
+    //             username: username,
+    //             email: email,
+    //             password: hashedPassword
+    //         })
 
-            await creatorToUpdate.save();
-            res.status(200).json(creatorToUpdate);
-        } catch (error) {
-            console.error('Error updating creator', error);
-            res.status(500).json({ message: 'Internal Server Error' });
-        }  
+    //         await creatorToUpdate.save();
+    //         res.status(200).json(creatorToUpdate);
+    //     } catch (error) {
+    //         console.error('Error updating creator', error);
+    //         res.status(500).json({ message: 'Internal Server Error' });
+    //     }  
 
-    });
+    // });
 
-    router.delete('/delete', async (req, res, next) => {
-        const { creator_id } = req.body;
-        try {
-            const result = await object.creator.destroy({
-            where: {
-                id: creator_id,
-            }
-            });
+    // router.delete('/delete', async (req, res, next) => {
+    //     const { creator_id } = req.body;
+    //     try {
+    //         const result = await object.creator.destroy({
+    //         where: {
+    //             id: creator_id,
+    //         }
+    //         });
     
-            if (result === 0) {
-            return res.status(404).json({ message: 'Have not found' });
-            } 
-            res.sendStatus(204);
-        } catch (error) {
-        console.error('Error deleting creator', error);
-        res.status(500).json('Internal Server Error');
-        }
-    });
+    //         if (result === 0) {
+    //         return res.status(404).json({ message: 'Have not found' });
+    //         } 
+    //         res.sendStatus(204);
+    //     } catch (error) {
+    //     console.error('Error deleting creator', error);
+    //     res.status(500).json('Internal Server Error');
+    //     }
+    // });
 
   return router;
 };
