@@ -36,7 +36,8 @@ export const getOfferRoutes = () => {
             category_1,
             category_2,
             category_3,
-            category_4
+            category_4,
+            availableDigitaly
         } = req.body;
         
         const id = uuidv4();
@@ -54,7 +55,8 @@ export const getOfferRoutes = () => {
                 category_1,
                 category_2,
                 category_3,
-                category_4
+                category_4,
+                available_digitaly: availableDigitaly
             });
             
             if (result === null) {

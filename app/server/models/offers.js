@@ -55,6 +55,10 @@ export const offers = db.define(
       category_4: {
         type: DataTypes.UUID,
         allowNull: true,
+      },
+      available_digitaly: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
       }
     },
     {

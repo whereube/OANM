@@ -4,6 +4,17 @@
     align-items: center;
 }
 
+.newOffer {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    min-width: 700px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 50px;
+}
+
 .formDiv{
     display: flex;
     flex-direction: column;
@@ -12,4 +23,13 @@
 .input-fields {
     height: 30px;
     font-size: 20px;
+}
+
+.formFields{
+    margin-bottom: 20px;
+}
+
+
+.recipeForm > div > textarea {
+    height: 150px;
 }
