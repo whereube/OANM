@@ -2,6 +2,8 @@ import { Router } from 'express';
 import * as object from '../models/objectIndex.js';
 import { v4 as uuidv4 } from 'uuid';
 import { hashPassword, checkPassword } from '../middleware/encrypt.js';
+import { validateInput, validateString, validateInteger } from '../middleware/routeFunctions.js';
+
 
 export const getUserRoutes = () => {
   const router = Router();
@@ -12,78 +14,104 @@ export const getUserRoutes = () => {
         res.status(200).send(user);
     });
 
-    router.get('/getCreatorByUsername/:username', async (req, res, next) => {
-        const username  = req.params.username; 
-        const creator = await object.creator.findOne({
-            where:{
-                username: username
-            }
-        });
-        res.status(200).send(creator);
-    });
-
     router.post('/login', async (req, res, next) => {
         const { email, password } = req.body;
 
-        const creator = await object.creator.findOne({
+        const user = await object.end_user.findOne({
             where: {
                 email: email
             }
         });
 
-        const checkedPassword = await checkPassword(password, creator['dataValues']['password']);
+        const checkedPassword = await checkPassword(password, user['dataValues']['password']);
 
         if (!checkedPassword) {
             res.status(401).json('Login failed');
-        } else if (creator.length !== 0) {
-            res.status(200).send(creator);
+        } else if (object.user.length !== 0) {
+            res.status(200).send(user);
         }
     });
 
     router.get('/getAll', async (req, res, next) => {
-        const allCreators = await object.creator.findAll({
+        const allUsers = await object.end_user.findAll({
         });
-        res.status(200).send(allCreators);
+        res.status(200).send(allUsers);
     });
 
     //Function for updating have based on singular article_id
-    router.post('/add', async (req, res, next) => {
+    router.post('/createUser', async (req, res, next) => {
         const {
-            username,
+            company_name,
+            user_name,
             email,
+            phone_number,
+            link,
             password
         } = req.body;
-        
-        const id = uuidv4();
-        const hashedPassword = await hashPassword(password);
 
-        const checkUsername = await object.creator.findAll({
-            where: {
-                username: username
-            }
-        });
+        const validateStr = validateString({ company_name, user_name, email, link, password });
+        const validateInt = validateInteger({ phone_number });
 
-        if (checkUsername.length === 0){
-            try {
-                const result = await object.creator.create({
-                    id,
-                    username,
-                    password:hashedPassword,
-                    email
-                });
-                
-                if (result === null) {
-                    return res.status(404).json('No new creator created');
-                } else{
-                    res.status(201).json({ message: 'New creator created'});
+        if (validateStr.valid && validateInt.valid) {
+            const checkCompanyName = await object.company.findOne({
+                where: {
+                    company_name: company_name
                 }
+            });
+            
+            const NewCompanyId = uuidv4();
 
-            } catch (error) {
-                console.error('Error creating creator', error);
-                res.status(500).json('Internal Server Error');
+            if (!checkCompanyName) {
+                try {
+                    const company = await object.company.create({
+                        id: NewCompanyId,
+                        company_name: company_name
+                    });
+                    
+                    if (company === null) {
+                        return res.status(404).json('No new company created');
+                    } 
+
+                } catch (error) {
+                    console.error('Error creating company', error);
+                    res.status(500).json('Internal Server Error');
+                }
             }
-        } else{
-            return res.status(401).json('Username already taken');
+
+            const user_id = uuidv4();
+            const hashedPassword = await hashPassword(password);
+    
+            const checkEmail = await object.end_user.findAll({
+                where: {
+                    email: email
+                }
+            });
+    
+            if (checkEmail.length === 0){
+                try {
+                    const result = await object.end_user.create({
+                        id: user_id,
+                        company_id: checkCompanyName ? checkCompanyName.id : NewCompanyId,
+                        user_name: user_name,
+                        email: email,
+                        phone_number: phone_number,
+                        link: link,
+                        password:hashedPassword
+                    });
+                    
+                    if (result === null) {
+                        return res.status(404).json('No new user created');
+                    } else {
+                        res.status(201).json({ message: 'New user created'});
+                    }
+    
+                } catch (error) {
+                    console.error('Error creating user', error);
+                    res.status(500).json('Internal Server Error');
+                }
+            } else{
+                return res.status(401).json('Email already exist');
+            }
         }
     });
 
