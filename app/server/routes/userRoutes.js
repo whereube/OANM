@@ -26,20 +26,24 @@ export const getUserRoutes = () => {
 
     router.post('/login', async (req, res, next) => {
         const { email, password } = req.body;
-
         const user = await object.end_user.findOne({
             where: {
                 email: email
             }
         });
 
-        const checkedPassword = await checkPassword(password, user['dataValues']['password']);
+        if (user) {
+            const checkedPassword = await checkPassword(password, user['dataValues']['password']);
 
-        if (!checkedPassword) {
-            res.status(401).json('Login failed');
-        } else if (user.length !== 0) {
-            res.status(200).send(user);
+            if (!checkedPassword) {
+                res.status(401).json({ message: 'Wrong password' });
+            } else if (user.length !== 0) {
+                res.status(200).send(user);
+            }
+        } else {
+            res.status(401).json({ message: 'Email does not exist' });
         }
+        
     });
 
     router.get('/getAll', async (req, res, next) => {

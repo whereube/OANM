@@ -13,6 +13,7 @@ function App() {
           <Routes>
               <Route path="/offers/add" element={<NewOfferForm />}/>
               <Route path="/needs/add" element={<NewNeedForm />}/>
+              <Route path="/profile/login" element={<LoginForm />}></Route>
           </Routes>
       </BrowserRouter>
     </div>
