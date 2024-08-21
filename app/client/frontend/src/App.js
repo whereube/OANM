@@ -1,6 +1,7 @@
 import './App.css';
 import NewOfferForm from './offers/NewOfferForm.js';
 import NewNeedForm from './needs/NewNeedForm.js';
+import LoginForm from './profile/LoginForm.js';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Header from './header/Header.js';
 
