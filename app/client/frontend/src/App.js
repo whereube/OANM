@@ -3,6 +3,7 @@ import NewOfferForm from './offers/NewOfferForm.js';
 import NewNeedForm from './needs/NewNeedForm.js';
 import LoginForm from './profile/LoginForm.js';
 import ShowOffers from './offers/ShowOffers.js';
+import ShowNeeds from './needs/ShowNeeds.js';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Header from './header/Header.js';
 
@@ -18,6 +19,7 @@ function App() {
               </Route>
               <Route path="/needs">
                 <Route path="add" element={<NewNeedForm />}/>
+                <Route path="showAll" element={<ShowNeeds />}/>
               </Route>
           </Routes>
       </BrowserRouter>
