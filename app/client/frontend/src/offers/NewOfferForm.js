@@ -10,7 +10,7 @@ const NewOfferForm = () => {
         description: '', 
         available: '', 
         location: '',
-        price: '',
+        price: 0,
         link: '', 
         availableDigitaly: false
     });
@@ -29,6 +29,10 @@ const NewOfferForm = () => {
             } else if (value === 'true'){
                 value = true
             } 
+        }
+
+        if(name == "price" && value !== null){
+            value = parseInt(value)
         }
 
         setFormData((prevData) => ({
@@ -149,12 +153,11 @@ const NewOfferForm = () => {
                             <label htmlFor="price">Pris</label>
                             <input
                                 className="input-fields"
-                                type="text"
+                                type="number"
                                 id="price"
                                 name="price"
                                 value={formData.price}
                                 onChange={handleChange}
-                                required
                             />
                         </div>
                         <div className='formDiv'>
@@ -166,7 +169,6 @@ const NewOfferForm = () => {
                                 name="link"
                                 value={formData.link}
                                 onChange={handleChange}
-                                required
                             />
                         </div>
                     </div>

@@ -152,7 +152,6 @@ const NewNeedForm = () => {
                                 name="price"
                                 value={formData.price}
                                 onChange={handleChange}
-                                required
                             />
                         </div>
                     </div>
