@@ -1,23 +1,19 @@
-import logo from './logo.svg';
 import './App.css';
+import NewOfferForm from './offers/NewOfferForm.js';
+import NewNeedForm from './needs/NewNeedForm.js';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import Header from './header/Header.js';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BrowserRouter>
+          <Header />
+          <Routes>
+              <Route path="/offers/add" element={<NewOfferForm />}/>
+              <Route path="/needs/add" element={<NewNeedForm />}/>
+          </Routes>
+      </BrowserRouter>
     </div>
   );
 }
