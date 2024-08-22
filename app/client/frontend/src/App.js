@@ -5,6 +5,7 @@ import LoginForm from './profile/LoginForm.js';
 import ShowOffers from './offers/ShowOffers.js';
 import ShowNeeds from './needs/ShowNeeds.js';
 import Article from './article/Article.js';
+import CreateAccount from './profile/CreateAccount.js';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Header from './header/Header.js';
 
@@ -26,6 +27,8 @@ function App() {
                 <Route path=":offerOrNeed/:id" element={<Article />}/>
               </Route>
               <Route path="/profile/login" element={<LoginForm />}></Route>
+              <Route path="/profile/create-account" element={<CreateAccount />}/>
+
           </Routes>
       </BrowserRouter>
     </div>

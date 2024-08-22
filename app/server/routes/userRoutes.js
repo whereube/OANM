@@ -63,18 +63,23 @@ export const getUserRoutes = () => {
         } = req.body;
 
         const validateStr = validateString({ company_name, user_name, email, link, password });
-        const validateInt = validateInteger({ phone_number });
 
-        if (validateStr.valid && validateInt.valid) {
+        if (validateStr.valid) {
             const checkCompanyName = await object.company.findOne({
                 where: {
                     company_name: company_name
                 }
             });
+
+            const checkEmail = await object.end_user.findAll({
+                where: {
+                    email: email
+                }
+            });
             
             const NewCompanyId = uuidv4();
 
-            if (!checkCompanyName) {
+            if (!checkCompanyName && checkEmail.length === 0) {
                 try {
                     const company = await object.company.create({
                         id: NewCompanyId,
@@ -94,12 +99,6 @@ export const getUserRoutes = () => {
             const user_id = uuidv4();
             const hashedPassword = await hashPassword(password);
     
-            const checkEmail = await object.end_user.findAll({
-                where: {
-                    email: email
-                }
-            });
-    
             if (checkEmail.length === 0){
                 try {
                     const result = await object.end_user.create({
@@ -115,7 +114,7 @@ export const getUserRoutes = () => {
                     if (result === null) {
                         return res.status(404).json('No new user created');
                     } else {
-                        res.status(201).json({ message: 'New user created'});
+                        res.status(201).json({result});
                     }
     
                 } catch (error) {
@@ -123,8 +122,10 @@ export const getUserRoutes = () => {
                     res.status(500).json('Internal Server Error');
                 }
             } else{
-                return res.status(401).json('Email already exist');
+                return res.status(401).json({ message: 'Email already exist' });
             }
+        } else {
+            return res.status(401).json({ message: 'Wrong data type' });
         }
     });
 
