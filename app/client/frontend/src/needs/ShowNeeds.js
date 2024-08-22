@@ -5,7 +5,7 @@ import './ShowNeeds.css'
 const ShowNeeds = () => {
 
     const [allOffers, setAllOffers] = useState([]);
-
+    const navigate = useNavigate();
 
     useEffect(() => {
         getOffers();
@@ -24,6 +24,10 @@ const ShowNeeds = () => {
         setAllOffers(result)
     }
 
+    const navigateToArticle = (needId) =>{
+        navigate(`/showArticle/need/${needId}`);
+    }
+
     return (
         <>
             <h1>Önskemål</h1>
@@ -38,7 +42,7 @@ const ShowNeeds = () => {
                         )
                         }
                         <p className='offerDesc'>{offer.description}</p>
-                        <button className='button-small offerButton'>Läs mer</button>
+                        <button className='button-small offerButton' onClick={() => navigateToArticle(offer.id)}>Läs mer</button>
                     </div>
                 ))}
             </div>
