@@ -28,6 +28,19 @@ export const getOfferRoutes = () => {
         }
     });
 
+
+    router.get('/byId/:offerId', async (req, res, next) => {
+        const offerId  = req.params.offerId; 
+        const validate = validateInput({ offerId });
+
+        if (validate.valid) {
+            const offers = await object.offers.findByPk(offerId)
+            res.status(200).send(offers);
+        } else {
+            res.status(400).json({ uuidError: validate.message }); 
+        }
+    });
+
     router.post('/add', async (req, res, next) => {
         const {
             userId,

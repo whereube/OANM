@@ -5,6 +5,7 @@ import './ShowOffers.css'
 const ShowOffers = () => {
 
     const [allOffers, setAllOffers] = useState([]);
+    const navigate = useNavigate()
 
 
     useEffect(() => {
@@ -24,6 +25,10 @@ const ShowOffers = () => {
         setAllOffers(result)
     }
 
+    const navigateToArticle = (offerId) =>{
+        navigate(`/showArticle/offer/${offerId}`);
+    }
+
     return (
         <>
             <h1>Tillgängliga erbjudanden</h1>
@@ -39,7 +44,7 @@ const ShowOffers = () => {
                         }
                         <p className='offerDesc'>{offer.description}</p>
                         <button className='button-small offerButton'>Markera som intresserad</button>
-                        <button className='button-small offerButton'>Läs mer</button>
+                        <button className='button-small offerButton' onClick={() => navigateToArticle(offer.id)}>Läs mer</button>
                     </div>
                 ))}
             </div>

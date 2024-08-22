@@ -28,6 +28,18 @@ export const getNeedRoutes = () => {
         }
     });
 
+    router.get('/byId/:needId', async (req, res, next) => {
+        const needId  = req.params.needId; 
+        const validate = validateInput({ needId });
+
+        if (validate.valid) {
+            const needs = await object.needs.findByPk(needId)
+            res.status(200).send(needs);
+        } else {
+            res.status(400).json({ uuidError: validate.message }); 
+        }
+    });
+
     router.post('/add', async (req, res, next) => {
         const {
             userId,
