@@ -6,6 +6,7 @@ const CreateAccount = () => {
     const [email, setEmail] = useState('');
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState(''); // New state for confirm password
     const [companyName, setCompanyName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [link, setLink] = useState('');
@@ -14,7 +15,13 @@ const CreateAccount = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(null); 
+        setError(null);
+
+        // Check if passwords match
+        if (password !== confirmPassword) {
+            setError('Passwords do not match. Please try again.');
+            return;
+        }
 
         try {
             const response = await fetch('http://localhost:443/user/createUser', {
@@ -75,6 +82,15 @@ const CreateAccount = () => {
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                </div>
+                <div>
+                    <label>Confirm Password:</label>
+                    <input
+                        type="password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
                         required
                     />
                 </div>
