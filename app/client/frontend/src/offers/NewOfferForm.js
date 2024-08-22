@@ -5,7 +5,7 @@ import './NewOfferForm.css'
 const NewOfferForm = () => {
 
     const [formData, setFormData] = useState({
-        userId: '7ed80514-953c-4d6f-baff-0946bf96f0d6',
+        userId: '',
         title: '',
         description: '', 
         available: '', 
@@ -18,6 +18,15 @@ const NewOfferForm = () => {
     const [status, setStatus] = useState(null);
     const navigate = useNavigate(); 
 
+    useEffect(() => {
+        const storedUserId = localStorage.getItem('sessionId');
+        if (storedUserId) {
+            setFormData((prevData) => ({
+                ...prevData,
+                userId: storedUserId
+            }));
+        }
+    }, []);
 
     const handleChange = (e) =>{
 
@@ -63,7 +72,7 @@ const NewOfferForm = () => {
         setStatus({ success: true, message: 'Offer added successfully!' });
         // Clear form fields
         setFormData({
-            userId: '7ed80514-953c-4d6f-baff-0946bf96f0d6',
+            userId: '',
             title: '',
             description: '', 
             available: '', 
@@ -82,8 +91,8 @@ const NewOfferForm = () => {
     return (
         <>
             <div className="newOfferPage">
-                <h1>Skapa erbjudande</h1>
                 <form onSubmit={handleSubmit} className="newOffer">
+                    <h2>Skapa erbjudande</h2>
                     <div className='formFields'>
                         <div className='formDiv'>
                             <label htmlFor="title">Titel</label>

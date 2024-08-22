@@ -51,15 +51,15 @@ export const getNeedRoutes = () => {
             category_1,
             category_2,
             category_3,
-            category_4
+            category_4,
+            availableDigitaly
         } = req.body;
         
         const id = uuidv4();
-        const validateStr = validateString({ title, description, available, location, link });
-        const validateInt = validateInteger({ price });
+        const validateStr = validateString({ title, description, available, location });
         const validate = validateInput({ userId });
 
-        if (validate.valid && validateStr.valid && validateInt.valid) {
+        if (validate.valid && validateStr.valid) {
             try {
                 const result = await object.needs.create({
                     id,
@@ -72,7 +72,8 @@ export const getNeedRoutes = () => {
                     category_1,
                     category_2,
                     category_3,
-                    category_4
+                    category_4,
+                    available_digitaly: availableDigitaly
                 });
                 
                 if (result === null) {
@@ -86,7 +87,7 @@ export const getNeedRoutes = () => {
                 res.status(500).json('Internal Server Error');
             }    
         } else {
-            res.status(400).json({ uuidError: validate.message, StrError: validateStr.message, IntError: validateInt.message }); 
+            res.status(400).json({ uuidError: validate.message, StrError: validateStr.message }); 
         }
         
     });
