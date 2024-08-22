@@ -62,6 +62,7 @@ const LoginForm = () => {
                 </div>
                 {error && <p style={{ color: 'red' }}>{error}</p>}
                 <button type="submit" className="button-small">Login</button>
+                <a href="/profile/create-account">Skapa konto</a>
             </form>
         </div>
     );

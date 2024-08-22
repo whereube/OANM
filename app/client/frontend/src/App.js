@@ -2,6 +2,7 @@ import './App.css';
 import NewOfferForm from './offers/NewOfferForm.js';
 import NewNeedForm from './needs/NewNeedForm.js';
 import LoginForm from './profile/LoginForm.js';
+import CreateAccount from './profile/CreateAccount.js';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Header from './header/Header.js';
 
@@ -13,7 +14,8 @@ function App() {
           <Routes>
               <Route path="/offers/add" element={<NewOfferForm />}/>
               <Route path="/needs/add" element={<NewNeedForm />}/>
-              <Route path="/profile/login" element={<LoginForm />}></Route>
+              <Route path="/profile/login" element={<LoginForm />}/>
+              <Route path="/profile/create-account" element={<CreateAccount />}/>
           </Routes>
       </BrowserRouter>
     </div>
