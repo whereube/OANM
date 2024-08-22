@@ -76,7 +76,8 @@ export const getOfferRoutes = () => {
                     category_1,
                     category_2,
                     category_3,
-                    category_4
+                    category_4, 
+                    available_digitaly: availableDigitaly
                 });
                 
                 if (result === null) {
