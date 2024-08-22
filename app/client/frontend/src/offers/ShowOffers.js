@@ -20,11 +20,6 @@ const ShowOffers = () => {
         setFilteredOffers(allOffers)
     }, [allOffers]);
 
-
-    useEffect(() => {
-        console.log(filterByCategory)
-    }, [filterByCategory]);
-
     useEffect(() => {
         let filtered = []
         if(filterByCategory !== ''){
@@ -34,7 +29,6 @@ const ShowOffers = () => {
         }
         setFilteredOffers(filtered)
     }, [filterByCategory]);
-
 
     const getOffers = async () => {
         const response = await fetch('http://localhost:443/offers/getAll');
@@ -53,13 +47,13 @@ const ShowOffers = () => {
         navigate(`/showArticle/offer/${offerId}`);
     }
 
-    const activeCategoryFilter = (e) => {
-        setFilterByCategory(e.target.value)
+    const activeCategoryFilter = (id) => {
+        setFilterByCategory(id)
     }
 
 
     const filterOffers = (offer) => {
-        return offer.category_1 == filterByCategory
+        return offer.category_1 === filterByCategory
     }  
 
     return (
