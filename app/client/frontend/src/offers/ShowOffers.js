@@ -1,16 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
+import CategoryFilter from './CategoryFilter';
 import './ShowOffers.css'
+
 
 const ShowOffers = () => {
 
     const [allOffers, setAllOffers] = useState([]);
+    const [filteredOffers, setFilteredOffers] = useState([])
+    const [filterByCategory, setFilterByCategory] = useState('')
     const navigate = useNavigate()
 
 
     useEffect(() => {
         getOffers();
     }, []);
+
+    useEffect(() => {
+        setFilteredOffers(allOffers)
+    }, [allOffers]);
+
+    useEffect(() => {
+        let filtered = []
+        if(filterByCategory !== ''){
+            filtered = allOffers.filter(filterOffers)
+        } else {
+            filtered = allOffers
+        }
+        setFilteredOffers(filtered)
+    }, [filterByCategory]);
 
     const getOffers = async () => {
         const response = await fetch('http://localhost:443/offers/getAll');
@@ -29,11 +47,21 @@ const ShowOffers = () => {
         navigate(`/showArticle/offer/${offerId}`);
     }
 
+    const activeCategoryFilter = (id) => {
+        setFilterByCategory(id)
+    }
+
+
+    const filterOffers = (offer) => {
+        return offer.category_1 === filterByCategory
+    }  
+
     return (
         <>
             <h1>Tillgängliga erbjudanden</h1>
+            <CategoryFilter activeCategoryFilter={activeCategoryFilter}/>
             <div className='allOffersDiv'>
-                {allOffers.map(offer => (
+                {filteredOffers.map(offer => (
                     <div key={offer.id} className='offerBox'>
                         <p className='offerTitle'>{offer.title}</p>
                         {offer.available_digitaly ? (

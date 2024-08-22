@@ -1,0 +1,20 @@
+.categoryFilterDiv{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+
+.categoryButton{
+    cursor: pointer;
+    border: solid rgb(170, 170, 170) 1px;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: rgba(187, 187, 187, 0.705);
+    margin-left: 10px;
+}
+
+.active{
+    background-color: white;
+}
