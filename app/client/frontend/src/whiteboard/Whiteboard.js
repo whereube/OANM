@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import HandleOffers from '../offers/HandleOffers.js'
 import './Whiteboard.css'
 
@@ -15,16 +15,13 @@ const Whiteboard = (props) => {
 
     const [allOffers, setAllOffers] = useState([]);
     const { getOffers, navigateToArticle} = HandleOffers();
+    let { meetingId } = useParams();
 
 
     useEffect(() => {
-        getOffers('byMeetingId/811dcd95-a4a2-4bd8-acdf-9ef4ceaf55cb', setAllOffers);
+        getOffers('byMeetingId/' + meetingId, setAllOffers);
         //byMeetingId/811dcd95-a4a2-4bd8-acdf-9ef4ceaf55cb
     }, []);
-
-    useEffect(() => {
-        console.log(allOffers)
-    }, [allOffers]);
 
 
     return (

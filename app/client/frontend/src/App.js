@@ -29,7 +29,7 @@ function App() {
               </Route>
               <Route path="/profile/login" element={<LoginForm />}></Route>
               <Route path="/profile/create-account" element={<CreateAccount />}/>
-              <Route path="/whiteboard" element={<Whiteboard />}/>
+              <Route path="/whiteboard/:meetingId" element={<Whiteboard />}/>
           </Routes>
       </BrowserRouter>
     </div>
