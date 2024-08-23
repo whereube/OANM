@@ -6,6 +6,7 @@ import ShowOffers from './offers/ShowOffers.js';
 import ShowNeeds from './needs/ShowNeeds.js';
 import Article from './article/Article.js';
 import CreateAccount from './profile/CreateAccount.js';
+import Whiteboard from './whiteboard/Whiteboard.js';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Header from './header/Header.js';
 
@@ -28,7 +29,7 @@ function App() {
               </Route>
               <Route path="/profile/login" element={<LoginForm />}></Route>
               <Route path="/profile/create-account" element={<CreateAccount />}/>
-
+              <Route path="/whiteboard" element={<Whiteboard />}/>
           </Routes>
       </BrowserRouter>
     </div>

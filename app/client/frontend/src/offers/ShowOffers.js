@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import CategoryFilter from './CategoryFilter';
+import HandleOffers from './HandleOffers.js'
 import './ShowOffers.css'
 
 
@@ -9,11 +10,10 @@ const ShowOffers = () => {
     const [allOffers, setAllOffers] = useState([]);
     const [filteredOffers, setFilteredOffers] = useState([])
     const [filterByCategory, setFilterByCategory] = useState('')
-    const navigate = useNavigate()
-
+    const { getOffers, navigateToArticle, activeCategoryFilter, filterOffers } = HandleOffers();
 
     useEffect(() => {
-        getOffers();
+        getOffers('getAll', setAllOffers);
     }, []);
 
     useEffect(() => {
@@ -30,36 +30,10 @@ const ShowOffers = () => {
         setFilteredOffers(filtered)
     }, [filterByCategory]);
 
-    const getOffers = async () => {
-        const response = await fetch('http://localhost:443/offers/getAll');
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.log(errorData)
-            console.error('Error:', errorData); 
-            throw new Error(errorData);
-        }
-
-        const result = await response.json();
-        setAllOffers(result)
-    }
-
-    const navigateToArticle = (offerId) =>{
-        navigate(`/showArticle/offer/${offerId}`);
-    }
-
-    const activeCategoryFilter = (id) => {
-        setFilterByCategory(id)
-    }
-
-
-    const filterOffers = (offer) => {
-        return offer.category_1 === filterByCategory
-    }  
-
     return (
         <>
             <h1>Tillgängliga erbjudanden</h1>
-            <CategoryFilter activeCategoryFilter={activeCategoryFilter}/>
+            <CategoryFilter activeCategoryFilter={activeCategoryFilter} setFilterByCategory={setFilterByCategory}/>
             <div className='allOffersDiv'>
                 {filteredOffers.map(offer => (
                     <div key={offer.id} className='offerBox'>

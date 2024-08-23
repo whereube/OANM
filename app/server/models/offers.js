@@ -59,7 +59,11 @@ export const offers = db.define(
       available_digitaly: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
-      }
+      }, 
+      meeting_id: {
+        type: DataTypes.UUID,
+        allowNull: true,
+      },
     },
     {
       // Other model are go here

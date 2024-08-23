@@ -6,6 +6,8 @@ import { offers } from "./offers.js";
 
 const environment = process.env.DEV_ENVIRONMENT;
 
+offers.belongsTo(end_user, { foreignKey: 'user_id' });
+
 if (process.env.DEV_ENVIRONMENT === 'local') {
   try {
     await db.authenticate();

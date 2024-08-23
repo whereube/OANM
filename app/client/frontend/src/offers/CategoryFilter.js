@@ -14,7 +14,7 @@ const CategoryFilter = (props) => {
 
     const handleClick = (categoryId) => {
         setSelectedCategoryId(categoryId); // Update the selected category
-        props.activeCategoryFilter(categoryId); // Call the parent's filter function
+        props.activeCategoryFilter(props.setFilterByCategory,categoryId); // Call the parent's filter function
     };
 
 
