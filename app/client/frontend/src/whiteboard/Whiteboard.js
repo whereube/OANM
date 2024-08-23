@@ -15,7 +15,7 @@ const Whiteboard = (props) => {
 
     const [allOffers, setAllOffers] = useState([]);
     const { getOffers, navigateToArticle} = HandleOffers();
-    let { meetingId } = useParams();
+    const { meetingId } = useParams();
 
 
     useEffect(() => {
@@ -33,7 +33,7 @@ const Whiteboard = (props) => {
                         {allOffers.map(offer => (
                             offer.category_1 === category.id && (
                                 <div> 
-                                    <p>Upplagt av: {offer.end_user.user_name}</p>
+                                    <p key={offer.end_user.id}>Upplagt av: {offer.end_user.user_name}</p>
                                     <p key={offer.id}>Erbjudande: {offer.title}</p>
                                 </div>
                             )

@@ -73,7 +73,8 @@ export const getOfferRoutes = () => {
             category_2,
             category_3,
             category_4,
-            availableDigitaly
+            availableDigitaly,
+            meetingId
         } = req.body;
         
         const id = uuidv4();
@@ -96,7 +97,8 @@ export const getOfferRoutes = () => {
                     category_2,
                     category_3,
                     category_4, 
-                    available_digitaly: availableDigitaly
+                    available_digitaly: availableDigitaly,
+                    meeting_id: meetingId
                 });
                 
                 if (result === null) {

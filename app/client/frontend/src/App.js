@@ -18,6 +18,7 @@ function App() {
           <Routes>
               <Route path="/offers">
                 <Route path="add" element={<NewOfferForm />}/>
+                <Route path="add/:meetingId" element={<NewOfferForm />}/>
                 <Route path="showAll" element={<ShowOffers />}/>
               </Route>
               <Route path="/needs">
