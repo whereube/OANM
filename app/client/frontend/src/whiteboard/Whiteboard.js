@@ -23,6 +23,26 @@ const Whiteboard = (props) => {
         //byMeetingId/811dcd95-a4a2-4bd8-acdf-9ef4ceaf55cb
     }, []);
 
+    useEffect(() => {
+        console.log(allOffers)
+    }, [allOffers]);
+
+
+  useEffect(() => {
+
+    const fetchOffers = () => {
+      getOffers('byMeetingId/' + meetingId, setAllOffers);
+    };
+
+    fetchOffers();
+
+    // Set up interval
+    const intervalId = setInterval(fetchOffers, 5000); // 500 milliseconds
+
+    // Cleanup interval on unmount
+    return () => clearInterval(intervalId);
+  }, []);
+
 
     return (
         <>
@@ -32,9 +52,10 @@ const Whiteboard = (props) => {
                         <h2>{category.name}</h2>
                         {allOffers.map(offer => (
                             offer.category_1 === category.id && (
-                                <div> 
-                                    <p key={offer.end_user.id}>Upplagt av: {offer.end_user.user_name}</p>
-                                    <p key={offer.id}>Erbjudande: {offer.title}</p>
+                                <div className='offerDiv'> 
+                                    <p className="postedBy" key={offer.end_user.id}>Upplagt av: {offer.end_user.user_name}</p>
+                                    <p key={offer.id}>{offer.title}</p>
+                                    <p key={offer.description}>Beskrivning: {offer.description}</p>
                                 </div>
                             )
                         ))}

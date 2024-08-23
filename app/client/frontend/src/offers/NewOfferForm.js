@@ -204,6 +204,7 @@ const NewOfferForm = () => {
                                         onChange={handleChange}
                                         required
                                     >
+                                        <option value="" disabled selected>Select an option</option>
                                         <option value="aeb778ee-939d-44e4-8f57-8810c3347dae">Lokaler</option>
                                         <option value="6a319924-f2d3-4813-8103-7ad7fc7676ce">Evenemang</option>
                                         <option value="2b6af113-55d2-4bcc-9066-d17196ffd745">Övrigt</option>
