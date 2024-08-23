@@ -37,7 +37,7 @@ const Whiteboard = (props) => {
     fetchOffers();
 
     // Set up interval
-    const intervalId = setInterval(fetchOffers, 5000); // 500 milliseconds
+    const intervalId = setInterval(fetchOffers, 10000);
 
     // Cleanup interval on unmount
     return () => clearInterval(intervalId);

@@ -10,7 +10,7 @@ const ShowOffers = () => {
     const [allOffers, setAllOffers] = useState([]);
     const [filteredOffers, setFilteredOffers] = useState([])
     const [filterByCategory, setFilterByCategory] = useState('')
-    const { getOffers, navigateToArticle, activeCategoryFilter, filterOffers } = HandleOffers();
+    const { getOffers, navigateToArticle} = HandleOffers();
 
     useEffect(() => {
         getOffers('getAll', setAllOffers);
@@ -29,6 +29,14 @@ const ShowOffers = () => {
         }
         setFilteredOffers(filtered)
     }, [filterByCategory]);
+
+    const activeCategoryFilter = (setFilterByCategory,id) => {
+        setFilterByCategory(id)
+    }
+
+    const filterOffers = (offer) => {
+        return offer.category_1 === filterByCategory
+    }  
 
     return (
         <>

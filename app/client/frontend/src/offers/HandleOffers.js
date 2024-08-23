@@ -26,20 +26,9 @@ const HandleOffers = () => {
         navigate(`/showArticle/offer/${offerId}`);
     }
 
-    const activeCategoryFilter = (setFilterByCategory,id) => {
-        setFilterByCategory(id)
-    }
-
-
-    const filterOffers = (offer, filterByCategory) => {
-        return offer.category_1 === filterByCategory
-    }  
-
     return {
         getOffers,
-        navigateToArticle,
-        activeCategoryFilter,
-        filterOffers
+        navigateToArticle
     };
 
 }
