@@ -31,7 +31,11 @@ const ShowOffers = () => {
     }, [filterByCategory]);
 
     const activeCategoryFilter = (setFilterByCategory,id) => {
-        setFilterByCategory(id)
+        if(!id.includes('all_')){
+            setFilterByCategory(id)
+        } else {
+            setFilterByCategory('')
+        }
     }
 
     const filterOffers = (offer) => {

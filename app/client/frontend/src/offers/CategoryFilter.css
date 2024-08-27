@@ -1,8 +1,13 @@
 .categoryFilterDiv{
+    margin-bottom: 30px;
+}
+
+.categoryLevelDiv{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 30px;
+    justify-content: space-around;
+    border-bottom: 1px black solid; 
+    padding: 10px;
 }
 
 

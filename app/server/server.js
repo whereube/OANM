@@ -4,6 +4,7 @@ import { getOfferRoutes } from './routes/offerRoutes.js';
 import { getNeedRoutes } from './routes/needRoutes.js';
 import { corsMiddleware } from './middleware/corsMiddleware.js';
 import { getCompanyRoutes } from './routes/companyRoutes.js';
+import { getCategoryRoutes } from './routes/categoryRoutes.js';
 
 export const createServer = () => {
   const app = express();
@@ -15,6 +16,7 @@ export const createServer = () => {
   app.use('/offers',  getOfferRoutes());
   app.use('/needs', getNeedRoutes());
   app.use('/company', getCompanyRoutes());
+  app.use('/category', getCategoryRoutes());
 
   return app;
 };

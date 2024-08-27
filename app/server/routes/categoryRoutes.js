@@ -7,7 +7,7 @@ export const getCategoryRoutes = () => {
     const router = Router();
 
     router.get('/getAll', async (req, res, next) => {
-        const allOffers = await object.company.findAll({
+        const allOffers = await object.category.findAll({
         });
         res.status(200).send(allOffers);
     });
