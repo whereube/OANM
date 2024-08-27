@@ -14,6 +14,14 @@ export const category = db.define(
       category_name: {
         type: DataTypes.STRING,
         allowNull: false,
+      },
+      level: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      parent_id: {
+        type: DataTypes.UUID,
+        allowNull: false,
       }
     },
     {
