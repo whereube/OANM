@@ -8,9 +8,40 @@ function AddCategoryForm() {
     category_name: ''
   });
 
+  const [categories, setCategories] = useState([]); // Manage categories here
   const [responseMessage, setResponseMessage] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+  // Fetch categories from the API
+  const fetchCategories = async () => {
+    try {
+      setLoading(true); // Set loading before fetching
+      const response = await fetch('http://localhost:443/category/getAll', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch categories');
+      }
+
+      const data = await response.json();
+      setCategories(data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      setError('An error occurred while fetching categories.');
+      setLoading(false);
+    }
+  };
+
+  // UseEffect to fetch categories once on component mount
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   // Handle changes to input fields
   const handleChange = (event) => {
@@ -37,6 +68,7 @@ function AddCategoryForm() {
 
       if (response.ok) {
         setResponseMessage(data.message);
+        fetchCategories(); // Re-fetch categories after adding a new one
       } else {
         setResponseMessage(data.message);
       }
@@ -68,7 +100,7 @@ function AddCategoryForm() {
       </form>
 
       {/* Render CategoryList with categories state and loading/error state */}
-      <CategoryList loading={loading} error={error} />
+      <CategoryList categories={categories} loading={loading} error={error} />
     </div>
   );
 }

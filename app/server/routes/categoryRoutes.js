@@ -51,6 +51,31 @@ export const getCategoryRoutes = () => {
       }
   });
 
+  router.delete('/deleteCategory', async (req, res, next) => {
+    const { id } = req.body;
+    
+    const validate = validateInput({ id });
+
+    if (validate.valid) {
+      try {
+        const result = await object.category.destroy({
+          where: {
+            id: id,
+          }
+        });
+  
+        if (result === 0) {
+          return res.status(404).json({ message: 'Category not found' });
+        }
+        res.sendStatus(204);
+      } catch (error) {
+        console.error('Error deleting category', error);
+        res.status(500).json('Internal Server Error');
+      }
+    } else {
+      res.status(400).json({ message: validate.message });
+    }
+  });
 
 
   return router;
