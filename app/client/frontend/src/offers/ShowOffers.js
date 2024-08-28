@@ -8,13 +8,20 @@ import './ShowOffers.css'
 const ShowOffers = () => {
 
     const [allOffers, setAllOffers] = useState([]);
+    const [allArticleCategories, setAllArticleCategories] = useState([]);
     const [filteredOffers, setFilteredOffers] = useState([])
     const [filterByCategory, setFilterByCategory] = useState({})
-    const { getOffers, navigateToArticle} = HandleOffers();
+    const { getOffers, navigateToArticle, getArticleCategories} = HandleOffers();
 
     useEffect(() => {
         getOffers('getAll', setAllOffers);
+        getArticleCategories(setAllArticleCategories);
     }, []);
+
+    useEffect(() => {
+        console.log(allArticleCategories)
+    }, [allArticleCategories]);
+
 
     useEffect(() => {
         setFilteredOffers(allOffers)
@@ -40,16 +47,22 @@ const ShowOffers = () => {
 
     const filterOffers = (offer) => {
 
+        const categoriesOfArticle = allArticleCategories.filter(obj => obj.article_id === offer.id);
+
         for (let level in filterByCategory) {
             const levelIndex = parseInt(level.split('_')[1], 10) + 1;
             const categoryKey = `category_${levelIndex}`;
 
-            // Check if the offer matches the category in the filter
-            if (filterByCategory[level] !== `all_${(levelIndex-1)}` && offer[categoryKey] !== filterByCategory[level]) {
-                return false; // If it doesn't match, exclude this offer
+
+            if (filterByCategory[level] !== `all_${(levelIndex-1)}`){
+
+                const isIn = allArticleCategories.some(obj => obj.article_id === offer.id && obj.category_id === filterByCategory[level])
+                if(isIn === false){
+                    return false
+                }
             }
         }
-        return true; // If all levels match, include this offer
+        return true;
     }  
 
     return (
