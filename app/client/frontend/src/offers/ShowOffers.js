@@ -22,7 +22,6 @@ const ShowOffers = () => {
 
     useEffect(() => {
 
-        console.log(filterByCategory)
         let filtered = []
         if (Object.keys(filterByCategory).length > 0) {
             filtered = allOffers.filter(filterOffers)
@@ -45,10 +44,6 @@ const ShowOffers = () => {
             const levelIndex = parseInt(level.split('_')[1], 10) + 1;
             const categoryKey = `category_${levelIndex}`;
 
-            console.log("index: " + levelIndex)
-            console.log("key: " + categoryKey)
-            console.log("level: " + level)
-            
             // Check if the offer matches the category in the filter
             if (filterByCategory[level] !== `all_${(levelIndex-1)}` && offer[categoryKey] !== filterByCategory[level]) {
                 return false; // If it doesn't match, exclude this offer
