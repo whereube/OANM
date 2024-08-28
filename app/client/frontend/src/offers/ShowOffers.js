@@ -19,11 +19,6 @@ const ShowOffers = () => {
     }, []);
 
     useEffect(() => {
-        console.log(allArticleCategories)
-    }, [allArticleCategories]);
-
-
-    useEffect(() => {
         setFilteredOffers(allOffers)
     }, [allOffers]);
 
@@ -38,17 +33,31 @@ const ShowOffers = () => {
         setFilteredOffers(filtered)
     }, [filterByCategory]);
 
-    const activeCategoryFilter = (setFilterByCategory,id, levelIndex) => {
-        setFilterByCategory(prevState => ({
-            ...prevState,
-            [`level_${levelIndex}`]: id.includes('all_') ? `all_${levelIndex}` : id
-        }));
+    const activeCategoryFilter = (setFilterByCategory, id, levelIndex) => {
+        setFilterByCategory(prevState => {
+            // Create a copy of the previous state
+            const newState = { ...prevState };
+
+            // Iterate over each key in the state
+            Object.keys(newState).forEach(key => {
+                const level = parseInt(key.split('_')[1], 10); // Extract the level number from the key
+
+                // If the level is higher than the current levelIndex, delete the key
+                if (level > levelIndex) {
+                    delete newState[key];
+                }
+            });
+
+            // Update the selected category for the current levelIndex
+
+            newState[`level_${levelIndex}`] = id;
+
+            return newState;
+        });
     }
 
     const filterOffers = (offer) => {
-
-        const categoriesOfArticle = allArticleCategories.filter(obj => obj.article_id === offer.id);
-
+        console.log(filterByCategory)
         for (let level in filterByCategory) {
             const levelIndex = parseInt(level.split('_')[1], 10) + 1;
             const categoryKey = `category_${levelIndex}`;
