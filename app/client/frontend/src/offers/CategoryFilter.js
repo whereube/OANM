@@ -4,7 +4,7 @@ import './CategoryFilter.css'
 
 const CategoryFilter = (props) => {
 
-    const [selectedCategoryId, setSelectedCategoryId] = useState('all_0');
+    const [selectedCategoryId, setSelectedCategoryId] = useState({});
     const [categories, setCategories] = useState([])
     const [nbrOfLevels, setNbrOfLevels] = useState(1)
 
@@ -17,9 +17,8 @@ const CategoryFilter = (props) => {
     }, [categories]);
 
     useEffect(() => {
-        console.log(nbrOfLevels)
+        populateCategoryState()
     }, [nbrOfLevels]);
-
 
     const getCategories = async () => {
         const response = await fetch('http://localhost:443/category/getAll');
@@ -34,15 +33,29 @@ const CategoryFilter = (props) => {
         setCategories(result)
     }
 
-    const handleClick = (categoryId) => {
-        setSelectedCategoryId(categoryId); // Update the selected category
-        props.activeCategoryFilter(props.setFilterByCategory,categoryId); // Call the parent's filter function
+    const handleClick = (categoryId, levelIndex) => {
+        setSelectedCategoryId(prevState => ({
+            ...prevState,
+            [`level_${levelIndex}`]: categoryId
+        }));
+        props.activeCategoryFilter(props.setFilterByCategory, categoryId, levelIndex); 
     };
 
     const checkNbrOfLevels = () => {
         const maxLevel = Math.max(...categories.map(category => category.level), 1);
         setNbrOfLevels(maxLevel);
     };
+
+
+    const populateCategoryState = () => {
+        const categoryLevelList = {}
+
+        for (let i = 0; i < nbrOfLevels; i++) {
+            categoryLevelList[`level_${i}`] = `all_${i}`;
+        }
+
+        setSelectedCategoryId(categoryLevelList);
+    }
 
 
     return (
@@ -52,10 +65,10 @@ const CategoryFilter = (props) => {
                 <div className='categoryLevelDiv' key={levelIndex}>
                     {categories.map(category => (
                         category.level === (levelIndex + 1) && (
-                            <div className={`categoryButton ${selectedCategoryId === category.id ? 'active' : ''}`} role='button' key={category.id} onClick={ () => handleClick(category.id)}>{category.category_name}</div>
+                            <div className={`categoryButton ${selectedCategoryId[`level_${levelIndex}`] === category.id ? 'active' : ''}`} role='button' key={category.id} onClick={ () => handleClick(category.id, levelIndex)}>{category.category_name}</div>
                         )
                     ))}
-                    <div className={`categoryButton ${selectedCategoryId === `all_${levelIndex}` ? 'active' : ''}`}  role='button' onClick={() => handleClick(`all_${levelIndex}`)}>Alla</div> 
+                    <div className={`categoryButton ${selectedCategoryId[`level_${levelIndex}`] === `all_${levelIndex}` ? 'active' : ''}`}  role='button' onClick={() => handleClick(`all_${levelIndex}`, levelIndex)}>Alla</div> 
                 </div>
                 ))}
             </div>

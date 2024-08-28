@@ -9,7 +9,7 @@ const ShowOffers = () => {
 
     const [allOffers, setAllOffers] = useState([]);
     const [filteredOffers, setFilteredOffers] = useState([])
-    const [filterByCategory, setFilterByCategory] = useState('')
+    const [filterByCategory, setFilterByCategory] = useState({})
     const { getOffers, navigateToArticle} = HandleOffers();
 
     useEffect(() => {
@@ -21,8 +21,10 @@ const ShowOffers = () => {
     }, [allOffers]);
 
     useEffect(() => {
+
+        console.log(filterByCategory)
         let filtered = []
-        if(filterByCategory !== ''){
+        if (Object.keys(filterByCategory).length > 0) {
             filtered = allOffers.filter(filterOffers)
         } else {
             filtered = allOffers
@@ -30,16 +32,29 @@ const ShowOffers = () => {
         setFilteredOffers(filtered)
     }, [filterByCategory]);
 
-    const activeCategoryFilter = (setFilterByCategory,id) => {
-        if(!id.includes('all_')){
-            setFilterByCategory(id)
-        } else {
-            setFilterByCategory('')
-        }
+    const activeCategoryFilter = (setFilterByCategory,id, levelIndex) => {
+        setFilterByCategory(prevState => ({
+            ...prevState,
+            [`level_${levelIndex}`]: id.includes('all_') ? `all_${levelIndex}` : id
+        }));
     }
 
     const filterOffers = (offer) => {
-        return offer.category_1 === filterByCategory
+
+        for (let level in filterByCategory) {
+            const levelIndex = parseInt(level.split('_')[1], 10) + 1;
+            const categoryKey = `category_${levelIndex}`;
+
+            console.log("index: " + levelIndex)
+            console.log("key: " + categoryKey)
+            console.log("level: " + level)
+            
+            // Check if the offer matches the category in the filter
+            if (filterByCategory[level] !== `all_${(levelIndex-1)}` && offer[categoryKey] !== filterByCategory[level]) {
+                return false; // If it doesn't match, exclude this offer
+            }
+        }
+        return true; // If all levels match, include this offer
     }  
 
     return (
