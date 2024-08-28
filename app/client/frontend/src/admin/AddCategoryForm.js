@@ -8,15 +8,16 @@ function AddCategoryForm() {
     category_name: ''
   });
 
-  const [categories, setCategories] = useState([]); // Manage categories here
+  const [categories, setCategories] = useState([]);
   const [responseMessage, setResponseMessage] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [isBlinking, setIsBlinking] = useState(false);
 
   // Fetch categories from the API
   const fetchCategories = async () => {
     try {
-      setLoading(true); // Set loading before fetching
+      setLoading(true);
       const response = await fetch('http://localhost:443/category/getAll', {
         method: 'GET',
         headers: {
@@ -38,12 +39,10 @@ function AddCategoryForm() {
     }
   };
 
-  // UseEffect to fetch categories once on component mount
   useEffect(() => {
     fetchCategories();
   }, []);
 
-  // Handle changes to input fields
   const handleChange = (event) => {
     setFormData({
       ...formData,
@@ -51,7 +50,6 @@ function AddCategoryForm() {
     });
   };
 
-  // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -67,14 +65,40 @@ function AddCategoryForm() {
       const data = await response.json();
 
       if (response.ok) {
-        setResponseMessage(data.message);
-        fetchCategories(); // Re-fetch categories after adding a new one
+        fetchCategories();
+        setFormData({ category_name: '' });
+        setIsBlinking(true); // Trigger blinking effect
+        setResponseMessage('');
+        setTimeout(() => {
+            setIsBlinking(false);
+          }, 1000);
       } else {
         setResponseMessage(data.message);
       }
+
     } catch (error) {
       console.error('Error submitting form:', error);
       setResponseMessage('An error occurred while submitting the form.');
+    }
+  };
+
+  const handleRemoveCategory = async (categoryId) => {
+    try {
+      const response = await fetch(`http://localhost:443/category/deleteCategory/${categoryId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete category');
+      }
+
+      fetchCategories();
+    } catch (error) {
+      console.error('Error deleting category:', error);
+      setResponseMessage('An error occurred while deleting the category.');
     }
   };
 
@@ -99,8 +123,13 @@ function AddCategoryForm() {
         <button type="submit" className="button-small">Add Category</button>
       </form>
 
-      {/* Render CategoryList with categories state and loading/error state */}
-      <CategoryList categories={categories} loading={loading} error={error} />
+      <CategoryList
+        categories={categories}
+        loading={loading}
+        error={error}
+        onRemoveCategory={handleRemoveCategory}
+        isBlinking={isBlinking} // Pass the blinking state to CategoryList
+      />
     </div>
   );
 }
