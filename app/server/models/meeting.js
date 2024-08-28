@@ -1,8 +1,8 @@
 import { DataTypes } from 'sequelize';
 import { db } from '../database/databaseConnection.js';
 
-export const category = db.define(
-    'category',
+export const meeting = db.define(
+    'meeting',
     {
       // Model attributes are defined here
       id: {
@@ -11,17 +11,9 @@ export const category = db.define(
         allowNull: false,
         primaryKey: true,
       },
-      category_name: {
+      meeting_name: {
         type: DataTypes.STRING,
         allowNull: false,
-      },
-      level: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
-      parent_id: {
-        type: DataTypes.UUID,
-        allowNull: true,
       }
     },
     {

@@ -1,0 +1,32 @@
+.category-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.create-category-form {
+    min-width: 700px;
+    padding: 20px 20px 40px 20px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    background-image: none;
+    border: 1px solid #000;
+    border-radius: 4px;
+    box-shadow: #000000 4px 4px 0 0,#000 4px 4px 0 1px;
+    color: #000000;
+    box-sizing: border-box;
+    display: inline-block;
+    margin-top: 40px;
+}
+
+.create-category-form > div {
+    margin: 40px 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+.create-category-form > div > input {
+    font-size: 30px;
+}

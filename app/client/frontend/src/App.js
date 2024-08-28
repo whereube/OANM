@@ -7,6 +7,8 @@ import ShowNeeds from './needs/ShowNeeds.js';
 import Article from './article/Article.js';
 import CreateAccount from './profile/CreateAccount.js';
 import Whiteboard from './whiteboard/Whiteboard.js';
+import AddCategoryForm from './admin/AddCategoryForm.js';
+import AddMeetingForm from './admin/AddMeetingForm.js';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Header from './header/Header.js';
 
@@ -31,6 +33,8 @@ function App() {
               <Route path="/profile/login" element={<LoginForm />}></Route>
               <Route path="/profile/create-account" element={<CreateAccount />}/>
               <Route path="/whiteboard/:meetingId" element={<Whiteboard />}/>
+              <Route path="/admin/add-category" element={<AddCategoryForm />}/>
+              <Route path="/admin/add-meeting" element={<AddMeetingForm />}/>
           </Routes>
       </BrowserRouter>
     </div>

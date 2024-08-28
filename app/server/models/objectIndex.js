@@ -3,6 +3,7 @@ import { company } from "./company.js";
 import { end_user } from "./end_user.js";
 import { needs } from "./needs.js";
 import { offers } from "./offers.js";
+import { meeting } from "./meeting.js";
 
 const environment = process.env.DEV_ENVIRONMENT;
 
@@ -31,5 +32,6 @@ export {
     company,
     end_user,
     needs,
-    offers
+    offers,
+    meeting
 }
