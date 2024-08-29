@@ -57,7 +57,7 @@ label {
 
 @keyframes blinkGreen {
     0% { background-color: transparent; }
-    50% { background-color: lightgreen; }
+    50% { background-color: #ACE1AF; }
     100% { background-color: transparent; }
   }
   
