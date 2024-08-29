@@ -90,25 +90,6 @@ const CategoryFilter = (props) => {
         setSelectedCategoryId(categoryLevelList);
     }
 
-
-    /*
-    return (
-        <>
-            <div className='categoryFilterDiv'>
-                {Array.from({ length: nbrOfLevels }).map((_, levelIndex) => (
-                <div className='categoryLevelDiv' key={levelIndex}>
-                    {categories.map(category => (
-                        category.level === (levelIndex + 1) && (
-                            <div className={`categoryButton ${selectedCategoryId[`level_${levelIndex}`] === category.id ? 'active' : ''}`} role='button' key={category.id} onClick={ () => handleClick(category.id, levelIndex)}>{category.category_name}</div>
-                        )
-                    ))}
-                    <div className={`categoryButton ${selectedCategoryId[`level_${levelIndex}`] === `all_${levelIndex}` ? 'active' : ''}`}  role='button' onClick={() => handleClick(`all_${levelIndex}`, levelIndex)}>Alla</div> 
-                </div>
-                ))}
-            </div>
-        </>
-    )
-    */
     return (
         <>
             <div className='categoryFilterDiv'>

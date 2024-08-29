@@ -5,6 +5,7 @@ import { needs } from "./needs.js";
 import { offers } from "./offers.js";
 import { meeting } from "./meeting.js";
 import { articleCategory } from "./articleCategory.js";
+import { meetingCategory } from "./meetingCategory.js";
 
 const environment = process.env.DEV_ENVIRONMENT;
 
@@ -35,5 +36,6 @@ export {
     needs,
     offers,
     meeting,
-    articleCategory
+    articleCategory,
+    meetingCategory
 }
