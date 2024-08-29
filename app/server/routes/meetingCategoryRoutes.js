@@ -34,6 +34,8 @@ export const getMeetingCategoryRoutes = () => {
           const errorMessage = await meetingResponse.text();
           return res.status(meetingResponse.status).json({ message: errorMessage });
         }
+        const meetingData = await meetingResponse.json();
+        const newMeetingId = meetingData.meeting_id;
         
         const createdEntries = [];
         for (const catId of category_id) {
@@ -42,7 +44,7 @@ export const getMeetingCategoryRoutes = () => {
           // Create each meetingCategory entry
           const result = await object.meetingCategory.create({
             id: id,
-            meeting_id: meeting_id,
+            meeting_id: newMeetingId,
             category_id: catId
           });
     

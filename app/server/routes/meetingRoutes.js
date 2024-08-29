@@ -34,7 +34,7 @@ export const getMeetingRoutes = () => {
               if (result === null) {
                   return res.status(404).json({ message: 'No new meeting created' });
               } else{
-                  res.status(201).json({ message: 'New meeting created'});
+                  res.status(201).json({ meeting_id: id });
               }
 
           } catch (error) {
