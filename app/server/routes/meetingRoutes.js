@@ -16,7 +16,7 @@ export const getMeetingRoutes = () => {
       const {
           meeting_name
       } = req.body;
-      
+
       const id = uuidv4();
 
       const checkMeetingName = await object.meeting.findAll({
@@ -24,7 +24,6 @@ export const getMeetingRoutes = () => {
               meeting_name: meeting_name
           }
       });
-
       if (checkMeetingName.length === 0){
           try {
               const result = await object.meeting.create({
