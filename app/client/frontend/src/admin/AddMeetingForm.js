@@ -76,6 +76,37 @@ function AddMeetingForm() {
     }
   };
 
+  // Recursive function to render categories and subcategories
+  const renderCategories = (parentId = null) => {
+    // Filter categories by parent_id
+    const filteredCategories = categories.filter(
+      (category) => category.parent_id === parentId
+    );
+
+    return filteredCategories.map((category) => (
+      <React.Fragment key={category.id}>
+        <li
+          style={{
+            marginLeft: parentId ? '30px' : '0', // Apply margin-left for subcategories
+            fontSize: parentId ? '15px' : 'inherit', // Apply font size for subcategories
+            borderBottom: parentId ? 'none' : 'inherit', // Remove border for subcategories
+          }}
+        >
+          {category.category_name}
+          <button
+            type="button"
+            onClick={() => handleCategoryToggle(category.id)}
+            className={`button-category ${selectedCategories.includes(category.id) ? 'selected' : ''}`}
+          >
+            {selectedCategories.includes(category.id) ? '-' : '+'}
+          </button>
+        </li>
+        {/* Recursively render subcategories */}
+        {renderCategories(category.id)}
+      </React.Fragment>
+    ));
+  };
+
   return (
     <div>
       <form onSubmit={handleSubmit} className="create-meeting-form">
@@ -100,18 +131,7 @@ function AddMeetingForm() {
             <p>{error}</p>
           ) : (
             <ul>
-              {categories.map((category) => (
-                <li key={category.id}>
-                  {category.category_name}
-                  <button
-                    type="button"
-                    onClick={() => handleCategoryToggle(category.id)}
-                    className={`button-category ${selectedCategories.includes(category.id) ? 'selected' : ''}`}
-                  >
-                    {selectedCategories.includes(category.id) ? '-' : '+'}
-                  </button>
-                </li>
-              ))}
+              {renderCategories()} {/* Render top-level categories and their subcategories */}
             </ul>
           )}
         </div>

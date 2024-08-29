@@ -35,8 +35,8 @@ function CategoryList({ categories, loading, error, onRemoveCategory, isBlinking
             borderBottom: category.parent_id ? 'none' : 'inherit', // Remove border for subcategories
           }}
         >
-          {category.parent_id ? `- ${category.category_name}` : category.category_name}
-          <button
+          {category.parent_id ? ` ${category.category_name}` : category.category_name}
+          <button style={{backgroundColor: '#fd5c63'}}
             type="button"
             className="remove-button"
             onClick={() => onRemoveCategory(category.id)}

@@ -13,6 +13,7 @@
     box-sizing: border-box;
     display: inline-block;
     margin-top: 40px;
+    margin-bottom: 50px;
 }
 
 .categories {
@@ -59,7 +60,7 @@
 .button-category {
     appearance: button;
     cursor: pointer;
-    background-color: lightgreen;
+    background-color: #ACE1AF;
     background-image: none;
     border: 1px solid #000;
     border-radius: 4px;
@@ -76,6 +77,6 @@
 }
 
 .button-category.selected {
-    background-color: red;
+    background-color: #fd5c63;
     color: white;
 }
