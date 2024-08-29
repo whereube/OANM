@@ -12,6 +12,17 @@ export const getMeetingCategoryRoutes = () => {
         res.status(200).send(data);
     });
 
+    router.get('/byMeetingId/:meetingId', async (req, res, next) => {
+        const meetingId  = req.params.meetingId; 
+        const data = await object.meetingCategory.findAll({
+            include: object.category,
+            where: {
+                meeting_id: meetingId
+            }
+      });
+        res.status(200).send(data);
+    });
+
 
   return router;
 };

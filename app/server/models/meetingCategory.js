@@ -7,8 +7,9 @@ export const meetingCategory = db.define(
       id: {
         type: DataTypes.UUID,
         allowNull: false,
+        primaryKey: true
       },
-      article_id: {
+      meeting_id: {
         type: DataTypes.UUID,
         allowNull: false,
       },

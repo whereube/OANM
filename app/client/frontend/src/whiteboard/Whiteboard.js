@@ -3,38 +3,26 @@ import { useParams } from "react-router-dom";
 import HandleOffers from '../offers/HandleOffers.js'
 import './Whiteboard.css'
 
-
 const Whiteboard = (props) => {
 
-    /*
-    const categories = [
-        {'id': 'aeb778ee-939d-44e4-8f57-8810c3347dae', 'name': 'Lokaler'},
-        {'id': '6a319924-f2d3-4813-8103-7ad7fc7676ce', 'name': 'Evenemang'},
-        {'id': '2b6af113-55d2-4bcc-9066-d17196ffd745', 'name': 'Övrigt'}
-    ];
-    */
-
     const [allOffers, setAllOffers] = useState([]);
-    const [categories, setCategories] = useState([])
-    const { getOffers, navigateToArticle} = HandleOffers();
+    const [meetingCategories, setMeetingCategories] = useState([])
+    const [allArticleCategories, setAllArticleCategories] = useState([]);
+    const { getOffers, navigateToArticle, getArticleCategories} = HandleOffers();
     const { meetingId } = useParams();
 
 
     useEffect(() => {
-        getOffers('byMeetingId/' + meetingId, setAllOffers);
         getMeetingCategories();
         //byMeetingId/811dcd95-a4a2-4bd8-acdf-9ef4ceaf55cb
     }, []);
 
 
     useEffect(() => {
-        console.log(categories)
-    }, [categories]);
-
-    useEffect(() => {
 
         const fetchOffers = () => {
-        getOffers('byMeetingId/' + meetingId, setAllOffers);
+            getOffers('byMeetingId/' + meetingId, setAllOffers);
+            getArticleCategories(setAllArticleCategories);
         };
 
         fetchOffers();
@@ -46,9 +34,8 @@ const Whiteboard = (props) => {
         return () => clearInterval(intervalId);
     }, []);
 
-
     const getMeetingCategories = async () => {
-        const response = await fetch('http://localhost:443/meetingCategory/getAll');
+        const response = await fetch('http://localhost:443/meetingCategory/byMeetingId/811dcd95-a4a2-4bd8-acdf-9ef4ceaf55cb');
         if (!response.ok) {
             const errorData = await response.json();
             console.log(errorData)
@@ -57,25 +44,66 @@ const Whiteboard = (props) => {
         }
 
         const result = await response.json();
-        setCategories(result)
+        setMeetingCategories(result)
     }
+
+    const filterOffers = (categoryId, level) => (offer) => {
+
+        const isIn = allArticleCategories.some(articleCategory => articleCategory.article_id === offer.id && articleCategory.category_id === categoryId)
+        if(isIn === false){
+            return false
+        } else {
+            return true
+        }
+    }  
+
+
+    const findArticleSubCategory = (categoryId, offer) => {
+        const categoryHasSubCategory = meetingCategories.find(meetingCategory => {
+            return meetingCategory.category.parent_id === categoryId
+        })
+
+        let notLowestCategory = false
+        if(categoryHasSubCategory != undefined){
+            notLowestCategory = allArticleCategories.some(articleCategory => articleCategory.article_id === offer.id && articleCategory.category_id !== categoryHasSubCategory.category_id)
+        } 
+        return notLowestCategory
+    }   
 
 
     return (
         <>
             <div className='whiteboardDiv'>
-                {categories.map(category => (
-                    <div className='categoryDiv' key={category.id}>
-                        <h2>{category.category_name}</h2>
-                        {allOffers.map(offer => (
-                            offer.category_1 === category.id && (
-                                <div className='offerDiv'> 
-                                    <p className="postedBy" key={offer.end_user.id}>Upplagt av: {offer.end_user.user_name}</p>
-                                    <p key={offer.id}>{offer.title}</p>
-                                    <p key={offer.description}>Beskrivning: {offer.description}</p>
-                                </div>
-                            )
-                        ))}
+                {meetingCategories.map(meetingCategory => (
+                    <div className='categoryDiv' key={meetingCategory.category.id}>
+                        {meetingCategory.category.parent_id === null && (
+                            <>
+                                <h2>{meetingCategory.category.category_name}</h2>
+                                {allOffers.filter(filterOffers(meetingCategory.category.id, 'nivå1')).map(offer =>
+                                    <div className='offerDiv'> 
+                                        <p className="postedBy" key={offer.end_user.id}>Upplagt av: {offer.end_user.user_name}</p>
+                                        <p key={offer.id}>{offer.title}</p>
+                                        <p key={offer.description}>Beskrivning: {offer.description}</p>
+                                    </div>
+                                )}
+                                {meetingCategories.map(subMeetingCategory => (
+                                    <div className='subCategoryDiv' key={subMeetingCategory.category.id}>
+                                        {subMeetingCategory.category.parent_id === meetingCategory.category.id && (
+                                            <>
+                                                <h3>{subMeetingCategory.category.category_name}</h3>
+                                                {allOffers.filter(filterOffers(subMeetingCategory.category.id, 'nivå2')).map(offer =>
+                                                    <div className='offerDiv'> 
+                                                        <p className="postedBy" key={offer.end_user.id}>Upplagt av: {offer.end_user.user_name}</p>
+                                                        <p key={offer.id}>{offer.title}</p>
+                                                        <p key={offer.description}>Beskrivning: {offer.description}</p>
+                                                    </div>
+                                                )}
+                                            </>
+                                        )}
+                                    </div>
+                                ))}
+                            </>
+                        )}
                     </div>
                 ))}
             </div>
