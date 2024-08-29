@@ -23,10 +23,6 @@ const Whiteboard = (props) => {
         //byMeetingId/811dcd95-a4a2-4bd8-acdf-9ef4ceaf55cb
     }, []);
 
-    useEffect(() => {
-        console.log(allOffers)
-    }, [allOffers]);
-
 
   useEffect(() => {
 

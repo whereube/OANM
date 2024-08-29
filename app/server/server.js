@@ -6,6 +6,7 @@ import { corsMiddleware } from './middleware/corsMiddleware.js';
 import { getCompanyRoutes } from './routes/companyRoutes.js';
 import { getCategoryRoutes } from './routes/categoryRoutes.js';
 import { getMeetingRoutes } from './routes/meetingRoutes.js';
+import { getArticleCategoryRoutes } from './routes/articleCategoryRoutes.js';
 
 export const createServer = () => {
   const app = express();
@@ -19,6 +20,7 @@ export const createServer = () => {
   app.use('/company', getCompanyRoutes());
   app.use('/category', getCategoryRoutes());
   app.use('/meeting', getMeetingRoutes());
+  app.use('/articleCategory', getArticleCategoryRoutes());
 
   return app;
 };

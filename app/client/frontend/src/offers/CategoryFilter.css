@@ -1,5 +1,7 @@
 .categoryFilterDiv{
     margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
 }
 
 .categoryLevelDiv{
@@ -22,4 +24,9 @@
 
 .active{
     background-color: white;
+}
+
+
+.hideIfNoCategory{
+    display: none;
 }
