@@ -6,38 +6,59 @@ import './Whiteboard.css'
 
 const Whiteboard = (props) => {
 
-
+    /*
     const categories = [
         {'id': 'aeb778ee-939d-44e4-8f57-8810c3347dae', 'name': 'Lokaler'},
         {'id': '6a319924-f2d3-4813-8103-7ad7fc7676ce', 'name': 'Evenemang'},
         {'id': '2b6af113-55d2-4bcc-9066-d17196ffd745', 'name': 'Övrigt'}
     ];
+    */
 
     const [allOffers, setAllOffers] = useState([]);
+    const [categories, setCategories] = useState([])
     const { getOffers, navigateToArticle} = HandleOffers();
     const { meetingId } = useParams();
 
 
     useEffect(() => {
         getOffers('byMeetingId/' + meetingId, setAllOffers);
+        getMeetingCategories();
         //byMeetingId/811dcd95-a4a2-4bd8-acdf-9ef4ceaf55cb
     }, []);
 
 
-  useEffect(() => {
+    useEffect(() => {
+        console.log(categories)
+    }, [categories]);
 
-    const fetchOffers = () => {
-      getOffers('byMeetingId/' + meetingId, setAllOffers);
-    };
+    useEffect(() => {
 
-    fetchOffers();
+        const fetchOffers = () => {
+        getOffers('byMeetingId/' + meetingId, setAllOffers);
+        };
 
-    // Set up interval
-    const intervalId = setInterval(fetchOffers, 10000);
+        fetchOffers();
 
-    // Cleanup interval on unmount
-    return () => clearInterval(intervalId);
-  }, []);
+        // Set up interval
+        const intervalId = setInterval(fetchOffers, 10000);
+
+        // Cleanup interval on unmount
+        return () => clearInterval(intervalId);
+    }, []);
+
+
+    const getMeetingCategories = async () => {
+        const response = await fetch('http://localhost:443/meetingCategory/getAll');
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.log(errorData)
+            console.error('Error:', errorData); 
+            throw new Error(errorData);
+        }
+
+        const result = await response.json();
+        setCategories(result)
+    }
 
 
     return (
@@ -45,7 +66,7 @@ const Whiteboard = (props) => {
             <div className='whiteboardDiv'>
                 {categories.map(category => (
                     <div className='categoryDiv' key={category.id}>
-                        <h2>{category.name}</h2>
+                        <h2>{category.category_name}</h2>
                         {allOffers.map(offer => (
                             offer.category_1 === category.id && (
                                 <div className='offerDiv'> 

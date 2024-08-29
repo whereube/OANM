@@ -4,6 +4,7 @@ import { end_user } from "./end_user.js";
 import { needs } from "./needs.js";
 import { offers } from "./offers.js";
 import { articleCategory } from "./articleCategory.js";
+import { meetingCategory } from "./meetingCategory.js";
 
 const environment = process.env.DEV_ENVIRONMENT;
 
@@ -33,5 +34,6 @@ export {
     end_user,
     needs,
     offers,
-    articleCategory
+    articleCategory,
+    meetingCategory
 }
