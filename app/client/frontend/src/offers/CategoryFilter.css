@@ -25,3 +25,8 @@
 .active{
     background-color: white;
 }
+
+
+.hideIfNoCategory{
+    display: none;
+}

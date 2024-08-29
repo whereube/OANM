@@ -57,7 +57,6 @@ const ShowOffers = () => {
     }
 
     const filterOffers = (offer) => {
-        console.log(filterByCategory)
         for (let level in filterByCategory) {
             const levelIndex = parseInt(level.split('_')[1], 10) + 1;
             const categoryKey = `category_${levelIndex}`;

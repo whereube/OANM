@@ -8,6 +8,7 @@ const CategoryFilter = (props) => {
     const [categories, setCategories] = useState([])
     const [nbrOfLevels, setNbrOfLevels] = useState(1)
     const [currentLevel, setCurrentLevel] = useState(0)
+    const [filterActivated, setFilterActivated] = useState(false);
 
     useEffect(() => {
         getCategories();
@@ -21,9 +22,17 @@ const CategoryFilter = (props) => {
         populateCategoryState()
     }, [nbrOfLevels]);
 
+
     useEffect(() => {
-        console.log(selectedCategoryId)
-    }, [selectedCategoryId]);
+        console.log("körs")
+        document.querySelectorAll('.categoryLevelDiv').forEach(div => {
+            if (div.querySelectorAll('.categoryDiv').length === 0) {
+                div.classList.add('hideIfNoCategory');
+            } else {
+                div.classList.remove('hideIfNoCategory');
+            }
+        });
+    }, [filterActivated, categories]);
 
     const getCategories = async () => {
         const response = await fetch('http://localhost:443/category/getAll');
@@ -41,6 +50,7 @@ const CategoryFilter = (props) => {
     const handleClick = (categoryId, levelIndex) => {
 
         setCurrentLevel(levelIndex)
+        setFilterActivated(prevState => (!prevState))
         setSelectedCategoryId(prevState => {
             // Create a copy of the previous state
             const newState = { ...prevState };
@@ -105,7 +115,7 @@ const CategoryFilter = (props) => {
                 <div className='categoryLevelDiv'>
                     {categories.map(category => (
                         category.parent_id === null && (
-                            <div>
+                            <div className='categoryDiv'>
                                 <div className={`categoryButton ${selectedCategoryId[`level_0`] === category.id ? 'active' : ''}`} role='button' key={category.id} onClick={ () => handleClick(category.id, 0)}>{category.category_name}</div>
                             </div>
                         )
@@ -116,7 +126,7 @@ const CategoryFilter = (props) => {
                     <div className='categoryLevelDiv'>
                         {categories.map(category => (
                             category.parent_id === selectedCategoryId[`level_${levelIndex}`] && (
-                                <div>
+                                <div className='categoryDiv'>
                                     <div className={`categoryButton ${selectedCategoryId[`level_${(levelIndex + 1)}`] === category.id ? 'active' : ''}`} role='button' key={category.id} onClick={ () => handleClick(category.id, (levelIndex + 1))}>{category.category_name}</div>
                                 </div>
                             )
