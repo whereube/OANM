@@ -15,7 +15,6 @@ export const getCategoryRoutes = () => {
     router.post('/addCategory', async (req, res, next) => {
       const {
           category_name,
-          level,
           parent_id
       } = req.body;
       
@@ -32,7 +31,6 @@ export const getCategoryRoutes = () => {
               const result = await object.category.create({
                   id: id,
                   category_name: category_name,
-                  level: 1,
                   parent_id: parent_id
               });
               

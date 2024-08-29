@@ -5,7 +5,8 @@ import CategoryList from './CategoryList';
 
 function AddCategoryForm() {
   const [formData, setFormData] = useState({
-    category_name: ''
+    category_name: '',
+    parent_id: '', // Initialize parent_id as an empty string
   });
 
   const [categories, setCategories] = useState([]);
@@ -53,25 +54,31 @@ function AddCategoryForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    // If parent_id is an empty string, set it to null or omit it
+    const submissionData = {
+      category_name: formData.category_name,
+      parent_id: formData.parent_id === '' ? null : formData.parent_id,
+    };
+
     try {
       const response = await fetch('http://localhost:443/category/addCategory', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(submissionData), // Include parent_id in the request body if it is not null
       });
 
       const data = await response.json();
 
       if (response.ok) {
         fetchCategories();
-        setFormData({ category_name: '' });
+        setFormData({ category_name: '', parent_id: '' }); // Reset both fields
         setIsBlinking(true); // Trigger blinking effect
         setResponseMessage('');
         setTimeout(() => {
-            setIsBlinking(false);
-          }, 1000);
+          setIsBlinking(false);
+        }, 1000);
       } else {
         setResponseMessage(data.message);
       }
@@ -116,6 +123,24 @@ function AddCategoryForm() {
             onChange={handleChange}
             required
           />
+        </div>
+        <div>
+          <label htmlFor="existing_categories">Subcategory to...</label>
+          <select
+            id="existing_categories"
+            name="parent_id"
+            value={formData.parent_id}
+            onChange={handleChange}
+          >
+            <option value="">
+              Not a Subcategory
+            </option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.category_name}
+              </option>
+            ))}
+          </select>
         </div>
 
         {responseMessage && <p>{responseMessage}</p>}

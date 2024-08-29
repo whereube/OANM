@@ -27,10 +27,16 @@
 
 .category-list > ul > li {
     border-bottom: 1px solid rgb(150, 150, 150);
-    padding: 10px 5px;
+    padding: 10px 5px 15px 5px;
     list-style-type: none;
 }
 
+select {
+    font-size: 18px;
+}
+label {
+    margin-bottom: 5px;
+}
 .remove-button {
     appearance: button;
     cursor: pointer;
@@ -43,9 +49,10 @@
     box-sizing: border-box;
     color: #000000;
     font-size: 12px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
     float: right;
+    margin-top: 0;
 }
 
 @keyframes blinkGreen {
