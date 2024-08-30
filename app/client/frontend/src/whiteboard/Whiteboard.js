@@ -19,6 +19,13 @@ const Whiteboard = (props) => {
 
 
     useEffect(() => {
+        const newList = allArticleCategories.filter(filterArticleCategories);
+        if (newList.length !== allArticleCategories.length) {
+            setAllArticleCategories(newList)
+        }
+    }, [allArticleCategories]);
+
+    useEffect(() => {
 
         const fetchOffers = () => {
             getOffers('byMeetingId/' + meetingId, setAllOffers);
@@ -49,7 +56,8 @@ const Whiteboard = (props) => {
 
     const filterOffers = (categoryId, level) => (offer) => {
 
-        const isIn = allArticleCategories.some(articleCategory => articleCategory.article_id === offer.id && articleCategory.category_id === categoryId)
+        const nbrOfCategoryLevels = countNbrOfCategoryLevels(offer)
+        const isIn = allArticleCategories.some(articleCategory => articleCategory.article_id === offer.id && articleCategory.category_id === categoryId && level === nbrOfCategoryLevels)
         if(isIn === false){
             return false
         } else {
@@ -57,6 +65,18 @@ const Whiteboard = (props) => {
         }
     }  
 
+
+    const filterArticleCategories = (articleCategory) => {
+        return meetingCategories.some(meetingCategory => {
+            return articleCategory.category_id === meetingCategory.category_id;
+        });
+    }
+
+    const countNbrOfCategoryLevels = (offer) => {
+        return allArticleCategories.reduce((count, articleCategory) => {
+            return articleCategory.article_id === offer.id ? count + 1 : count;
+        }, 0);
+    }
 
     const findArticleSubCategory = (categoryId, offer) => {
         const categoryHasSubCategory = meetingCategories.find(meetingCategory => {
@@ -79,7 +99,7 @@ const Whiteboard = (props) => {
                         {meetingCategory.category.parent_id === null && (
                             <>
                                 <h2>{meetingCategory.category.category_name}</h2>
-                                {allOffers.filter(filterOffers(meetingCategory.category.id, 'nivå1')).map(offer =>
+                                {allOffers.filter(filterOffers(meetingCategory.category.id, 1)).map(offer =>
                                     <div className='offerDiv'> 
                                         <p className="postedBy" key={offer.end_user.id}>Upplagt av: {offer.end_user.user_name}</p>
                                         <p key={offer.id}>{offer.title}</p>
@@ -91,7 +111,7 @@ const Whiteboard = (props) => {
                                         {subMeetingCategory.category.parent_id === meetingCategory.category.id && (
                                             <>
                                                 <h3>{subMeetingCategory.category.category_name}</h3>
-                                                {allOffers.filter(filterOffers(subMeetingCategory.category.id, 'nivå2')).map(offer =>
+                                                {allOffers.filter(filterOffers(subMeetingCategory.category.id, 2)).map(offer =>
                                                     <div className='offerDiv'> 
                                                         <p className="postedBy" key={offer.end_user.id}>Upplagt av: {offer.end_user.user_name}</p>
                                                         <p key={offer.id}>{offer.title}</p>
