@@ -17,7 +17,6 @@ const Whiteboard = (props) => {
         //byMeetingId/811dcd95-a4a2-4bd8-acdf-9ef4ceaf55cb
     }, []);
 
-
     useEffect(() => {
         const newList = allArticleCategories.filter(filterArticleCategories);
         if (newList.length !== allArticleCategories.length) {
@@ -42,7 +41,7 @@ const Whiteboard = (props) => {
     }, []);
 
     const getMeetingCategories = async () => {
-        const response = await fetch('http://localhost:443/meetingCategory/byMeetingId/811dcd95-a4a2-4bd8-acdf-9ef4ceaf55cb');
+        const response = await fetch('http://localhost:443/meetingCategory/byMeetingId/' + meetingId);
         if (!response.ok) {
             const errorData = await response.json();
             console.log(errorData)

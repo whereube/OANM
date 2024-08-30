@@ -6,7 +6,7 @@ const NewOfferForm = () => {
 
     let { meetingId } = useParams();
     const meetingIdParam = meetingId
-
+    const [categories, setCategories] = useState([])
     const [formData, setFormData] = useState({
         userId: '',
         title: '',
@@ -17,13 +17,11 @@ const NewOfferForm = () => {
         link: '', 
         availableDigitaly: false,
         meetingId: meetingIdParam != undefined ? meetingIdParam : null,
-        category_1: null
+        articleCategories: {}
     });
 
     const [status, setStatus] = useState(null);
     const navigate = useNavigate(); 
-
-    console.log(meetingIdParam)
 
     useEffect(() => {
         const storedUserId = localStorage.getItem('sessionId');
@@ -33,6 +31,10 @@ const NewOfferForm = () => {
                 userId: storedUserId
             }));
         }
+    }, []);
+
+    useEffect(() => {
+        getCategories();
     }, []);
 
     const handleChange = (e) =>{
@@ -51,23 +53,79 @@ const NewOfferForm = () => {
             value = parseInt(value)
         }
 
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value
-        }));
+        if(name.includes('category')){
+            setFormData((prevData) => {
+                const newCategory = { [name]: value };
+                const currentLevel = parseInt(name.split('_')[1], 10)
+
+                
+                const updatedCategories = {
+                    ...prevData.articleCategories,
+                    ...newCategory
+                };
+
+                Object.keys(updatedCategories).forEach(key => {
+                    const keyLevel = parseInt(key.split('_')[1], 10)
+                    if (keyLevel > currentLevel) {
+                        delete updatedCategories[key];
+                    }
+                });
+
+                return {
+                    ...prevData,
+                    articleCategories: updatedCategories
+                };
+            });
+
+        } else {
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: value
+            }));
+        }
     }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-        const response = await fetch('http://localhost:443/offers/add', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json' // Indicates that the body of the request contains JSON
-            },
-            body: JSON.stringify(formData) // Convert dataToSend to JSON string
-        });
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch('http://localhost:443/offers/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json' // Indicates that the body of the request contains JSON
+                },
+                body: JSON.stringify(formData) // Convert dataToSend to JSON string
+            });
 
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.log(errorData)
+                console.error('Error:', errorData); 
+                throw new Error(errorData);
+            }
+
+            const result = await response.json();
+            setStatus({ success: true, message: 'Offer added successfully!' });
+            // Clear form fields
+            setFormData({
+                userId: '',
+                title: '',
+                description: '', 
+                available: '', 
+                location: '',
+                price: '',
+                link: '', 
+                availableDigitaly: false,
+                meetingId: meetingIdParam != undefined ? meetingIdParam : null,
+                articleCategories: {}
+            });
+            navigate('/'); 
+            } catch (error) {
+            setStatus({ success: false, message: error.message });
+        }
+    };
+
+    const getCategories = async () => {
+        const response = await fetch('http://localhost:443/category/getAll');
         if (!response.ok) {
             const errorData = await response.json();
             console.log(errorData)
@@ -76,25 +134,19 @@ const NewOfferForm = () => {
         }
 
         const result = await response.json();
-        setStatus({ success: true, message: 'Offer added successfully!' });
-        // Clear form fields
-        setFormData({
-            userId: '',
-            title: '',
-            description: '', 
-            available: '', 
-            location: '',
-            price: '',
-            link: '', 
-            availableDigitaly: false,
-            meetingId: meetingIdParam != undefined ? meetingIdParam : null,
-            category_1: null
-        });
-        navigate('/'); 
-        } catch (error) {
-        setStatus({ success: false, message: error.message });
+        setCategories(result)
     }
-  };
+
+
+    useEffect(() => {
+        document.querySelectorAll('.select').forEach(child => {
+            if (child.querySelectorAll('.option').length === 0) {
+                child.classList.add('hideIfNoCategory');
+            } else {
+                child.classList.remove('hideIfNoCategory');
+            }
+        });
+    }, [formData.articleCategories, categories]);
 
 
     return (
@@ -193,24 +245,42 @@ const NewOfferForm = () => {
                                 </div>
                             </div>
                         )}
-                        {meetingIdParam !== undefined && (
-                            <div className='formDiv selectDiv'>
-                                    <label htmlFor="category_1">Kategori</label>
+                        <div className='formDiv selectDiv'>
+                                <label htmlFor="category_1">Kategori</label>
+                                <select
+                                    className="input-fields select"
+                                    id="category_1"
+                                    name="category_1"
+                                    value={formData.category_1}
+                                    onChange={handleChange}
+                                    required
+                                    defaultValue={""}
+                                >
+                                    <option value="" disabled>Select an option</option>
+                                    {categories.map(category => (
+                                        category.parent_id === null && (
+                                            <option className="option" key={category.id} value={category.id}>{category.category_name}</option>
+                                        )
+                                    ))}
+                                </select>
+                                {formData.articleCategories['category_1'] !== undefined && formData.articleCategories['category_1'] !== '' &&(
                                     <select
-                                        className="input-fields"
-                                        id="category_1"
-                                        name="category_1"
-                                        value={formData.category_1}
+                                        className="input-fields select"
+                                        id="category_2"
+                                        name="category_2"
+                                        value={formData.category_2}
                                         onChange={handleChange}
-                                        required
+                                        defaultValue={""}
                                     >
-                                        <option value="" disabled selected>Select an option</option>
-                                        <option value="aeb778ee-939d-44e4-8f57-8810c3347dae">Lokaler</option>
-                                        <option value="6a319924-f2d3-4813-8103-7ad7fc7676ce">Evenemang</option>
-                                        <option value="2b6af113-55d2-4bcc-9066-d17196ffd745">Övrigt</option>
+                                        <option value="" disabled>Select an option</option>
+                                        {categories.map(subCategory => (
+                                                subCategory.parent_id === formData.articleCategories['category_1'] && (
+                                                    <option className="option" key={subCategory.id} value={subCategory.id}>{subCategory.category_name}</option>
+                                                )
+                                        ))}
                                     </select>
-                            </div>
-                        )}
+                                )}
+                        </div>
                     </div>
                     <button type="submit" className="button-small" role="button">
                         Skapa
