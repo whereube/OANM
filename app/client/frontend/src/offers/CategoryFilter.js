@@ -24,7 +24,6 @@ const CategoryFilter = (props) => {
 
 
     useEffect(() => {
-        console.log("körs")
         document.querySelectorAll('.categoryLevelDiv').forEach(div => {
             if (div.querySelectorAll('.categoryDiv').length === 0) {
                 div.classList.add('hideIfNoCategory');

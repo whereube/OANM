@@ -10,6 +10,10 @@ import { meetingCategory } from "./meetingCategory.js";
 const environment = process.env.DEV_ENVIRONMENT;
 
 offers.belongsTo(end_user, { foreignKey: 'user_id' });
+meetingCategory.belongsTo(category, { foreignKey: 'category_id' });
+meetingCategory.belongsTo(meeting, { foreignKey: 'meeting_id' });
+
+
 
 if (process.env.DEV_ENVIRONMENT === 'local') {
   try {
