@@ -6,7 +6,8 @@ const Header = () => {
   return (
     <>
         <div className='header'>
-            <h1>Offers and Needs market</h1>
+            <div className='logoImage'>
+            </div>
         </div>
         <Outlet />
     </>

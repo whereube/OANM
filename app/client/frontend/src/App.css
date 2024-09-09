@@ -1,10 +1,19 @@
+:root {
+    --blue: #1e90ff;
+    --white: #ffffff;
+    --primary: #00a6a6;
+    --secondary: #f18d9e;
+    --tertiary: #292929;
+    --quaternary: #f4c14a;
+}
+
 .button-small {
     appearance: button;
     background-color: #ffffff;
     background-image: none;
     border: 1px solid #000;
     border-radius: 4px;
-    box-shadow: #000000 4px 4px 0 0,#000 4px 4px 0 1px;
+    box-shadow: var(--primary) 4px 4px 0 0, var(--primary) 4px 4px 0 1px;
     padding: 3px 7px ;
     box-sizing: border-box;
     color: #000000;
