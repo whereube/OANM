@@ -12,9 +12,13 @@
     flex-direction: column;
     background-color: #ffffff;
     background-image: none;
-    border: 1px solid #000;
     border-radius: 4px;
-    box-shadow: #000000 4px 4px 0 0,#000 4px 4px 0 1px;
+    border: none;
+    box-shadow: 
+        0 0 0px 2px var(--tertiary),     
+        0 0 0px 6px var(--primary),   
+        0 0 0px 10px var(--secondary),   
+        0 0 0px 13px var(--quaternary); 
     color: #000000;
     box-sizing: border-box;
     display: inline-block;

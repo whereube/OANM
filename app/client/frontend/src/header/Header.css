@@ -5,7 +5,7 @@
 }
 
 .logoImage{
-    background-image: url('C:\Users\teoes\OneDrive\Dokument\GitHub\OANM\app\client\frontend\public\Ecubuntu_logo_resize.png');
+    background-image: url('../../public/Ecubuntu_logo_resize.png');
     background-position: center;
     background-size: 60%;
     background-repeat: no-repeat;

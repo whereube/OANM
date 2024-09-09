@@ -8,6 +8,15 @@
     margin-top: 30px;
     justify-content: space-between; 
     text-align: center;
+    border-radius: 4px;
+    min-height: 500px;
+    margin-bottom: 100px;
+    background-color: white;
+    box-shadow: 
+    0 0 0px 2px var(--tertiary),     
+    0 0 0px 6px var(--primary),   
+    0 0 0px 10px var(--secondary),   
+    0 0 0px 13px var(--quaternary); 
 }
 
 .categoryDiv{

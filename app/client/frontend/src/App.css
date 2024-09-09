@@ -11,9 +11,9 @@
     appearance: button;
     background-color: #ffffff;
     background-image: none;
-    border: 1px solid #000;
+    border: 1px solid var(--tertiary);
     border-radius: 4px;
-    box-shadow: var(--primary) 4px 4px 0 0, var(--primary) 4px 4px 0 1px;
+    box-shadow: var(--tertiary) 3px 3px 0 0, var(--tertiary) 3px 3px 0 1px;
     padding: 3px 7px ;
     box-sizing: border-box;
     color: #000000;
@@ -54,6 +54,7 @@ body {
     font-family: 'Moderustic',"Montserrat", sans-serif;
     font-optical-sizing: auto;
     font-style: normal;
+    color: var(--tertiary);
 }
 
 .App{
