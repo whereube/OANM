@@ -52,7 +52,9 @@ export const getNeedRoutes = () => {
             category_2,
             category_3,
             category_4,
-            availableDigitaly
+            availableDigitaly,
+            meetingId,
+            articleCategories
         } = req.body;
         
         const id = uuidv4();
@@ -73,14 +75,31 @@ export const getNeedRoutes = () => {
                     category_2,
                     category_3,
                     category_4,
-                    available_digitaly: availableDigitaly
+                    available_digitaly: availableDigitaly,
+                    meeting_id: meetingId
                 });
                 
                 if (result === null) {
                     return res.status(404).json('No new need created');
-                } else{
-                    res.status(201).json({ message: 'New need created'});
+                } 
+                for (const key in articleCategories) {
+                    if (articleCategories.hasOwnProperty(key)) {
+                        const articleCategoryResponse = await fetch('http://localhost:443/articleCategory/add', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ 'articleId': id, 'categoryId': articleCategories[key] })
+                        });
+                        
+                        if (articleCategoryResponse === null) {
+                            return res.status(404).json('No new article category created');
+                        }
+                    }
                 }
+
+                res.status(201).json({ message: 'New article category created'});
+
     
             } catch (error) {
                 console.error('Error creating need', error);

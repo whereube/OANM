@@ -7,6 +7,7 @@ const NewOfferForm = () => {
     let { meetingId } = useParams();
     const meetingIdParam = meetingId
     const [categories, setCategories] = useState([])
+    const [addOffer, setAddOffer] = useState(true)
     const [formData, setFormData] = useState({
         userId: '',
         title: '',
@@ -88,13 +89,26 @@ const NewOfferForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:443/offers/add', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json' // Indicates that the body of the request contains JSON
-                },
-                body: JSON.stringify(formData) // Convert dataToSend to JSON string
-            });
+            let response = []
+
+            if(addOffer === true){
+                response = await fetch('http://localhost:443/offers/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json' // Indicates that the body of the request contains JSON
+                    },
+                    body: JSON.stringify(formData) // Convert dataToSend to JSON string
+                });
+            } else {
+                console.log("hej")
+                response = await fetch('http://localhost:443/needs/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json' // Indicates that the body of the request contains JSON
+                    },
+                    body: JSON.stringify(formData) // Convert dataToSend to JSON string
+                });
+            }
 
             if (!response.ok) {
                 const errorData = await response.json();
@@ -118,7 +132,7 @@ const NewOfferForm = () => {
                 meetingId: meetingIdParam != undefined ? meetingIdParam : null,
                 articleCategories: {}
             });
-            navigate('/'); 
+            navigate(0); 
             } catch (error) {
             setStatus({ success: false, message: error.message });
         }
@@ -148,12 +162,26 @@ const NewOfferForm = () => {
         });
     }, [formData.articleCategories, categories]);
 
+    const toggleOffersOrNeeds = (offerToBeAdded) => {
+        setAddOffer(offerToBeAdded)
+    }
+
 
     return (
         <>
             <div className="newOfferPage">
+                <div className='AddOfferOrNeed'>
+                    <div className='buttonsDiv'>
+                        <p className={`OfferOrNeedButton ${addOffer && 'active'} `} onClick={() => toggleOffersOrNeeds(true)}>Erbjudanden</p>
+                        <p className={`OfferOrNeedButton ${addOffer === false && 'active'} `} onClick={() => toggleOffersOrNeeds(false)}>Behov</p>
+                    </div>
+                </div>
                 <form onSubmit={handleSubmit} className="newOffer">
-                    <h2>Skapa erbjudande</h2>
+                    {addOffer ? (
+                        <h2>Skapa erbjudande</h2>
+                    ) : (
+                        <h2>Skapa behov</h2>
+                    )}
                     <div className='formFields'>
                         <div className='formDiv'>
                             <label htmlFor="title">Titel</label>
@@ -232,17 +260,19 @@ const NewOfferForm = () => {
                                         onChange={handleChange}
                                     />
                                 </div>
-                                <div className='formDiv'>
-                                    <label htmlFor="link">Länk</label>
-                                    <input
-                                        className="input-fields"
-                                        type="text"
-                                        id="link"
-                                        name="link"
-                                        value={formData.link}
-                                        onChange={handleChange}
-                                    />
-                                </div>
+                                {addOffer === true && (
+                                    <div className='formDiv'>
+                                        <label htmlFor="link">Länk</label>
+                                        <input
+                                            className="input-fields"
+                                            type="text"
+                                            id="link"
+                                            name="link"
+                                            value={formData.link}
+                                            onChange={handleChange}
+                                        />
+                                    </div>
+                                )}
                             </div>
                         )}
                         <div className='formDiv selectDiv'>

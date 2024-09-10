@@ -2,6 +2,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 40px;
+    border-radius: 4px;
+    box-shadow: 
+    0 0 0px 2px var(--tertiary),
+    0 0 0px 6px var(--primary),
+    0 0 0px 10px var(--secondary),
+    0 0 0px 13px var(--quaternary);
 }
 
 .newOffer {
@@ -9,12 +16,10 @@
     justify-content: space-around;
     flex-direction: column;
     min-width: 700px;
-    border-radius: 4px;
-    padding: 40px 20px;
+    border-radius: 0px 0px 4px 4px;
+    padding: 20px 20px 20px 5px;
     margin-bottom: 50px;
-    margin-top: 50px;
     background-color: #fff;
-    border: 1px solid black;
 }
 
 .formDiv{
@@ -42,4 +47,11 @@
 
 .recipeForm > div > textarea {
     height: 150px;
+}
+
+.AddOfferOrNeed{
+    width: 100%;
+    background-color: rgb(195, 195, 195);
+    margin-bottom: 0px;
+    border-radius: 4px 4px 0px 0px;
 }

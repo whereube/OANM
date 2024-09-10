@@ -32,6 +32,7 @@
 
 .showOffersOrNeeds{
     background-color: rgb(195, 195, 195);
+    border-radius: 4px 4px 0px 0px;
 }
 
 .buttonsDiv{
@@ -72,5 +73,6 @@
     border-radius: 4px;
     width: 80%;
     margin-top: 80px;
+    margin-bottom: 40px;
 }
 
