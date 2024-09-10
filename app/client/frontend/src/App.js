@@ -2,7 +2,7 @@ import './App.css';
 import NewOfferForm from './offers/NewOfferForm.js';
 import NewNeedForm from './needs/NewNeedForm.js';
 import LoginForm from './profile/LoginForm.js';
-import ShowOffers from './offers/ShowOffers.js';
+import ShowArticles from './article/ShowArticles.js';
 import ShowNeeds from './needs/ShowNeeds.js';
 import Article from './article/Article.js';
 import CreateAccount from './profile/CreateAccount.js';
@@ -21,7 +21,7 @@ function App() {
               <Route path="/offers">
                 <Route path="add" element={<NewOfferForm />}/>
                 <Route path="add/:meetingId" element={<NewOfferForm />}/>
-                <Route path="showAll" element={<ShowOffers />}/>
+                <Route path="showAll" element={<ShowArticles />}/>
               </Route>
               <Route path="/needs">
                 <Route path="add" element={<NewNeedForm />}/>

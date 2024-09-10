@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import CategoryFilter from './CategoryFilter';
-import HandleOffers from './HandleOffers.js'
+import CategoryFilter from './CategoryFilter.js';
+import HandleOffers from '../offers/HandleOffers.js'
 import HandleNeeds from '../needs/HandleNeeds.js';
 import ArticleList from './ArticleList.js';
-import './ShowOffers.css'
+import './ShowArticles.css'
 
 
-const ShowOffers = () => {
+const ShowArticles = () => {
 
     const [allOffers, setAllOffers] = useState([]);
     const [allNeeds, setAllNeeds] = useState([]);
@@ -132,4 +132,4 @@ const ShowOffers = () => {
     )
 }
 
-export default ShowOffers
+export default ShowArticles
