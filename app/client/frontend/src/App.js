@@ -1,7 +1,7 @@
 import './App.css';
 import NewArticleForm from './article/createArticle/NewArticleForm.js';
 import LoginForm from './profile/LoginForm.js';
-import ShowArticles from './article/ShowArticles.js';
+import ShowArticles from './article/viewArticles/ShowArticles.js';
 import Article from './article/Article.js';
 import CreateAccount from './profile/CreateAccount.js';
 import Whiteboard from './whiteboard/Whiteboard.js';
