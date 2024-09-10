@@ -95,7 +95,7 @@ const CategoryFilter = (props) => {
                 <div className='categoryLevelDiv'>
                     {categories.map(category => (
                         category.parent_id === null && (
-                            <div className='categoryDiv'>
+                            <div key={category.id} className='categoryDiv'>
                                 <div className={`categoryButton ${selectedCategoryId[`level_0`] === category.id ? 'active' : ''}`} role='button' key={category.id} onClick={ () => handleClick(category.id, 0)}>{category.category_name}</div>
                             </div>
                         )
@@ -106,7 +106,7 @@ const CategoryFilter = (props) => {
                     <div className='categoryLevelDiv'>
                         {categories.map(category => (
                             category.parent_id === selectedCategoryId[`level_${levelIndex}`] && (
-                                <div className='categoryDiv'>
+                                <div key={category.id} className='categoryDiv'>
                                     <div className={`categoryButton ${selectedCategoryId[`level_${(levelIndex + 1)}`] === category.id ? 'active' : ''}`} role='button' key={category.id} onClick={ () => handleClick(category.id, (levelIndex + 1))}>{category.category_name}</div>
                                 </div>
                             )

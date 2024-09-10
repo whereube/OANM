@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 
 
-const HandleOffers = () => {
+const HandleNeeds = () => {
 
 
     const navigate = useNavigate()
 
-    const getOffers = async (type, setAllOffers) => {
+    const getNeeds = async (type, setAllOffers) => {
 
-        const response = await fetch('http://localhost:443/offers/' + type);
+        const response = await fetch('http://localhost:443/needs/' + type);
         if (!response.ok) {
             const errorData = await response.json();
             console.log(errorData)
@@ -41,11 +41,11 @@ const HandleOffers = () => {
     }
 
     return {
-        getOffers,
+        getNeeds,
         navigateToArticle,
         getArticleCategories
     };
 
 }
 
-export default HandleOffers
+export default HandleNeeds
