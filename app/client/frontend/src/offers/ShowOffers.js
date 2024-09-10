@@ -2,19 +2,30 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import CategoryFilter from './CategoryFilter';
 import HandleOffers from './HandleOffers.js'
+import HandleNeeds from '../needs/HandleNeeds.js';
+import ArticleList from './ArticleList.js';
 import './ShowOffers.css'
 
 
 const ShowOffers = () => {
 
     const [allOffers, setAllOffers] = useState([]);
+    const [allNeeds, setAllNeeds] = useState([]);
     const [allArticleCategories, setAllArticleCategories] = useState([]);
-    const [filteredOffers, setFilteredOffers] = useState([])
-    const [filterByCategory, setFilterByCategory] = useState({})
+    const [filteredOffers, setFilteredOffers] = useState([]);
+    const [filteredNeeds, setFilteredNeeds] = useState([]);
+    const [filterByCategory, setFilterByCategory] = useState({});
+    const [viewOffers, setViewOffers] = useState(true)
+
+
     const { getOffers, navigateToArticle, getArticleCategories} = HandleOffers();
+    const { getNeeds } = HandleNeeds();
+
+
 
     useEffect(() => {
         getOffers('getAll', setAllOffers);
+        getNeeds('getAll', setAllNeeds);
         getArticleCategories(setAllArticleCategories);
     }, []);
 
@@ -23,15 +34,29 @@ const ShowOffers = () => {
     }, [allOffers]);
 
     useEffect(() => {
+        setFilteredNeeds(allNeeds)
+    }, [allNeeds]);
 
+
+    useEffect(() => {
         let filtered = []
-        if (Object.keys(filterByCategory).length > 0) {
-            filtered = allOffers.filter(filterOffers)
+
+        if(viewOffers === true ) {
+            if (Object.keys(filterByCategory).length > 0) {
+                filtered = allOffers.filter(filterArticles)
+            } else {
+                filtered = allOffers
+            }
+            setFilteredOffers(filtered)
         } else {
-            filtered = allOffers
+            if (Object.keys(filterByCategory).length > 0) {
+                filtered = allNeeds.filter(filterArticles)
+            } else {
+                filtered = allNeeds
+            }
+            setFilteredNeeds(filtered)
         }
-        setFilteredOffers(filtered)
-    }, [filterByCategory]);
+    }, [filterByCategory, viewOffers]);
 
     const activeCategoryFilter = (setFilterByCategory, id, levelIndex) => {
         setFilterByCategory(prevState => {
@@ -56,7 +81,7 @@ const ShowOffers = () => {
         });
     }
 
-    const filterOffers = (offer) => {
+    const filterArticles = (article) => {
         for (let level in filterByCategory) {
             const levelIndex = parseInt(level.split('_')[1], 10) + 1;
             const categoryKey = `category_${levelIndex}`;
@@ -64,7 +89,7 @@ const ShowOffers = () => {
 
             if (filterByCategory[level] !== `all_${(levelIndex-1)}`){
 
-                const isIn = allArticleCategories.some(obj => obj.article_id === offer.id && obj.category_id === filterByCategory[level])
+                const isIn = allArticleCategories.some(obj => obj.article_id === article.id && obj.category_id === filterByCategory[level])
                 if(isIn === false){
                     return false
                 }
@@ -73,27 +98,37 @@ const ShowOffers = () => {
         return true;
     }  
 
+    const toggleOffersOrNeeds = (displayOffers) => {
+        setViewOffers(displayOffers)
+    }
+
     return (
-        <>
-            <h1>Tillgängliga erbjudanden</h1>
-            <CategoryFilter activeCategoryFilter={activeCategoryFilter} setFilterByCategory={setFilterByCategory}/>
-            <div className='allOffersDiv'>
-                {filteredOffers.map(offer => (
-                    <div key={offer.id} className='offerBox'>
-                        <p className='offerTitle'>{offer.title}</p>
-                        {offer.available_digitaly ? (
-                            <p className='location'>Tillgänglig digitalt</p>
-                        ) : (
-                            <p className='location'>Plats: {offer.location}</p>
-                        )
-                        }
-                        <p className='offerDesc'>{offer.description}</p>
-                        <button className='button-small offerButton'>Markera som intresserad</button>
-                        <button className='button-small offerButton' onClick={() => navigateToArticle(offer.id)}>Läs mer</button>
-                    </div>
-                ))}
+        <div className='showAllArticles'>
+            <div className='showOffersOrNeeds'>
+                <div className='buttonsDiv'>
+                    <p className={`OfferOrNeedButton ${viewOffers && 'active'} `} onClick={() => toggleOffersOrNeeds(true)}>Erbjudanden</p>
+                    <p className={`OfferOrNeedButton ${viewOffers === false && 'active'} `} onClick={() => toggleOffersOrNeeds(false)}>Behov</p>
+                </div>
             </div>
-        </>
+            <div className={`articleList`}>
+                {viewOffers ? (
+                    <ArticleList 
+                        activeCategoryFilter={activeCategoryFilter}
+                        setFilterByCategory={setFilterByCategory}
+                        filteredArticles={filteredOffers}
+                        navigateToArticle={navigateToArticle}
+                        viewOffers={viewOffers}
+                    />
+                ) : (
+                    <ArticleList 
+                        activeCategoryFilter={activeCategoryFilter}
+                        setFilterByCategory={setFilterByCategory}
+                        filteredArticles={filteredNeeds}
+                        navigateToArticle={navigateToArticle}
+                    />
+                )}
+            </div>
+        </div>
     )
 }
 
