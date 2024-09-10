@@ -51,7 +51,11 @@ export const needs = db.define(
       category_4: {
         type: DataTypes.UUID,
         allowNull: true,
-      }
+      }, 
+      meeting_id: {
+        type: DataTypes.UUID,
+        allowNull: true,
+      },
     },
     {
       // Other model are go here

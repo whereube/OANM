@@ -40,6 +40,24 @@ export const getNeedRoutes = () => {
         }
     });
 
+
+    router.get('/byMeetingId/:meetingId', async (req, res, next) => {
+        const meetingId  = req.params.meetingId; 
+        const validate = validateInput({ meetingId });
+
+        if (validate.valid) {
+            const needs = await object.needs.findAll({
+                include: object.end_user,
+                where:{
+                    meeting_id: meetingId
+                }
+            });
+            res.status(200).send(needs);
+        } else {
+            res.status(400).json({ uuidError: validate.message }); 
+        }
+    });
+
     router.post('/add', async (req, res, next) => {
         const {
             userId,

@@ -1,21 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import HandleOffers from '../offers/HandleOffers.js'
+import HandleNeeds from '../needs/HandleNeeds.js';
+import ListWhiteboardArticles from './ListWhiteboardArticles.js';
 import './Whiteboard.css'
 
 const Whiteboard = (props) => {
 
     const [allOffers, setAllOffers] = useState([]);
+    const [allNeeds, setAllNeeds] = useState([]);
     const [meetingCategories, setMeetingCategories] = useState([])
     const [allArticleCategories, setAllArticleCategories] = useState([]);
+    const [viewOffers, setViewOffers] = useState(true)
     const { getOffers, navigateToArticle, getArticleCategories} = HandleOffers();
+    const { getNeeds } = HandleNeeds();
     const { meetingId } = useParams();
+
 
 
     useEffect(() => {
         getMeetingCategories();
-        //byMeetingId/811dcd95-a4a2-4bd8-acdf-9ef4ceaf55cb
     }, []);
+
 
     useEffect(() => {
         const newList = allArticleCategories.filter(filterArticleCategories);
@@ -28,6 +34,7 @@ const Whiteboard = (props) => {
 
         const fetchOffers = () => {
             getOffers('byMeetingId/' + meetingId, setAllOffers);
+            getNeeds('byMeetingId/' + meetingId, setAllNeeds);
             getArticleCategories(setAllArticleCategories);
         };
 
@@ -77,20 +84,34 @@ const Whiteboard = (props) => {
         }, 0);
     }
 
-    const findArticleSubCategory = (categoryId, offer) => {
-        const categoryHasSubCategory = meetingCategories.find(meetingCategory => {
-            return meetingCategory.category.parent_id === categoryId
-        })
-
-        let notLowestCategory = false
-        if(categoryHasSubCategory != undefined){
-            notLowestCategory = allArticleCategories.some(articleCategory => articleCategory.article_id === offer.id && articleCategory.category_id !== categoryHasSubCategory.category_id)
-        } 
-        return notLowestCategory
-    }   
-
+    const toggleOffersOrNeeds = (displayOffers) => {
+        setViewOffers(displayOffers)
+    }
 
     return (
+        <div className='whiteboardDiv'>
+            <div className='showOffersOrNeeds'>
+                <div className='buttonsDiv'>
+                    <p className={`OfferOrNeedButton ${viewOffers && 'active'} `} onClick={() => toggleOffersOrNeeds(true)}>Erbjudanden</p>
+                    <p className={`OfferOrNeedButton ${viewOffers === false && 'active'} `} onClick={() => toggleOffersOrNeeds(false)}>Behov</p>
+                </div>
+            </div>
+            {viewOffers ? (
+                <ListWhiteboardArticles 
+                    meetingCategories={meetingCategories}
+                    allArticles={allOffers}
+                    filterOffers={filterOffers}
+                />
+            ) : (
+                <ListWhiteboardArticles 
+                    meetingCategories={meetingCategories}
+                    allArticles={allNeeds}
+                    filterOffers={filterOffers}
+                />
+            )}
+        </div>
+
+        /*
         <>
             <div className='whiteboardDiv'>
                 {meetingCategories.map(meetingCategory => (
@@ -127,6 +148,7 @@ const Whiteboard = (props) => {
                 ))}
             </div>
         </>
+    */
     )
 }
 
