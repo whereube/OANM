@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
-import './NewOfferForm.css'
+import './NewArticleForm.css'
 
-const NewOfferForm = () => {
+const NewArticleForm = () => {
 
     let { meetingId } = useParams();
     const meetingIdParam = meetingId
@@ -330,4 +330,4 @@ const NewOfferForm = () => {
     )
 }
 
-export default NewOfferForm
+export default NewArticleForm
