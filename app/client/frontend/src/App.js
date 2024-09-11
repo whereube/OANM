@@ -8,17 +8,28 @@ import Whiteboard from './whiteboard/Whiteboard.js';
 import AddCategoryForm from './admin/AddCategoryForm.js';
 import AddMeetingForm from './admin/AddMeetingForm.js';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import {AuthProvider, useAuth} from './auth/AuthProvider.js';
 import Header from './header/Header.js';
 
 function App() {
+
   return (
     <div className="App">
       <BrowserRouter>
+        <AuthProvider>
           <Header />
           <Routes>
               <Route path="/article">
-                <Route path="add" element={<NewArticleForm />}/>
-                <Route path="add/:meetingId" element={<NewArticleForm />}/>
+                  <Route path="add" element={
+                    <ProtectedRoute>
+                      <NewArticleForm />
+                    </ProtectedRoute>
+                  }/>
+                  <Route path="add/:meetingId" element={
+                    <ProtectedRoute>
+                      <NewArticleForm />
+                    </ProtectedRoute>
+                  }/>
                 <Route path="showAll" element={<ShowArticles />}/>
               </Route>
               <Route path="/showArticle">
@@ -30,9 +41,24 @@ function App() {
               <Route path="/admin/add-category" element={<AddCategoryForm />}/>
               <Route path="/admin/add-meeting" element={<AddMeetingForm />}/>
           </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </div>
   );
+
+}
+
+function ProtectedRoute({ children }) {
+  const { user } = useAuth();
+  const location = useLocation();
+
+  if (!user) {
+    // Redirect to login page if not authenticated
+    return <Navigate to="/profile/login" state={{ from: location }}/>;
+  }
+
+  // If authenticated, return the children components
+  return children;
 }
 
 export default App;

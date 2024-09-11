@@ -1,40 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from '../auth/AuthProvider';
 import './LoginForm.css'
 
 const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
-    const navigate = useNavigate(); 
+    const auth = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null); 
+        const formData = {
+            email: email,
+            password: password
+        }
 
-        try {
-            const response = await fetch('http://localhost:443/user/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
-            });
-
-            if (response.status === 200) {
-                const userData = await response.json();
-                localStorage.setItem('sessionId', userData.id);
-                navigate('/');
-            } else if (response.status === 401) {
-                const errorData = await response.json();
-                setError(errorData.message);
-            } else {
-                setError('An error occurred. Please try again.');
-            }
-        } catch (err) {
-            setError('An error occurred. Please try again.');
-            console.error('Login error:', err);
+        const result = await auth.loginAction(formData);
+        if (result.success) {
+            navigate(from, { replace: true });
+        } else {
+            setError({ success: false, message: result.message });
         }
     };
 
