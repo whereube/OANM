@@ -12,6 +12,8 @@ const Whiteboard = (props) => {
     const [meetingCategories, setMeetingCategories] = useState([])
     const [allArticleCategories, setAllArticleCategories] = useState([]);
     const [viewOffers, setViewOffers] = useState(true)
+    const [categoryCounter, setCategoryCounter] = useState({})
+    const [categoryCollapse, setCategoryCollapse] = useState({})
     const { getOffers, navigateToArticle, getArticleCategories} = HandleOffers();
     const { getNeeds } = HandleNeeds();
     const { meetingId } = useParams();
@@ -22,13 +24,33 @@ const Whiteboard = (props) => {
         getMeetingCategories();
     }, []);
 
-
     useEffect(() => {
         const newList = allArticleCategories.filter(filterArticleCategories);
         if (newList.length !== allArticleCategories.length) {
             setAllArticleCategories(newList)
         }
     }, [allArticleCategories]);
+
+    useEffect(() => {
+        const listOfMeetingCategories = {}
+        for (const index in meetingCategories) {
+            listOfMeetingCategories[meetingCategories[index].category.id] = 0;
+        }
+        setCategoryCounter(listOfMeetingCategories)
+    }, [meetingCategories]);
+
+    useEffect(() => {
+        const listOfMeetingCategories = {}
+        for (const index in meetingCategories) {
+            listOfMeetingCategories[meetingCategories[index].category.id] = true;
+        }
+        setCategoryCollapse(listOfMeetingCategories)
+    }, [meetingCategories]);
+
+    useEffect(() => {
+        console.log(meetingCategories)
+    }, [meetingCategories]);
+
 
     useEffect(() => {
 
@@ -88,6 +110,15 @@ const Whiteboard = (props) => {
         setViewOffers(displayOffers)
     }
 
+    const changeCategoryCounter = (categoryId, amount) => {
+        console.log(categoryId)
+        console.log(amount) 
+        setCategoryCounter((prevCategoryCounter) => ({
+            ...prevCategoryCounter,   
+            [categoryId]: amount
+        }));
+    };
+
     return (
         <div className='whiteboardDiv'>
             <div className='showOffersOrNeeds'>
@@ -101,12 +132,16 @@ const Whiteboard = (props) => {
                     meetingCategories={meetingCategories}
                     allArticles={allOffers}
                     filterOffers={filterOffers}
+                    categoryCounter={categoryCounter}
+                    changeCategoryCounter={changeCategoryCounter}
                 />
             ) : (
                 <ListWhiteboardArticles 
                     meetingCategories={meetingCategories}
                     allArticles={allNeeds}
                     filterOffers={filterOffers}
+                    categoryCounter={categoryCounter}
+                    changeCategoryCounter={changeCategoryCounter}
                 />
             )}
         </div>
