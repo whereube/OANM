@@ -18,16 +18,16 @@
     margin-left: auto;
     margin-right: auto;
     margin-top: 30px;
-    justify-content: space-between; 
+    justify-content: space-between;
     text-align: center;
     border-radius: 4px;
-    min-height: 500px;
     margin-bottom: 100px;
     background-color: white;
 }
 
 .categoryDiv{
     width: 40%;
+    margin-top: 20px;
 }
 
 .offerDiv{
@@ -44,3 +44,30 @@
     color: rgb(94, 92, 92);
 }
 
+.categoryCollapseButton{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: black 1px solid;
+    padding: 10px;
+    border-radius: 4px;
+    align-items: center;
+}
+
+.categoryCollapseButton.sub{
+    width: 90%;
+    font-size: smaller;
+    padding: 6px;
+    margin-top: 10px;
+}
+
+.collapsed{
+    display: none;
+}
+
+.arrowIcon{
+    font-size: 20px;
+}
+.arrowIcon.sub{
+    font-size: 15px;
+}

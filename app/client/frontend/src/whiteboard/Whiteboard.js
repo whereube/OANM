@@ -47,10 +47,6 @@ const Whiteboard = (props) => {
         setCategoryCollapse(listOfMeetingCategories)
     }, [meetingCategories]);
 
-    useEffect(() => {
-        console.log(meetingCategories)
-    }, [meetingCategories]);
-
 
     useEffect(() => {
 
@@ -94,6 +90,18 @@ const Whiteboard = (props) => {
     }  
 
 
+    const filterOffersForCounter = (categoryId, level) => (offer) => {
+
+        const nbrOfCategoryLevels = countNbrOfCategoryLevels(offer)
+        const isIn = allArticleCategories.some(articleCategory => articleCategory.article_id === offer.id && articleCategory.category_id === categoryId)
+        if(isIn === false){
+            return false
+        } else {
+            return true
+        }
+    }  
+
+
     const filterArticleCategories = (articleCategory) => {
         return meetingCategories.some(meetingCategory => {
             return articleCategory.category_id === meetingCategory.category_id;
@@ -111,13 +119,19 @@ const Whiteboard = (props) => {
     }
 
     const changeCategoryCounter = (categoryId, amount) => {
-        console.log(categoryId)
-        console.log(amount) 
+
         setCategoryCounter((prevCategoryCounter) => ({
             ...prevCategoryCounter,   
             [categoryId]: amount
         }));
     };
+
+    const changeCollapseState = (categoryId) => {
+        setCategoryCollapse((prevCategoryCollapse) => ({
+            ...prevCategoryCollapse,   
+            [categoryId]: !prevCategoryCollapse[categoryId]
+        }));
+    }
 
     return (
         <div className='whiteboardDiv'>
@@ -132,16 +146,22 @@ const Whiteboard = (props) => {
                     meetingCategories={meetingCategories}
                     allArticles={allOffers}
                     filterOffers={filterOffers}
+                    filterOffersForCounter={filterOffersForCounter}
                     categoryCounter={categoryCounter}
                     changeCategoryCounter={changeCategoryCounter}
+                    categoryCollapse={categoryCollapse}
+                    changeCollapseState={changeCollapseState}
                 />
             ) : (
                 <ListWhiteboardArticles 
                     meetingCategories={meetingCategories}
                     allArticles={allNeeds}
                     filterOffers={filterOffers}
+                    filterOffersForCounter={filterOffersForCounter}
                     categoryCounter={categoryCounter}
                     changeCategoryCounter={changeCategoryCounter}
+                    categoryCollapse={categoryCollapse}
+                    changeCollapseState={changeCollapseState}
                 />
             )}
         </div>
