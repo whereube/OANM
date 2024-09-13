@@ -7,6 +7,7 @@ import CreateAccount from './profile/CreateAccount.js';
 import Whiteboard from './whiteboard/Whiteboard.js';
 import AddCategoryForm from './admin/AddCategoryForm.js';
 import AddMeetingForm from './admin/AddMeetingForm.js';
+import AdminPage from './admin/AdminPage.js';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import {AuthProvider, useAuth} from './auth/AuthProvider.js';
 import Header from './header/Header.js';
@@ -38,8 +39,11 @@ function App() {
               <Route path="/profile/login" element={<LoginForm />}></Route>
               <Route path="/profile/create-account" element={<CreateAccount />}/>
               <Route path="/whiteboard/:meetingId" element={<Whiteboard />}/>
-              <Route path="/admin/add-category" element={<AddCategoryForm />}/>
-              <Route path="/admin/add-meeting" element={<AddMeetingForm />}/>
+              <Route path='/admin'>
+                <Route path="" element={<AdminPage />}/>
+                <Route path="add-category" element={<AddCategoryForm />}/>
+                <Route path="add-meeting" element={<AddMeetingForm />}/>
+              </Route>
           </Routes>
         </AuthProvider>
       </BrowserRouter>

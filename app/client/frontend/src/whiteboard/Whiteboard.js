@@ -165,45 +165,6 @@ const Whiteboard = (props) => {
                 />
             )}
         </div>
-
-        /*
-        <>
-            <div className='whiteboardDiv'>
-                {meetingCategories.map(meetingCategory => (
-                    <div className='categoryDiv' key={meetingCategory.category.id}>
-                        {meetingCategory.category.parent_id === null && (
-                            <>
-                                <h2>{meetingCategory.category.category_name}</h2>
-                                {allOffers.filter(filterOffers(meetingCategory.category.id, 1)).map(offer =>
-                                    <div className='offerDiv'> 
-                                        <p className="postedBy" key={offer.end_user.id}>Upplagt av: {offer.end_user.user_name}</p>
-                                        <p key={offer.id}>{offer.title}</p>
-                                        <p key={offer.description}>Beskrivning: {offer.description}</p>
-                                    </div>
-                                )}
-                                {meetingCategories.map(subMeetingCategory => (
-                                    <div className='subCategoryDiv' key={subMeetingCategory.category.id}>
-                                        {subMeetingCategory.category.parent_id === meetingCategory.category.id && (
-                                            <>
-                                                <h3>{subMeetingCategory.category.category_name}</h3>
-                                                {allOffers.filter(filterOffers(subMeetingCategory.category.id, 2)).map(offer =>
-                                                    <div className='offerDiv'> 
-                                                        <p className="postedBy" key={offer.end_user.id}>Upplagt av: {offer.end_user.user_name}</p>
-                                                        <p key={offer.id}>{offer.title}</p>
-                                                        <p key={offer.description}>Beskrivning: {offer.description}</p>
-                                                    </div>
-                                                )}
-                                            </>
-                                        )}
-                                    </div>
-                                ))}
-                            </>
-                        )}
-                    </div>
-                ))}
-            </div>
-        </>
-    */
     )
 }
 

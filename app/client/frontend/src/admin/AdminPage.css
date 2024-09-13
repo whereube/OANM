@@ -1,0 +1,51 @@
+.adminPage{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 80%;
+    align-items: center;
+    min-height: 50vh;
+    text-align: center;
+}
+
+.navigateButton{
+    box-shadow: 
+        0 0 0px 2px var(--tertiary),
+        0 0 0px 6px var(--primary),
+        0 0 0px 10px var(--secondary),
+        0 0 0px 13px var(--quaternary);
+    border-radius: 4px;
+    padding: 10px;
+    width: 60%;
+    font-weight: bold;
+}
+
+.allMeetings{
+    width: 60%;
+}
+
+.button-small.small{
+    padding: 5px;
+    font-weight: 100;
+    max-width: 30%;
+}
+
+.meeting{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border: 1px solid grey;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.meetingButtons{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.collapsed{
+    display: none;
+}
