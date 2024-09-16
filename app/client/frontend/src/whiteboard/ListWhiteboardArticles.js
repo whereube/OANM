@@ -25,8 +25,8 @@ const ListWhiteboardArticles = (props) => {
         <>
             <div className='allWhiteboardArticles'>
                 {props.meetingCategories.map(meetingCategory => (
-                    <div className='categoryDiv' key={meetingCategory.category.id}>
-                        {meetingCategory.category.parent_id === null && (
+                    meetingCategory.category.parent_id === null && (
+                        <div className='categoryDiv' key={meetingCategory.category.id}>
                             <>
                                 <div className='categoryCollapseButton' onClick={() => props.changeCollapseState(meetingCategory.category.id)}>
                                     <h2>{meetingCategory.category.category_name}</h2>
@@ -41,7 +41,7 @@ const ListWhiteboardArticles = (props) => {
                                     {props.allArticles.filter(props.filterOffers(meetingCategory.category.id, 1)).map(article =>
                                         <div key={article.id} className='offerDiv'> 
                                             <p className="postedBy">Upplagt av: {article.end_user.user_name}</p>
-                                            <p>{article.title}</p>
+                                            <h3>{article.title}</h3>
                                             <p>Beskrivning: {article.description}</p>
                                         </div>
                                     )}
@@ -62,7 +62,7 @@ const ListWhiteboardArticles = (props) => {
                                                         {props.allArticles.filter(props.filterOffers(subMeetingCategory.category.id, 2)).map(article =>
                                                             <div key={article.id} className='offerDiv'> 
                                                                 <p className="postedBy">Upplagt av: {article.end_user.user_name}</p>
-                                                                <p>{article.title}</p>
+                                                                <h3>{article.title}</h3>
                                                                 <p>Beskrivning: {article.description}</p>
                                                             </div>
                                                         )}
@@ -73,8 +73,8 @@ const ListWhiteboardArticles = (props) => {
                                     ))}
                                 </div>
                             </>
-                        )}
-                    </div>
+                        </div>
+                    )
                 ))}
             </div>
         </>

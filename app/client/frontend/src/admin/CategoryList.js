@@ -52,7 +52,7 @@ function CategoryList({ categories, loading, error, onRemoveCategory, isBlinking
 
   return (
     <div className="category-list">
-      <h3>All Categories</h3>
+      <h3>Alla kategorier</h3>
       <ul className={blinkClass}>
         {renderCategories()} {/* Render top-level categories and their subcategories */}
       </ul>

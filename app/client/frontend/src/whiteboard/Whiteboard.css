@@ -28,15 +28,21 @@
 .categoryDiv{
     width: 40%;
     margin-top: 20px;
+    cursor: pointer;
 }
 
 .offerDiv{
     border: 1px solid rgb(228, 228, 228);
-    border-radius: 20px;
+    border-radius: 4px;
     padding: 5px 5px;
     text-align: center;
     background-color: white;
     margin-bottom: 20px;
+    margin-top: 20px;
+    box-shadow: 
+    0 0 0px 3px var(--primary),   
+    0 0 0px 5px var(--secondary),   
+    0 0 0px 7px var(--quaternary); 
 }
 
 .postedBy{

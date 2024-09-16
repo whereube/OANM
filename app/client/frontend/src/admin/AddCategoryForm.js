@@ -112,9 +112,9 @@ function AddCategoryForm() {
   return (
     <div className="category-container">
       <form onSubmit={handleSubmit} className="create-category-form">
-        <h2>Add New Category</h2>
+        <h2>Lägg till ny kategori</h2>
         <div>
-          <label htmlFor="category_name">Category Name:</label>
+          <label htmlFor="category_name">Namn:</label>
           <input
             type="text"
             id="category_name"
@@ -125,7 +125,7 @@ function AddCategoryForm() {
           />
         </div>
         <div>
-          <label htmlFor="existing_categories">Subcategory to...</label>
+          <label htmlFor="existing_categories">Underkategori till...</label>
           <select
             id="existing_categories"
             name="parent_id"
@@ -133,7 +133,7 @@ function AddCategoryForm() {
             onChange={handleChange}
           >
             <option value="">
-              Not a Subcategory
+              Inte en underkategori
             </option>
             {categories.map((category) => (
               <option key={category.id} value={category.id}>
@@ -145,7 +145,7 @@ function AddCategoryForm() {
 
         {responseMessage && <p>{responseMessage}</p>}
 
-        <button type="submit" className="button-small">Add Category</button>
+        <button type="submit" className="button-small">Lägg till</button>
       </form>
 
       <CategoryList

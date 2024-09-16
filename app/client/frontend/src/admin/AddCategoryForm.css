@@ -2,6 +2,14 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    background-color: white;
+    box-shadow: 
+    0 0 0px 2px var(--tertiary),     
+    0 0 0px 6px var(--primary),   
+    0 0 0px 10px var(--secondary),   
+    0 0 0px 13px var(--quaternary); 
+    margin-bottom: 40px;
+    border-radius: 4px;
 }
 
 .create-category-form {
@@ -14,11 +22,7 @@
     background-image: none;
     border-radius: 4px;
     border: none;
-    box-shadow: 
-        0 0 0px 2px var(--tertiary),     
-        0 0 0px 6px var(--primary),   
-        0 0 0px 10px var(--secondary),   
-        0 0 0px 13px var(--quaternary); 
+
     color: #000000;
     box-sizing: border-box;
     display: inline-block;
