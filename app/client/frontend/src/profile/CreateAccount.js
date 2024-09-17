@@ -58,7 +58,7 @@ const CreateAccount = () => {
     return (
         <div>
             <form onSubmit={handleSubmit} className="create-account-form">
-                <h2>Create Account</h2>
+                <h2>Ny användare</h2>
                 <div>
                     <label>Email:</label>
                     <input
@@ -69,15 +69,16 @@ const CreateAccount = () => {
                     />
                 </div>
                 <div>
-                    <label>User Name:</label>
+                    <label>Användarnamn:</label>
                     <input
                         type="text"
                         value={userName}
                         onChange={(e) => setUserName(e.target.value)}
+                        required
                     />
                 </div>
                 <div>
-                    <label>Password:</label>
+                    <label>Lösenord:</label>
                     <input
                         type="password"
                         value={password}
@@ -86,7 +87,7 @@ const CreateAccount = () => {
                     />
                 </div>
                 <div>
-                    <label>Confirm Password:</label>
+                    <label>Bekräfta lösenord:</label>
                     <input
                         type="password"
                         value={confirmPassword}
@@ -95,7 +96,7 @@ const CreateAccount = () => {
                     />
                 </div>
                 <div>
-                    <label>Company Name:</label>
+                    <label>Företag (valfritt):</label>
                     <input
                         type="text"
                         value={companyName}
@@ -103,7 +104,7 @@ const CreateAccount = () => {
                     />
                 </div>
                 <div>
-                    <label>Phone Number:</label>
+                    <label>Telefonnummer (valfritt):</label>
                     <input
                         type="number"
                         value={phoneNumber}
@@ -111,7 +112,7 @@ const CreateAccount = () => {
                     />
                 </div>
                 <div>
-                    <label>Link:</label>
+                    <label>Länk (valfritt):</label>
                     <input
                         type="text"
                         value={link}
@@ -119,7 +120,7 @@ const CreateAccount = () => {
                     />
                 </div>
                 {error && <p style={{ color: 'red' }}>{error}</p>}
-                <button type="submit" className="button-small">Create Account</button>
+                <button type="submit" className="button-small">Skapa användare</button>
             </form>
         </div>
     );

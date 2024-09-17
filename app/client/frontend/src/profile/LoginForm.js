@@ -32,7 +32,7 @@ const LoginForm = () => {
     return (
         <div>
             <form onSubmit={handleSubmit} className="login-form">
-                <h2>Login</h2>
+                <h2>Logga in</h2>
                 <div>
                     <label>Email:</label>
                     <input
@@ -43,7 +43,7 @@ const LoginForm = () => {
                     />
                 </div>
                 <div>
-                    <label>Password:</label>
+                    <label>Lösenord:</label>
                     <input
                         type="password"
                         value={password}
@@ -52,7 +52,7 @@ const LoginForm = () => {
                     />
                 </div>
                 {error && <p style={{ color: 'red' }}>{error}</p>}
-                <button type="submit" className="button-small">Login</button>
+                <button type="submit" className="button-small">Logga in</button>
                 <a href="/profile/create-account">Skapa konto</a>
             </form>
         </div>
