@@ -7,7 +7,7 @@ import { config } from 'dotenv';
 // Load environment variables from .env
 config();
 
-const port = process.env.PORT || 5432;
+const port = process.env.PORT || process.env.SERVER_PORT;
 const server = createServer();
 
 // __filename and __dirname are not available in ES Modules

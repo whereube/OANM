@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import './CreateAccount.css';
 
 const CreateAccount = () => {
+    let API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_LOCAL_API_URL;
     const [email, setEmail] = useState('');
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
@@ -24,7 +25,7 @@ const CreateAccount = () => {
         }
 
         try {
-            const response = await fetch('https://oanm-ecubuntu-b3e74bbc7ba9.herokuapp.com/user/createUser', {
+            const response = await fetch(`${API_URL}/user/createUser`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

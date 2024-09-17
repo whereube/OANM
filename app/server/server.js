@@ -15,14 +15,14 @@ export const createServer = () => {
   app.use(express.json());
   app.use(corsMiddleware);  // Use the CORS middleware globally
 
-  app.use('/user',  getUserRoutes());
-  app.use('/offers',  getOfferRoutes());
-  app.use('/needs', getNeedRoutes());
-  app.use('/company', getCompanyRoutes());
-  app.use('/category', getCategoryRoutes());
-  app.use('/meeting', getMeetingRoutes());
-  app.use('/articleCategory', getArticleCategoryRoutes());
-  app.use('/meetingCategory', getMeetingCategoryRoutes());
+  app.use('/api/user',  getUserRoutes());
+  app.use('/api/offers',  getOfferRoutes());
+  app.use('/api/needs', getNeedRoutes());
+  app.use('/api/company', getCompanyRoutes());
+  app.use('/api/category', getCategoryRoutes());
+  app.use('/api/meeting', getMeetingRoutes());
+  app.use('/api/articleCategory', getArticleCategoryRoutes());
+  app.use('/api/meetingCategory', getMeetingCategoryRoutes());
 
 
   return app;
