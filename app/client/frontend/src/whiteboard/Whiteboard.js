@@ -7,6 +7,7 @@ import './Whiteboard.css'
 
 const Whiteboard = (props) => {
 
+    let API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_LOCAL_API_URL;
     const [allOffers, setAllOffers] = useState([]);
     const [allNeeds, setAllNeeds] = useState([]);
     const [meetingCategories, setMeetingCategories] = useState([])
@@ -66,7 +67,7 @@ const Whiteboard = (props) => {
     }, []);
 
     const getMeetingCategories = async () => {
-        const response = await fetch('http://localhost:443/meetingCategory/byMeetingId/' + meetingId);
+        const response = await fetch(`${API_URL}/meetingCategory/byMeetingId/` + meetingId);
         if (!response.ok) {
             const errorData = await response.json();
             console.log(errorData)

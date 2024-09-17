@@ -5,6 +5,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
 
+    let API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_LOCAL_API_URL;
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(localStorage.getItem("sessionId") || "");
     const [loading, setLoading] = useState(true);
@@ -25,7 +26,7 @@ export const AuthProvider = ({ children }) => {
 
     const loginAction = async (data) => {
         try {
-            const response = await fetch("http://localhost:443/user/login", {
+            const response = await fetch(`${API_URL}/user/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -69,7 +70,7 @@ export const AuthProvider = ({ children }) => {
             const userid = {"userId": token}
             console.log(userid)
             try {
-                const response = await fetch("http://localhost:443/user/isAdmin", {
+                const response = await fetch(`${API_URL}/user/isAdmin`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

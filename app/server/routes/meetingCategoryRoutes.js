@@ -4,6 +4,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { validateInput, validateString, validateInteger } from '../middleware/routeFunctions.js';
 
 export const getMeetingCategoryRoutes = () => {
+
+    let API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_LOCAL_API_URL;
     const router = Router();
 
     router.get('/getAll', async (req, res, next) => {
@@ -21,7 +23,7 @@ export const getMeetingCategoryRoutes = () => {
       }
       try {
         // Make a request to the /addMeeting endpoint to create the meeting
-        const meetingResponse = await fetch('http://localhost:443/meeting/addMeeting', {
+        const meetingResponse = await fetch(`${API_URL}/meeting/addMeeting`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

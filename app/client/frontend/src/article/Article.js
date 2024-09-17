@@ -4,7 +4,7 @@ import './Article.css'
 
 
 const Article = () => {
-
+    let API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_LOCAL_API_URL;
     const [article, setArticle] = useState({});
     let { id, offerOrNeed } = useParams();
 
@@ -18,9 +18,9 @@ const Article = () => {
         let response = {} 
 
         if(offerOrNeed === 'offer'){
-            response = await fetch('http://localhost:443/offers/byId/' + id);
+            response = await fetch(`${API_URL}/offers/byId/` + id);
         } else if(offerOrNeed === 'need') {
-            response = await fetch('http://localhost:443/needs/byId/' + id);
+            response = await fetch(`${API_URL}/needs/byId/` + id);
         }
         if (!response.ok) {
             const errorData = await response.json();

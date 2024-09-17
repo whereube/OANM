@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 
 const HandleOffers = () => {
 
-
+    let API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_LOCAL_API_URL;
     const navigate = useNavigate()
 
     const getOffers = async (type, setAllOffers) => {
 
-        const response = await fetch('http://localhost:443/offers/' + type);
+        const response = await fetch(`${API_URL}/offers/` + type);
         if (!response.ok) {
             const errorData = await response.json();
             console.log(errorData)
@@ -24,7 +24,7 @@ const HandleOffers = () => {
 
     const getArticleCategories = async (setAllArticleCategories) => {
 
-        const response = await fetch('http://localhost:443/articleCategory/getAll');
+        const response = await fetch(`${API_URL}/articleCategory/getAll`);
         if (!response.ok) {
             const errorData = await response.json();
             console.log(errorData)

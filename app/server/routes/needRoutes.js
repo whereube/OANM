@@ -5,6 +5,7 @@ import { validateInput, validateString, validateInteger } from '../middleware/ro
 
 export const getNeedRoutes = () => {
 
+    let API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_LOCAL_API_URL;
     const router = Router();
 
     router.get('/getAll', async (req, res, next) => {
@@ -102,7 +103,7 @@ export const getNeedRoutes = () => {
                 } 
                 for (const key in articleCategories) {
                     if (articleCategories.hasOwnProperty(key)) {
-                        const articleCategoryResponse = await fetch('http://localhost:443/articleCategory/add', {
+                        const articleCategoryResponse = await fetch(`${API_URL}/articleCategory/add`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'

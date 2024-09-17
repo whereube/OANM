@@ -8,7 +8,7 @@ function AddCategoryForm() {
     category_name: '',
     parent_id: '', // Initialize parent_id as an empty string
   });
-
+  let API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_LOCAL_API_URL;
   const [categories, setCategories] = useState([]);
   const [responseMessage, setResponseMessage] = useState('');
   const [loading, setLoading] = useState(true);
@@ -19,7 +19,7 @@ function AddCategoryForm() {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:443/category/getAll', {
+      const response = await fetch('${API_URL}/category/getAll', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ function AddCategoryForm() {
     };
 
     try {
-      const response = await fetch('http://localhost:443/category/addCategory', {
+      const response = await fetch('${API_URL}/category/addCategory', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -91,7 +91,7 @@ function AddCategoryForm() {
 
   const handleRemoveCategory = async (categoryId) => {
     try {
-      const response = await fetch(`http://localhost:443/category/deleteCategory/${categoryId}`, {
+      const response = await fetch(`${API_URL}/category/deleteCategory/${categoryId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

@@ -36,22 +36,6 @@ export const needs = db.define(
         type: DataTypes.INTEGER,
         allowNull: true,
       },
-      category_1: {
-        type: DataTypes.UUID,
-        allowNull: true,
-      },
-      category_2: {
-        type: DataTypes.UUID,
-        allowNull: true,
-      },
-      category_3: {
-        type: DataTypes.UUID,
-        allowNull: true,
-      },
-      category_4: {
-        type: DataTypes.UUID,
-        allowNull: true,
-      }, 
       meeting_id: {
         type: DataTypes.UUID,
         allowNull: true,

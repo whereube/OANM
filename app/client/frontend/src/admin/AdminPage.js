@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import './AdminPage.css'
 
 function AdminPage() {
-
+    let API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_LOCAL_API_URL;
     const [meetings, setMeetings] = useState([])
     const [meetingsIsCollapsed, setMeetingsIsCollapsed] = useState(true)
     const navigate = useNavigate(); 
@@ -17,7 +17,7 @@ function AdminPage() {
     }, []);
 
     const getMeetings = async () => {
-        const response = await fetch('http://localhost:443/meeting/getAll');
+        const response = await fetch(`${API_URL}/meeting/getAll`);
         if (!response.ok) {
             const errorData = await response.json();
             console.log(errorData)

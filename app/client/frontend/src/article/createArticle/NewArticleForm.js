@@ -4,6 +4,7 @@ import './NewArticleForm.css'
 
 const NewArticleForm = () => {
 
+    let API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_LOCAL_API_URL;
     let { meetingId } = useParams();
     const meetingIdParam = meetingId
     const [categories, setCategories] = useState([])
@@ -92,7 +93,7 @@ const NewArticleForm = () => {
             let response = []
 
             if(addOffer === true){
-                response = await fetch('http://localhost:443/offers/add', {
+                response = await fetch(`${API_URL}/offers/add`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json' // Indicates that the body of the request contains JSON
@@ -100,8 +101,7 @@ const NewArticleForm = () => {
                     body: JSON.stringify(formData) // Convert dataToSend to JSON string
                 });
             } else {
-                console.log("hej")
-                response = await fetch('http://localhost:443/needs/add', {
+                response = await fetch(`${API_URL}/needs/add`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json' // Indicates that the body of the request contains JSON
@@ -139,7 +139,7 @@ const NewArticleForm = () => {
     };
 
     const getCategories = async () => {
-        const response = await fetch('http://localhost:443/category/getAll');
+        const response = await fetch(`${API_URL}/category/getAll`);
         if (!response.ok) {
             const errorData = await response.json();
             console.log(errorData)

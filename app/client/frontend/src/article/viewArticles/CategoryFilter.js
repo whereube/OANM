@@ -4,6 +4,7 @@ import './CategoryFilter.css'
 
 const CategoryFilter = (props) => {
 
+    let API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_LOCAL_API_URL;
     const [selectedCategoryId, setSelectedCategoryId] = useState({});
     const [categories, setCategories] = useState([])
     const [nbrOfLevels, setNbrOfLevels] = useState(1)
@@ -34,7 +35,7 @@ const CategoryFilter = (props) => {
     }, [filterActivated, categories]);
 
     const getCategories = async () => {
-        const response = await fetch('http://localhost:443/category/getAll');
+        const response = await fetch(`${API_URL}/category/getAll`);
         if (!response.ok) {
             const errorData = await response.json();
             console.log(errorData)

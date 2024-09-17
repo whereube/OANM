@@ -3,6 +3,7 @@ import './AddMeetingForm.css';
 import '../App.css';
 
 function AddMeetingForm() {
+  let API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_LOCAL_API_URL;
   const [formData, setFormData] = useState({
     meeting_name: "",
   });
@@ -16,7 +17,7 @@ function AddMeetingForm() {
     // Fetch categories on component mount
     const fetchCategories = async () => {
       try {
-        const response = await fetch("http://localhost:443/category/getAll"); // Update URL as needed
+        const response = await fetch(`${API_URL}/category/getAll`); // Update URL as needed
         if (!response.ok) {
           throw new Error("Failed to fetch categories");
         }
@@ -51,7 +52,7 @@ function AddMeetingForm() {
     event.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:443/meetingCategory/addMeetingAndCategory", {
+      const response = await fetch(`${API_URL}/meetingCategory/addMeetingAndCategory`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
