@@ -5,6 +5,7 @@ dotenv.config();
 const environment = process.env.DEV_ENVIRONMENT;
 
 
+
 const getDBName = process.env.DB_NAME;
 const getDBUser = process.env.DB_USER;
 const getDBPassword = process.env.DB_PASSWORD;
