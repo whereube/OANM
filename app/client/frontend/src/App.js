@@ -93,7 +93,6 @@ function AdminRoute() {
     return <div>Loading...</div>; // Optional: Show loading state while checking admin status
   }
 
-  console.log(isAdmin)
   if (!isAdmin) {
     return <NotAdmin />;
   }

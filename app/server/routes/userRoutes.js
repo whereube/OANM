@@ -55,7 +55,6 @@ export const getUserRoutes = () => {
 
     router.post('/isAdmin', async (req, res, next) => {
         const { userId } = req.body;
-        console.log(userId)
         const user = await object.end_user.findOne({
             where: {
                 id: userId

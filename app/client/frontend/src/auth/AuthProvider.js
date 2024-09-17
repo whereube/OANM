@@ -68,7 +68,6 @@ export const AuthProvider = ({ children }) => {
         } else{
 
             const userid = {"userId": token}
-            console.log(userid)
             try {
                 const response = await fetch(`${API_URL}/user/isAdmin`, {
                     method: "POST",

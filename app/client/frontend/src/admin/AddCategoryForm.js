@@ -19,7 +19,7 @@ function AddCategoryForm() {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const response = await fetch('${API_URL}/category/getAll', {
+      const response = await fetch(`${API_URL}/category/getAll`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ function AddCategoryForm() {
     };
 
     try {
-      const response = await fetch('${API_URL}/category/addCategory', {
+      const response = await fetch(`${API_URL}/category/addCategory`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -7,7 +7,6 @@ export const getMeetingCategoryRoutes = () => {
 
     let API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_LOCAL_API_URL;
     const router = Router();
-
     router.get('/getAll', async (req, res, next) => {
         const data = await object.meetingCategory.findAll({
         });
