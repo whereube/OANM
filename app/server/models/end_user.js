@@ -34,6 +34,10 @@ export const end_user = db.define(
       password: {
         type: DataTypes.STRING,
         allowNull: false,
+      },
+      is_admin: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
       }
     },
     {

@@ -52,6 +52,18 @@ export const getUserRoutes = () => {
         res.status(200).send(allUsers);
     });
 
+
+    router.post('/isAdmin', async (req, res, next) => {
+        const { userId } = req.body;
+        console.log(userId)
+        const user = await object.end_user.findOne({
+            where: {
+                id: userId
+            }
+        });
+        res.status(200).send(user.is_admin);
+    });
+
     router.post('/createUser', async (req, res, next) => {
         const {
             company_name,

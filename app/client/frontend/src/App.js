@@ -1,4 +1,5 @@
 import './App.css';
+import { useState, useEffect} from "react";
 import NewArticleForm from './article/createArticle/NewArticleForm.js';
 import LoginForm from './profile/LoginForm.js';
 import ShowArticles from './article/viewArticles/ShowArticles.js';
@@ -8,8 +9,9 @@ import Whiteboard from './whiteboard/Whiteboard.js';
 import AddCategoryForm from './admin/AddCategoryForm.js';
 import AddMeetingForm from './admin/AddMeetingForm.js';
 import AdminPage from './admin/AdminPage.js';
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
-import {AuthProvider, useAuth} from './auth/AuthProvider.js';
+import NotAdmin from './auth/NotAdmin.js';
+import { BrowserRouter, Routes, Route, Navigate, useLocation, Outlet } from "react-router-dom";
+import {AuthProvider, useAuth, checkIfAdmin} from './auth/AuthProvider.js';
 import Header from './header/Header.js';
 
 function App() {
@@ -39,10 +41,10 @@ function App() {
               <Route path="/profile/login" element={<LoginForm />}></Route>
               <Route path="/profile/create-account" element={<CreateAccount />}/>
               <Route path="/whiteboard/:meetingId" element={<Whiteboard />}/>
-              <Route path='/admin'>
-                <Route path="" element={<AdminPage />}/>
-                <Route path="add-category" element={<AddCategoryForm />}/>
-                <Route path="add-meeting" element={<AddMeetingForm />}/>
+              <Route path='/admin' element={<AdminRoute />}>
+                  <Route path="" element={<AdminPage />}/>
+                  <Route path="add-category" element={<AddCategoryForm />}/>
+                  <Route path="add-meeting" element={<AddMeetingForm />}/>
               </Route>
           </Routes>
         </AuthProvider>
@@ -52,7 +54,7 @@ function App() {
 
 }
 
-function ProtectedRoute({ children }) {
+function ProtectedRoute({children}) {
   const { user } = useAuth();
   const location = useLocation();
 
@@ -62,7 +64,41 @@ function ProtectedRoute({ children }) {
   }
 
   // If authenticated, return the children components
-  return children;
+  return children ? children : <Outlet />;
+}
+
+
+function AdminRoute() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const auth = useAuth();
+  const location = useLocation();
+
+  useEffect(() => {
+    const checkAdminStatus = async () => {
+      try {
+        const result = await auth.checkIfAdmin(); // Perform async admin check
+        setIsAdmin(result);
+      } catch (error) {
+        console.error('Error checking admin status:', error);
+      } finally {
+        setIsLoading(false); // Set loading to false once check is complete
+      }
+    };
+
+    checkAdminStatus();
+  }, [auth]);
+
+  if (isLoading) {
+    return <div>Loading...</div>; // Optional: Show loading state while checking admin status
+  }
+
+  console.log(isAdmin)
+  if (!isAdmin) {
+    return <NotAdmin />;
+  }
+
+  return <Outlet />; // Render child routes if the user is admin
 }
 
 export default App;

@@ -2,6 +2,7 @@ import { useContext, createContext, useState, useEffect} from "react";
 
 const AuthContext = createContext();
 
+
 export const AuthProvider = ({ children }) => {
 
     const [user, setUser] = useState(null);
@@ -20,7 +21,6 @@ export const AuthProvider = ({ children }) => {
         };
         initializeUser();
     }, []);
-
 
 
     const loginAction = async (data) => {
@@ -59,13 +59,46 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem("sessionId");
     };
 
+    const checkIfAdmin = async () => {
+
+        
+        if (user === null){
+            return false
+        } else{
+
+            const userid = {"userId": token}
+            console.log(userid)
+            try {
+                const response = await fetch("http://localhost:443/user/isAdmin", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(userid),
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.log(errorData)
+                    console.error('Error:', errorData); 
+                    throw new Error(errorData);
+                } else {
+                    const res = await response.json();
+                    console.log(res)
+                    return res
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        } 
+    }
+
     if (loading) {
         return <div>Loading...</div>;
     }
 
 
     return (
-    <AuthContext.Provider value={{ token, user, loginAction, logOut }}>
+    <AuthContext.Provider value={{ token, user, loginAction, logOut, checkIfAdmin }}>
         {children}
     </AuthContext.Provider>
     );
