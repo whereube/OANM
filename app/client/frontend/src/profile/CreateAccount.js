@@ -24,7 +24,7 @@ const CreateAccount = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:443/user/createUser', {
+            const response = await fetch('https://oanm-ecubuntu-b3e74bbc7ba9.herokuapp.com/user/createUser', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
