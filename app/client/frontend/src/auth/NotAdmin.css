@@ -1,0 +1,11 @@
+.notAdminPage{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    min-height: 50vh;
+}
+
+.notAdminButton{
+    width: 50%;
+    margin: auto;
+}
