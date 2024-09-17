@@ -1,11 +1,16 @@
 import express from 'express';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { config } from 'dotenv';
 
 config();
 
 const app = express();
 const port = process.env.PORT || 5432;
+
+// __filename and __dirname are not available in ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, '../client/frontend/build')));
