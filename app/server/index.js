@@ -1,6 +1,6 @@
 import { createServer } from './server.js';
 
-const port = 443;
+const port = 5432;
 
 const server = createServer();
 
