@@ -31,27 +31,29 @@
 }
 
 .showOffersOrNeeds{
-    background-color: rgb(195, 195, 195);
+    background-color: var(--primary);
     border-radius: 4px 4px 0px 0px;
 }
 
 .buttonsDiv{
     display: flex;
-    justify-content: space-around;
-    width: 40%;
+    flex-direction: row;
     bottom: 0;
+    margin-left: 0;
 }
 
 .OfferOrNeedButton{
     margin-bottom: 0px;
     text-align: center;
-    padding: 10px;
+    min-width: 150px;
+    padding: 10px 0px;
     cursor: pointer;
+
 }
 
 .OfferOrNeedButton.active {
     background-color: white;
-    padding: 10px;
+    padding: 10px 0;
     border-radius: 4px 4px 0px 0px;
 }
 
@@ -67,7 +69,6 @@
 
 .showAllArticles{
     box-shadow: 
-    0 0 0px 2px var(--tertiary),
     0 0 0px 6px var(--primary),
     0 0 0px 10px var(--secondary),
     0 0 0px 13px var(--quaternary);
@@ -75,5 +76,6 @@
     width: 80%;
     margin-top: 80px;
     margin-bottom: 40px;
+    background-color: white;
 }
 
