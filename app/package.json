@@ -1,0 +1,11 @@
+{
+  "name": "oanm-ecubuntu",
+  "scripts": {
+    "client": "cd client && cd frontend && npm start",
+    "server": "cd server && node index.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "dependencies": {
+    "concurrently": "^6.0.0"
+  }
+}
