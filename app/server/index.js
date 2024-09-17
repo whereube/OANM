@@ -1,4 +1,4 @@
-import { createServer } from './server.js';
+import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { config } from 'dotenv';
