@@ -3,6 +3,7 @@
   "scripts": {
     "client": "cd app && cd client && cd frontend && npm start",
     "server": "cd app && cd server && node index.js",
+    "start": "npm run server",  
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "dependencies": {
