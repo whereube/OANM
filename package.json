@@ -4,7 +4,8 @@
     "client": "cd app && cd client && cd frontend && npm start",
     "server": "cd app && cd server && npm install && node index.js",
     "start": "npm run server",  
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "cd app && cd client && cd frontend && npm install && npm run build"
   },
   "dependencies": {
     "concurrently": "^6.0.0"
