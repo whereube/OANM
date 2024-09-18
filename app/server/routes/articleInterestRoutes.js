@@ -41,5 +41,31 @@ export const getArticleInterestRoutes = () => {
     });
 
 
+    router.post('/remove', async (req, res, next) => {
+        const {
+            id
+        } = req.body;
+
+        try {
+        const result = await object.articleInterest.destroy({
+            where: {
+                id: id
+            }
+        });
+        
+        if (result === null) {
+            return res.status(404).json({ message: 'No article interest removed' });
+        } else{
+            res.status(201).json({ message: 'Article interest removed'});
+        }
+
+        } catch (error) {
+            console.error('Error creating category', error);
+            res.status(500).json('Internal Server Error');
+        }
+
+    });
+
+
   return router;
 };

@@ -54,14 +54,39 @@ const HandleArticles = () => {
                 
             }
         } catch (error) {
-            console.error('Error submitting form:', error);
+            console.error('Error adding interest:', error);
+        }
+    }
+
+
+    const removeArticleInterest = async (postData) => {
+
+        try {
+            const response = await fetch(`${API_URL}/articleInterest/remove`, {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(postData), 
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                return data
+            } else {
+                return false
+            }
+        } catch (error) {
+            console.error('Error removing interest:', error);
         }
     }
 
     return {
         getArticleCategories,
         getArticleInterests,
-        addArticleInterests
+        addArticleInterests,
+        removeArticleInterest
     };
 
 }

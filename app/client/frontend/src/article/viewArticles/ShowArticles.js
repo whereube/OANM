@@ -16,6 +16,7 @@ const ShowArticles = () => {
     const [allArticleCategories, setAllArticleCategories] = useState([]);
     const [allArticleInterests, setAllArticleInterests] = useState([]);
     const [articleInterestCounter, setArticleInterestCounter] = useState({})
+    const [ownArticleInterest, setOwnArticleInterest] = useState([])
     const [filteredOffers, setFilteredOffers] = useState([]);
     const [filteredNeeds, setFilteredNeeds] = useState([]);
     const [filterByCategory, setFilterByCategory] = useState({});
@@ -26,7 +27,7 @@ const ShowArticles = () => {
 
     const { getOffers, navigateToOfferArticle} = HandleOffers();
     const { getNeeds, navigateToNeedArticle } = HandleNeeds();
-    const { getArticleInterests, getArticleCategories, addArticleInterests } = HandleArticles();
+    const { getArticleInterests, getArticleCategories, addArticleInterests, removeArticleInterest } = HandleArticles();
 
 
     useEffect(() => {
@@ -35,15 +36,6 @@ const ShowArticles = () => {
         getArticleCategories(setAllArticleCategories);
         getArticleInterests(setAllArticleInterests)
     }, []);
-
-
-    useEffect(() => {
-        console.log(allArticleInterests)
-    }, [allArticleInterests]);
-
-    useEffect(() => {
-        console.log(articleInterestCounter)
-    }, [articleInterestCounter]);
 
     useEffect(() => {
         setFilteredOffers(allOffers)
@@ -77,21 +69,48 @@ const ShowArticles = () => {
 
     useEffect(() => {
         const listOfArticleInterests = {}
+        const listOfOwnArticleInterests = []
+
         for (const index in allArticleInterests) {
-            listOfArticleInterests[allArticleInterests[index].article_id] = 0;
+            listOfArticleInterests[allArticleInterests[index].article_id] = {
+                'count': 0,
+                'id': allArticleInterests[index].id
+            }
         }
 
         const keyCount = allArticleInterests.reduce((count, key) => {
-            count[key.article_id] = (count[key.article_id] || 0) + 1; // Increment the count for each occurrence
+            const articleId = key.article_id;
+            // If the key already exists, increment the count, otherwise initialize it with count = 1 and id
+            if (!count[articleId]) {
+                count[articleId] = { count: 1, id: articleId };
+            } else {
+                count[articleId].count += 1;
+            }
             return count;
         }, {});
 
         Object.keys(listOfArticleInterests).forEach(key => {
         if (keyCount[key] !== undefined) {
-            listOfArticleInterests[key] = keyCount[key]; // Set the value to the count of occurrences
+            listOfArticleInterests[key].count = keyCount[key].count;
         }
         });
 
+
+        if(user !== null){
+            let userId = ''
+            if(user.hasOwnProperty(userId)){
+                userId = user.userId
+            } else {
+                userId = user.id
+            }
+            allArticleInterests.forEach(articleInterest => {
+                if(articleInterest.user_id === userId){
+                    listOfOwnArticleInterests.push(articleInterest.article_id)
+                }
+            });
+        }       
+
+        setOwnArticleInterest(listOfOwnArticleInterests)
         setArticleInterestCounter(listOfArticleInterests)
     }, [allArticleInterests]);
 
@@ -141,13 +160,26 @@ const ShowArticles = () => {
 
 
     const markAsInterested = async (articleId) => {
-        console.log(articleId)
-        console.log(user.userId)
-        const data = {
-            'articleId': articleId,
-            'userId': user.userId
+        if (user !== null) {
+            let userId = ''
+            if(user.hasOwnProperty(userId)){
+                userId = user.userId
+            } else {
+                userId = user.id
+            }
+
+            const data = {
+                'articleId': articleId,
+                'userId': userId
+            }
+            await addArticleInterests(data);
+            getArticleInterests(setAllArticleInterests)
         }
-        await addArticleInterests(data);
+    }
+
+
+    const removeMarkAsInterested = async (articleId) => {
+        await removeArticleInterest({'id': articleId})
         getArticleInterests(setAllArticleInterests)
     }
 
@@ -168,7 +200,9 @@ const ShowArticles = () => {
                         navigateToArticle={navigateToOfferArticle}
                         viewOffers={viewOffers}
                         markAsInterested={markAsInterested}
+                        removeMarkAsInterested={removeMarkAsInterested}
                         articleInterestCounter={articleInterestCounter}
+                        ownArticleInterest={ownArticleInterest}
                     />
                 ) : (
                     <ArticleList 
@@ -176,7 +210,10 @@ const ShowArticles = () => {
                         setFilterByCategory={setFilterByCategory}
                         filteredArticles={filteredNeeds}
                         navigateToArticle={navigateToNeedArticle}
+                        markAsInterested={markAsInterested}
+                        removeMarkAsInterested={removeMarkAsInterested}
                         articleInterestCounter={articleInterestCounter}
+                        ownArticleInterest={ownArticleInterest}
                     />
                 )}
             </div>
