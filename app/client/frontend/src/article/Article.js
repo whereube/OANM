@@ -14,6 +14,7 @@ const Article = () => {
         setLoading(false)
     }, []);
 
+
     const getArticle = async () => {
 
         let response = {} 
@@ -55,9 +56,6 @@ const Article = () => {
                             )
                             }
                             <p>{article.description}</p>
-                            {article.link != '' &&(
-                                <a href={article.link} target='_blank'>Läs mer här</a>
-                            )}
                         </>
                     ): (
                         <p>Laddar...</p>

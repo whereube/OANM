@@ -15,7 +15,7 @@ const Whiteboard = (props) => {
     const [viewOffers, setViewOffers] = useState(true)
     const [categoryCounter, setCategoryCounter] = useState({})
     const [categoryCollapse, setCategoryCollapse] = useState({})
-    const { getOffers, navigateToArticle, getArticleCategories} = HandleOffers();
+    const { getOffers, navigateToOfferArticle, getArticleCategories} = HandleOffers();
     const { getNeeds } = HandleNeeds();
     const { meetingId } = useParams();
 

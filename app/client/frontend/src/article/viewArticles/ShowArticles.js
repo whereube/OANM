@@ -18,8 +18,8 @@ const ShowArticles = () => {
     const [viewOffers, setViewOffers] = useState(true)
 
 
-    const { getOffers, navigateToArticle, getArticleCategories} = HandleOffers();
-    const { getNeeds } = HandleNeeds();
+    const { getOffers, navigateToOfferArticle, getArticleCategories} = HandleOffers();
+    const { getNeeds, navigateToNeedArticle } = HandleNeeds();
 
 
 
@@ -116,7 +116,7 @@ const ShowArticles = () => {
                         activeCategoryFilter={activeCategoryFilter}
                         setFilterByCategory={setFilterByCategory}
                         filteredArticles={filteredOffers}
-                        navigateToArticle={navigateToArticle}
+                        navigateToArticle={navigateToOfferArticle}
                         viewOffers={viewOffers}
                     />
                 ) : (
@@ -124,7 +124,7 @@ const ShowArticles = () => {
                         activeCategoryFilter={activeCategoryFilter}
                         setFilterByCategory={setFilterByCategory}
                         filteredArticles={filteredNeeds}
-                        navigateToArticle={navigateToArticle}
+                        navigateToArticle={navigateToNeedArticle}
                     />
                 )}
             </div>

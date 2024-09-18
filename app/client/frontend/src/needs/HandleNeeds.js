@@ -36,13 +36,13 @@ const HandleNeeds = () => {
         setAllArticleCategories(result)
     }
 
-    const navigateToArticle = (offerId) =>{
-        navigate(`/showArticle/offer/${offerId}`);
+    const navigateToNeedArticle = (offerId) =>{
+        navigate(`/showArticle/need/${offerId}`);
     }
 
     return {
         getNeeds,
-        navigateToArticle,
+        navigateToNeedArticle,
         getArticleCategories
     };
 

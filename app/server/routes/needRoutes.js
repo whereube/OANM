@@ -34,7 +34,14 @@ export const getNeedRoutes = () => {
         const validate = validateInput({ needId });
 
         if (validate.valid) {
-            const needs = await object.needs.findByPk(needId)
+            const needs = await object.needs.findByPk(needId,  {
+                include: [{
+                    model: object.end_user,
+                    attributes: { 
+                    exclude: ['password'] 
+                    }
+                }]
+            })
             res.status(200).send(needs);
         } else {
             res.status(400).json({ uuidError: validate.message }); 

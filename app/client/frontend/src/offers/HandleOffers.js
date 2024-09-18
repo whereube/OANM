@@ -36,13 +36,13 @@ const HandleOffers = () => {
         setAllArticleCategories(result)
     }
 
-    const navigateToArticle = (offerId) =>{
+    const navigateToOfferArticle = (offerId) =>{
         navigate(`/showArticle/offer/${offerId}`);
     }
 
     return {
         getOffers,
-        navigateToArticle,
+        navigateToOfferArticle,
         getArticleCategories
     };
 
