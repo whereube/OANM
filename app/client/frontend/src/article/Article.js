@@ -6,12 +6,13 @@ import './Article.css'
 const Article = () => {
     let API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_LOCAL_API_URL;
     const [article, setArticle] = useState({});
+    const [loading, setLoading] = useState(true)
     let { id, offerOrNeed } = useParams();
 
     useEffect(() => {
         getArticle();
+        setLoading(false)
     }, []);
-
 
     const getArticle = async () => {
 
@@ -34,22 +35,36 @@ const Article = () => {
     }
 
     return (
-        <>
-            <div className='articlePage'>
-                <h1>{article.title}</h1>
-                {article.available_digitaly ? (
-                    <p>Tillgänglig digitalt</p>
-                ) : (
-                    <p>Plats: {article.location}</p>
-                )
-                }
-                <p>{article.description}</p>
-                {article.link != '' &&(
-                    <a href={article.link} target='_blank'>Läs mer här</a>
-                )}
-            </div>
-        </>
-    )
+            <>
+                <div className='articlePage'>
+                    {loading !== true ? (
+                        <>
+                            <h1>{article.title}</h1>
+                            <div className='postedByUser'>
+                                <p className='desc'>Upplagt av: </p>
+                                <p className='name'>{article?.end_user?.user_name}</p>
+                            </div>
+                            {article.available_digitaly ? (
+                                <p>Tillgänglig digitalt</p>
+                            ) : (
+                                article.location !== '' ? (
+                                    <p>Plats: {article.location}</p>
+                                ) : (
+                                    <p></p>
+                                )
+                            )
+                            }
+                            <p>{article.description}</p>
+                            {article.link != '' &&(
+                                <a href={article.link} target='_blank'>Läs mer här</a>
+                            )}
+                        </>
+                    ): (
+                        <p>Laddar...</p>
+                    )}
+                </div>
+            </>
+        )
 }
 
 export default Article

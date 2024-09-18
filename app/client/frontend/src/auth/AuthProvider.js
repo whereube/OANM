@@ -83,7 +83,6 @@ export const AuthProvider = ({ children }) => {
                     throw new Error(errorData);
                 } else {
                     const res = await response.json();
-                    console.log(res)
                     return res
                 }
             } catch (err) {

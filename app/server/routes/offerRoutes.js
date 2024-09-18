@@ -36,7 +36,14 @@ export const getOfferRoutes = () => {
         const validate = validateInput({ offerId });
 
         if (validate.valid) {
-            const offers = await object.offers.findByPk(offerId)
+            const offers = await object.offers.findByPk(offerId, {
+                include: [{
+                    model: object.end_user,
+                    attributes: { 
+                    exclude: ['password'] 
+                    }
+                }]
+            })
             res.status(200).send(offers);
         } else {
             res.status(400).json({ uuidError: validate.message }); 
@@ -50,7 +57,12 @@ export const getOfferRoutes = () => {
 
         if (validate.valid) {
             const offers = await object.offers.findAll({
-                include: object.end_user,
+                include: [{
+                    model: object.end_user,
+                    attributes: { 
+                    exclude: ['password'] 
+                    }
+                }],
                 where:{
                     meeting_id: meetingId
                 }
