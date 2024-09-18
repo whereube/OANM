@@ -21,29 +21,13 @@ const HandleNeeds = () => {
         setAllOffers(result)
     }
 
-
-    const getArticleCategories = async (setAllArticleCategories) => {
-
-        const response = await fetch(`${API_URL}/articleCategory/getAll`);
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.log(errorData)
-            console.error('Error:', errorData); 
-            throw new Error(errorData);
-        }
-
-        const result = await response.json();
-        setAllArticleCategories(result)
-    }
-
     const navigateToNeedArticle = (offerId) =>{
         navigate(`/showArticle/need/${offerId}`);
     }
 
     return {
         getNeeds,
-        navigateToNeedArticle,
-        getArticleCategories
+        navigateToNeedArticle
     };
 
 }

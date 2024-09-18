@@ -13,7 +13,7 @@ export const articleInterest = db.define(
         type: DataTypes.UUID,
         allowNull: false,
         },
-        category_id: {
+        user_id: {
         type: DataTypes.UUID,
         allowNull: false,
         }

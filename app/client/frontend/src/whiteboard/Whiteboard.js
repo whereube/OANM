@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import HandleOffers from '../offers/HandleOffers.js'
 import HandleNeeds from '../needs/HandleNeeds.js';
+import HandleArticles from '../article/handleArticles.js';
 import ListWhiteboardArticles from './ListWhiteboardArticles.js';
 import './Whiteboard.css'
 
@@ -15,7 +16,8 @@ const Whiteboard = (props) => {
     const [viewOffers, setViewOffers] = useState(true)
     const [categoryCounter, setCategoryCounter] = useState({})
     const [categoryCollapse, setCategoryCollapse] = useState({})
-    const { getOffers, navigateToOfferArticle, getArticleCategories} = HandleOffers();
+    const { getOffers, navigateToOfferArticle} = HandleOffers();
+    const { getArticleCategories} = HandleArticles();
     const { getNeeds } = HandleNeeds();
     const { meetingId } = useParams();
 

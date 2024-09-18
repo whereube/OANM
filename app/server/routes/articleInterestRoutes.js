@@ -21,7 +21,7 @@ export const getArticleInterestRoutes = () => {
       const id = uuidv4();
 
       try {
-        const result = await object.articleCategory.create({
+        const result = await object.articleInterest.create({
             id: id,
             article_id: articleId,
             user_id: userId

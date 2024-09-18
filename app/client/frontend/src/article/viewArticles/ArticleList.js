@@ -19,7 +19,7 @@ const ArticleList = (props) => {
                             <p className='offerDesc'>{article.description.substr(0, 200)}{article.description.length > 200 ? '...' : ''}</p>
                         </div>
                         <div className='articleButtons'>
-                            <button className='button-small offerButton'>Markera som intresserad</button>
+                            <button className='button-small offerButton' onClick={() => props.markAsInterested(article.id)}>Markera som intresserad {props.articleInterestCounter.hasOwnProperty(article.id) ? props.articleInterestCounter[article.id] : 0}</button>
                             <button className='button-small offerButton' onClick={() => props.navigateToArticle(article.id)}>Läs mer</button>
                         </div>
                     </div>
