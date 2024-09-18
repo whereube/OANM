@@ -36,9 +36,21 @@ function AdminPage() {
 
     return (
         <div className="adminPage">
-            <p className='navigateButton' onClick={() => handleNavigate('add-category')}>Hantera kategorier</p>
-            <p className='navigateButton' onClick={() => handleNavigate('add-meeting')}>Skapa möte</p>
-            <p className='navigateButton' onClick={() => changeCollapseState()}>Skapade möten</p>
+            <div className='navigateButton' onClick={() => handleNavigate('add-category')}>
+                <p className="buttonDesc">Hantera kategorier</p>
+            </div>
+            <div className='navigateButton' onClick={() => handleNavigate('add-meeting')}>
+                <p className="buttonDesc">Skapa möte</p>
+            </div>
+            <div className='navigateButton' onClick={() => changeCollapseState()}>
+                <p className="buttonDesc">Skapade möten</p>
+                {meetingsIsCollapsed ? (
+                    <p className='arrowIcon'>&#43;</p>
+                ):(
+                    <p className='arrowIcon'>&#8722;</p>
+                )}
+            </div>
+
             <div className={`allMeetings ${meetingsIsCollapsed && 'collapsed'}`}>
                 {meetings.map(meeting => (
                     <div key={meeting.id} className="meeting">

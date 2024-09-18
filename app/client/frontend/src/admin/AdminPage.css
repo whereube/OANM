@@ -6,9 +6,13 @@
     align-items: center;
     min-height: 50vh;
     text-align: center;
+    margin-top: 30px;
 }
 
 .navigateButton{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     box-shadow: 
         0 0 0px 2px var(--tertiary),
         0 0 0px 6px var(--primary),
@@ -48,4 +52,14 @@
 
 .collapsed{
     display: none;
+}
+
+.arrowIcon{
+    margin-left: auto;
+    order: 2;
+}
+
+.navigateButton .buttonDesc{
+    flex-grow: 1;
+    text-align: center;
 }
