@@ -6,6 +6,7 @@ import { offers } from "./offers.js";
 import { meeting } from "./meeting.js";
 import { articleCategory } from "./articleCategory.js";
 import { meetingCategory } from "./meetingCategory.js";
+import { articleInterest } from "./articleInterest.js";
 
 const environment = process.env.DEV_ENVIRONMENT;
 
@@ -35,12 +36,13 @@ if (process.env.DEV_ENVIRONMENT === 'local') {
 }
 
 export {
-    category,
-    company,
-    end_user,
-    needs,
-    offers,
-    meeting,
-    articleCategory,
-    meetingCategory
+  category,
+  company,
+  end_user,
+  needs,
+  offers,
+  meeting,
+  articleCategory,
+  meetingCategory,
+  articleInterest
 }
