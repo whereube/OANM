@@ -10,7 +10,7 @@ const LoginForm = () => {
     const auth = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
-    const from = location.state?.from?.pathname || "/";
+    const from = location.state?.from?.pathname || "/article/showAll";
 
 
     const handleSubmit = async (e) => {
