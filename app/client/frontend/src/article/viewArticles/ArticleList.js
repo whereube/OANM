@@ -16,7 +16,7 @@ const ArticleList = (props) => {
                     <div key={article.id} className='offerBox'>
                         <div className='articleText'>
                             <p className='offerTitle'>{article.title}</p>
-                            <p className='offerDesc'>{article.description}</p>
+                            0<p className='offerDesc'>{article.description.substr(0, 200)}{article.description.length > 200 ? '...' : ''}</p>
                         </div>
                         <div className='articleButtons'>
                             <button className='button-small offerButton'>Markera som intresserad</button>

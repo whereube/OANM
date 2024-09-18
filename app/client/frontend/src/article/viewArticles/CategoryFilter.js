@@ -105,7 +105,7 @@ const CategoryFilter = (props) => {
 
                 </div>
                 {Array.from({ length: (currentLevel + 1) }).map((_, levelIndex) => (
-                    <div className='categoryLevelDiv'>
+                    <div className='categoryLevelDiv' key={currentLevel + 1}>
                         {categories.map(category => (
                             category.parent_id === selectedCategoryId[`level_${levelIndex}`] && (
                                 <div key={category.id} className='categoryDivForBtn'>
