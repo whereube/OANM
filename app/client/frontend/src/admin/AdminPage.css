@@ -31,23 +31,24 @@
 .button-small.small{
     padding: 5px;
     font-weight: 100;
-    max-width: 30%;
 }
 
 .meeting{
     display: flex;
     flex-direction: column;
-    width: 100%;
+    max-width: 100%;
     border: 1px solid grey;
     border-radius: 8px;
     margin-bottom: 10px;
     font-weight: bold;
+    padding: 20px;
 }
 
 .meetingButtons{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    margin-top: 20px;
 }
 
 .collapsed{

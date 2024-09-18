@@ -33,7 +33,7 @@
 .offerDiv{
     border: 1px solid rgb(228, 228, 228);
     border-radius: 4px;
-    padding: 5px 5px;
+    padding: 10px;
     text-align: center;
     background-color: white;
     margin-bottom: 20px;
@@ -42,6 +42,7 @@
     0 0 0px 3px var(--primary),   
     0 0 0px 5px var(--secondary),   
     0 0 0px 7px var(--quaternary); 
+    cursor: auto;
 }
 
 .postedBy{
@@ -52,7 +53,7 @@
 .categoryCollapseButton{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
     border: black 1px solid;
     padding: 10px;
     border-radius: 4px;
@@ -79,4 +80,9 @@
 }
 .arrowIcon.sub{
     font-size: 15px;
+}
+
+.collapseText{
+    flex-grow: 1;
+    text-align: center;
 }

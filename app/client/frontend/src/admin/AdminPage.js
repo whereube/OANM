@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import './AdminPage.css'
 
 function AdminPage() {
@@ -56,11 +56,11 @@ function AdminPage() {
                     <div key={meeting.id} className="meeting">
                         <p>{meeting.meeting_name}</p> 
                         <div className="meetingButtons">
-                            <p className='button-small small' onClick={() => handleNavigate('/whiteboard/' + meeting.id)}>Mötets whiteboard</p>
-                            <p className='button-small small' onClick={() => handleNavigate('/article/add/' + meeting.id)}>Deltagarnas länk</p>
+                            <Link to={'/whiteboard/' + meeting.id} target='_blank' className='button-small small'>Mötets whiteboard</Link>
+                            <Link to={'/article/add/' + meeting.id} target='_blank' className='button-small small' >Deltagarnas länk</Link>
                         </div>
                     </div>
-                ))};
+                ))}
             </div>
         </div>
     );

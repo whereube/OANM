@@ -28,7 +28,7 @@
     font-size: 30px;
 }
 
-a {
+.login-form a {
     margin: 100px 10px 10px 10px;
     color: #666;
 }

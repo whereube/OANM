@@ -29,12 +29,12 @@ const ListWhiteboardArticles = (props) => {
                         <div className='categoryDiv' key={meetingCategory.category.id}>
                             <>
                                 <div className='categoryCollapseButton' onClick={() => props.changeCollapseState(meetingCategory.category.id)}>
-                                    <h2>{meetingCategory.category.category_name}</h2>
-                                    <p>{props.categoryCounter[meetingCategory.category.id]}</p>
+                                    <h2 className='collapseText'>{meetingCategory.category.category_name}</h2>
+                                    <p className='collapseText'>{props.categoryCounter[meetingCategory.category.id]}</p>
                                     {props.categoryCollapse[meetingCategory.category.id] ? (
-                                        <p className='arrowIcon'>&#x25BC;</p>
+                                        <p className='arrowIcon'>&#43;</p>
                                     ):(
-                                        <p className='arrowIcon'>&#x25B2;</p>
+                                        <p className='arrowIcon'>&#8722;</p>
                                     )}
                                 </div>
                                 <div className={`categoryCollapse ${props.categoryCollapse[meetingCategory.category.id] && 'collapsed'} `}>
