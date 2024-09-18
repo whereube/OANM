@@ -286,7 +286,7 @@ const NewArticleForm = () => {
                                     required
                                     defaultValue={""}
                                 >
-                                    <option value="" disabled>Select an option</option>
+                                    <option value="" disabled>Välj en kategori</option>
                                     {categories.map(category => (
                                         category.parent_id === null && (
                                             <option className="option" key={category.id} value={category.id}>{category.category_name}</option>
@@ -302,7 +302,7 @@ const NewArticleForm = () => {
                                         onChange={handleChange}
                                         defaultValue={""}
                                     >
-                                        <option value="" disabled>Select an option</option>
+                                        <option value="" disabled>Välj en kategori</option>
                                         {categories.map(subCategory => (
                                                 subCategory.parent_id === formData.articleCategories['category_1'] && (
                                                     <option className="option" key={subCategory.id} value={subCategory.id}>{subCategory.category_name}</option>
