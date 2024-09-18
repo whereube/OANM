@@ -97,14 +97,14 @@ const ShowArticles = () => {
 
 
         if(user !== null){
-            let userId = ''
-            if(user.hasOwnProperty(userId)){
-                userId = user.userId
+            let logedInUser = ''
+            if(user.hasOwnProperty('userId')){
+                logedInUser = user.userId
             } else {
-                userId = user.id
+                logedInUser = user.id
             }
             allArticleInterests.forEach(articleInterest => {
-                if(articleInterest.user_id === userId){
+                if(articleInterest.user_id === logedInUser){
                     listOfOwnArticleInterests.push(articleInterest.article_id)
                 }
             });
@@ -161,16 +161,16 @@ const ShowArticles = () => {
 
     const markAsInterested = async (articleId) => {
         if (user !== null) {
-            let userId = ''
-            if(user.hasOwnProperty(userId)){
-                userId = user.userId
+            let logedInUser = ''
+            if(user.hasOwnProperty('userId')){
+                logedInUser = user.userId
             } else {
-                userId = user.id
+                logedInUser = user.id
             }
 
             const data = {
                 'articleId': articleId,
-                'userId': userId
+                'userId': logedInUser
             }
             await addArticleInterests(data);
             getArticleInterests(setAllArticleInterests)
