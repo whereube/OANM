@@ -26,7 +26,7 @@ const CategoryFilter = (props) => {
 
     useEffect(() => {
         document.querySelectorAll('.categoryLevelDiv').forEach(div => {
-            if (div.querySelectorAll('.categoryDiv').length === 0) {
+            if (div.querySelectorAll('.categoryDivForBtn').length === 0) {
                 div.classList.add('hideIfNoCategory');
             } else {
                 div.classList.remove('hideIfNoCategory');
@@ -96,18 +96,19 @@ const CategoryFilter = (props) => {
                 <div className='categoryLevelDiv'>
                     {categories.map(category => (
                         category.parent_id === null && (
-                            <div key={category.id} className='categoryDiv'>
+                            <div key={category.id} className='categoryDivForBtn'>
                                 <div className={`categoryButton ${selectedCategoryId[`level_0`] === category.id ? 'active' : ''}`} role='button' key={category.id} onClick={ () => handleClick(category.id, 0)}>{category.category_name}</div>
                             </div>
                         )
                     ))}
                     <div className={`categoryButton ${selectedCategoryId[`level_0`] === `all_0` ? 'active' : ''}`}  role='button' onClick={() => handleClick(`all_0`, 0)}>Alla</div>
+
                 </div>
                 {Array.from({ length: (currentLevel + 1) }).map((_, levelIndex) => (
                     <div className='categoryLevelDiv'>
                         {categories.map(category => (
                             category.parent_id === selectedCategoryId[`level_${levelIndex}`] && (
-                                <div key={category.id} className='categoryDiv'>
+                                <div key={category.id} className='categoryDivForBtn'>
                                     <div className={`categoryButton ${selectedCategoryId[`level_${(levelIndex + 1)}`] === category.id ? 'active' : ''}`} role='button' key={category.id} onClick={ () => handleClick(category.id, (levelIndex + 1))}>{category.category_name}</div>
                                 </div>
                             )

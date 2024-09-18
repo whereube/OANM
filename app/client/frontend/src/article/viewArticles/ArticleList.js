@@ -14,16 +14,14 @@ const ArticleList = (props) => {
             <div className='allOffersDiv'>
                 {props.filteredArticles.map(article => (
                     <div key={article.id} className='offerBox'>
-                        <p className='offerTitle'>{article.title}</p>
-                        {article.available_digitaly ? (
-                            <p className='location'>Tillgänglig digitalt</p>
-                        ) : (
-                            <p className='location'>Plats: {article.location}</p>
-                        )
-                        }
-                        <p className='offerDesc'>{article.description}</p>
-                        <button className='button-small offerButton'>Markera som intresserad</button>
-                        <button className='button-small offerButton' onClick={() => props.navigateToArticle(article.id)}>Läs mer</button>
+                        <div className='articleText'>
+                            <p className='offerTitle'>{article.title}</p>
+                            <p className='offerDesc'>{article.description}</p>
+                        </div>
+                        <div className='articleButtons'>
+                            <button className='button-small offerButton'>Markera som intresserad</button>
+                            <button className='button-small offerButton' onClick={() => props.navigateToArticle(article.id)}>Läs mer</button>
+                        </div>
                     </div>
                 ))}
             </div>
