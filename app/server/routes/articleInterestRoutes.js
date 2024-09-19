@@ -43,13 +43,15 @@ export const getArticleInterestRoutes = () => {
 
     router.post('/remove', async (req, res, next) => {
         const {
-            id
+            interestId,
+            userId
         } = req.body;
 
         try {
         const result = await object.articleInterest.destroy({
             where: {
-                id: id
+                id: interestId,
+                user_id: userId
             }
         });
         

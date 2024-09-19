@@ -69,12 +69,11 @@ const ShowArticles = () => {
 
     useEffect(() => {
         const listOfArticleInterests = {}
-        const listOfOwnArticleInterests = []
+        const objectOfOwnArticleInterests = {}
 
         for (const index in allArticleInterests) {
             listOfArticleInterests[allArticleInterests[index].article_id] = {
-                'count': 0,
-                'id': allArticleInterests[index].id
+                'count': 0
             }
         }
 
@@ -105,12 +104,14 @@ const ShowArticles = () => {
             }
             allArticleInterests.forEach(articleInterest => {
                 if(articleInterest.user_id === logedInUser){
-                    listOfOwnArticleInterests.push(articleInterest.article_id)
+                    objectOfOwnArticleInterests[articleInterest.article_id] = {
+                        'articleInterestId': articleInterest.id 
+                    }
                 }
             });
         }       
 
-        setOwnArticleInterest(listOfOwnArticleInterests)
+        setOwnArticleInterest(objectOfOwnArticleInterests)
         setArticleInterestCounter(listOfArticleInterests)
     }, [allArticleInterests]);
 
@@ -178,9 +179,24 @@ const ShowArticles = () => {
     }
 
 
-    const removeMarkAsInterested = async (articleId) => {
-        await removeArticleInterest({'id': articleId})
-        getArticleInterests(setAllArticleInterests)
+    const removeMarkAsInterested = async (interestId) => {
+
+        if (user !== null) {
+            let logedInUser = ''
+            if(user.hasOwnProperty('userId')){
+                logedInUser = user.userId
+            } else {
+                logedInUser = user.id
+            }
+
+            const data = {
+                'interestId': interestId,
+                'userId': logedInUser
+            }
+
+            await removeArticleInterest(data)
+            getArticleInterests(setAllArticleInterests)
+        }
     }
 
     return (
