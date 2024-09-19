@@ -1,6 +1,15 @@
 import CategoryFilter from './CategoryFilter';
+import React, { useState, useEffect } from 'react';
+import Modal from './Modal';
 
 const ArticleList = (props) => {
+
+    const [modalisOpen, setModalIsOpen] = useState(false);
+
+    const handleInterestClick = (article_id) => {
+        setModalIsOpen(true)
+        props.markAsInterested(article_id)
+    }
 
 
     return (
@@ -22,10 +31,15 @@ const ArticleList = (props) => {
                             {props.ownArticleInterest.hasOwnProperty(article.id) ? (
                                 <button className={`button-small offerButton ${props.ownArticleInterest.hasOwnProperty(article.id) ? 'liked': ''}`} onClick={() => props.removeMarkAsInterested(props.ownArticleInterest[article.id].articleInterestId)}>Intresserad {props.articleInterestCounter.hasOwnProperty(article.id) ? props.articleInterestCounter[article.id].count : 0} &#128100;</button>
                             ):(
-                                <button className={`button-small offerButton`} onClick={() => props.markAsInterested(article.id)}> Intresserad {props.articleInterestCounter.hasOwnProperty(article.id) ? props.articleInterestCounter[article.id].count : 0} &#128100;</button>
+                                <button className={`button-small offerButton`} onClick={() => handleInterestClick(article.id)}> Intresserad {props.articleInterestCounter.hasOwnProperty(article.id) ? props.articleInterestCounter[article.id].count : 0} &#128100;</button>
                             )}
                             <button className='button-small offerButton' onClick={() => props.navigateToArticle(article.id)}>Läs mer</button>
                         </div>
+                        <Modal 
+                            content={<p>Markerar du dig som intresserad på en artikel delas dina mailadress med skaparen av artikeln, vill du detta?</p>}
+                            modalisOpen={modalisOpen}
+                            setModalIsOpen={setModalIsOpen}
+                        />
                     </div>
                 ))}
             </div>
