@@ -13,7 +13,7 @@
 
 .modal-content {
     background-color: white;
-    padding: 20px;
+    padding: 40px;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     position: relative;
@@ -36,4 +36,26 @@
 
 .modal-close-button:hover {
     color: red;
+}
+
+.modalButtonsDiv{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: auto;
+    margin-top: 30px;
+    width: 80%;
+}
+
+.modalButton{
+    float: none;
+    font-size: 15px;
+}
+
+.accept{
+    background-color: rgba(22, 160, 22, 0.429);
+}
+
+.decline{
+    background-color: rgba(212, 11, 11, 0.522);
 }

@@ -5,11 +5,22 @@ import Modal from './Modal';
 const ArticleList = (props) => {
 
     const [modalisOpen, setModalIsOpen] = useState(false);
+    const [currentArticleId, setCurrentArticleId] = useState(null);
 
     const handleInterestClick = (article_id) => {
         setModalIsOpen(true)
-        props.markAsInterested(article_id)
+        setCurrentArticleId(article_id);
     }
+
+    const handleAccept = () => {
+        props.markAsInterested(currentArticleId);
+        setModalIsOpen(false);
+    };
+
+    const handleDecline = () => {
+        setCurrentArticleId(null);
+        setModalIsOpen(false); 
+    };
 
 
     return (
@@ -38,6 +49,8 @@ const ArticleList = (props) => {
                         <Modal 
                             content={<p>Markerar du dig som intresserad på en artikel delas dina mailadress med skaparen av artikeln, vill du detta?</p>}
                             modalisOpen={modalisOpen}
+                            handleDecline={handleDecline}
+                            handleAccept={handleAccept}
                             setModalIsOpen={setModalIsOpen}
                         />
                     </div>

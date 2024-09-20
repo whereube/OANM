@@ -8,32 +8,8 @@ const Modal = (props) => {
         props.setModalIsOpen(false);
     };
 
-    // Close modal when clicking outside
-    const handleClickOutside = (e) => {
-        if (modalRef.current && !modalRef.current.contains(e.target)) {
-            props.setModalIsOpen(false);
-        }
-    };
-
-/*
-    // Add event listener to detect clicks outside the modal
-    React.useEffect(() => {
-        if (props.modalisOpen) {
-            document.addEventListener('mousedown', handleClickOutside);
-        } else {
-            document.removeEventListener('mousedown', handleClickOutside);
-        }
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [props.modalisOpen]);
-*/
-
     if (!props.modalisOpen) {
         return null; // Return nothing if modal is closed
-    }
-
-    const acceptSharing = (sharingAccepted) => {
     }
 
     return (
@@ -43,8 +19,10 @@ const Modal = (props) => {
                     &times;
                 </button>
                 {props.content}
-                <button onClick={() => acceptSharing(true)}>Acceptera</button>
-                <button onClick={() => acceptSharing(false)}>Neka</button>
+                <div className='modalButtonsDiv'>
+                    <button className='modalButton button-small accept' onClick={() => props.handleAccept()}>Acceptera</button>
+                    <button className='modalButton button-small decline' onClick={() => props.handleDecline()}>Neka</button>
+                </div>
             </div>
         </div>
     );
