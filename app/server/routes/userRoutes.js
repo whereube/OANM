@@ -60,7 +60,18 @@ export const getUserRoutes = () => {
                 id: userId
             }
         });
-        res.status(200).send(user.is_admin);
+        if (user !== null){
+            let result = false
+            if(user.is_admin !== null){
+                if (user.is_admin){
+                    result=true
+                }
+            }
+
+            res.status(200).send(result);
+        } else {
+            res.status(200).send(false);
+        }
     });
 
     router.post('/createUser', async (req, res, next) => {

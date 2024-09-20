@@ -37,11 +37,11 @@ export const AuthProvider = ({ children }) => {
                 const errorData = await response.json();
                 console.log(errorData)
                 console.error('Error:', errorData); 
-                throw new Error(errorData);
+                throw new Error(errorData.message);
             } else {
                 const res = await response.json();
                 if (res && res.email === data.email) {
-                    setUser(res);
+                    setUser({ userId: res.id });
                     setToken(res.user_id);
                     localStorage.setItem("sessionId", res.id);
                     return { success: true };
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
                 }
             }
         } catch (err) {
-            return ({ success: false, message: err.message });
+            return ({ success: false, 'message': err.message });
         }
     };
 
@@ -66,8 +66,7 @@ export const AuthProvider = ({ children }) => {
         if (user === null){
             return false
         } else{
-
-            const userid = {"userId": token}
+            const userid = {"userId": user.userId}
             try {
                 const response = await fetch(`${API_URL}/user/isAdmin`, {
                     method: "POST",

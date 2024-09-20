@@ -51,7 +51,7 @@ const LoginForm = () => {
                         required
                     />
                 </div>
-                {error && <p style={{ color: 'red' }}>{error}</p>}
+                {error && <p style={{ color: 'red' }}>{error.message}</p>}
                 <button type="submit" className="button-small">Logga in</button>
                 <a href="/profile/create-account">Skapa konto</a>
             </form>

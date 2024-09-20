@@ -60,7 +60,7 @@
     align-items: center;
 }
 
-.categoryCollapseButton > h2, p {
+.categoryCollapseButton > h2, .categoryCollapseButton > p {
     margin: 0px;
 }
 

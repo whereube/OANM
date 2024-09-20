@@ -1,5 +1,4 @@
 .header{
-    color: white;
     background-color: white;
     text-align: center;
     width: 100%;
@@ -11,6 +10,7 @@
 }
 
 .logoImage{
+    position: relative;
     background-image: url('../../public/Ecubuntu_logo_resize.png');
     background-position: center;
     background-size: 60%;
@@ -18,4 +18,32 @@
     min-height: 200px;
     width: 100%;
 }
+
+.profileDiv{
+    float: right;
+    right: 30px;
+    position: absolute;
+    top: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.linkButton{
+    text-decoration: none;
+    display: block;
+}
+
+.linkButton:visited{
+    color: black;
+}
+
+.profileButton{
+    font-size: 15px;
+    border-radius: 4px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+}
+
+
 
