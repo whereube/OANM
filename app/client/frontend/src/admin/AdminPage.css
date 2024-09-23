@@ -23,10 +23,13 @@
     width: 60%;
     font-weight: bold;
     margin-bottom: 40px;
+    cursor: pointer;
+    Background-color: white;
 }
 
 .allMeetings{
     width: 60%;
+    background-color: white;
 }
 
 .button-small.small{
