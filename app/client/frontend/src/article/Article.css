@@ -4,6 +4,7 @@
     padding: 20px;
     min-height: 30vh;
     border-radius: 4px;
+    background-color: white;
     box-shadow: 
     0 0 0px 2px var(--tertiary),
     0 0 0px 6px var(--primary),
