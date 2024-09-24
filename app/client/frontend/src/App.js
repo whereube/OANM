@@ -39,7 +39,6 @@ function App() {
                 <Route path=":offerOrNeed/:id" element={<Article />}/>
               </Route>
               <Route path="/profile/login" element={<LoginForm />}></Route>
-              <Route path="/profile/create-account" element={<CreateAccount />}/>
               <Route path="/whiteboard/:meetingId" element={<Whiteboard />}/>
               <Route path='/admin' element={<AdminRoute />}>
                   <Route path="" element={<AdminPage />}/>

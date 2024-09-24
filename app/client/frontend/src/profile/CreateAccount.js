@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom";
 import './CreateAccount.css';
 
-const CreateAccount = () => {
+const CreateAccount = (props) => {
     let API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_LOCAL_API_URL;
     const [email, setEmail] = useState('');
     const [userName, setUserName] = useState('');
@@ -12,12 +11,10 @@ const CreateAccount = () => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [link, setLink] = useState('');
     const [error, setError] = useState(null);
-    const navigate = useNavigate(); 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
-
         // Check if passwords match
         if (password !== confirmPassword) {
             setError('Passwords do not match. Please try again.');
@@ -43,7 +40,7 @@ const CreateAccount = () => {
             if (response.status === 201) {
                 const userData = await response.json();
                 localStorage.setItem('sessionId', userData.result.id);
-                navigate('/profile/login');
+                props.setShowCreateAccount(false)
             } else if (response.status === 401) {
                 const errorData = await response.json();
                 setError(errorData.message);
@@ -55,6 +52,7 @@ const CreateAccount = () => {
             console.error('Account creation error:', err);
         }
     };
+
 
     return (
         <div>

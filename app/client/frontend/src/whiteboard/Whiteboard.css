@@ -26,9 +26,9 @@
 
 .categoryDiv{
     width: 80%;
-    margin-top: 20px;
     cursor: pointer;
     margin: auto;
+    margin-top: 20px;
 }
 
 .offerDiv{
