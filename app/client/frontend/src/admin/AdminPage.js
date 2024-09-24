@@ -56,8 +56,8 @@ function AdminPage() {
                     <div key={meeting.id} className="meeting">
                         <p>{meeting.meeting_name}</p> 
                         <div className="meetingButtons">
-                            <Link to={'/whiteboard/' + meeting.id} target='_blank' className='button-small small'>Mötets whiteboard</Link>
-                            <Link to={'/article/add/' + meeting.id} target='_blank' className='button-small small' >Deltagarnas länk</Link>
+                            <Link to={'/whiteboard/' + meeting.id} className='button-small small'>Mötets whiteboard</Link>
+                            <Link to={'/article/add/' + meeting.id} className='button-small small' >Deltagarnas länk</Link>
                         </div>
                     </div>
                 ))}
