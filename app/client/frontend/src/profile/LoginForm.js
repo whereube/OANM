@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from '../auth/AuthProvider';
+import CreateAccount from './CreateAccount';
 import './LoginForm.css'
 
 const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
+    const [showCreateAccount, setShowCreateAccount] = useState(false)
     const auth = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -29,32 +31,47 @@ const LoginForm = () => {
         }
     };
 
+    const handleCreateAccountClick = () => {
+        setShowCreateAccount(true)
+    }
+
     return (
         <div>
-            <form onSubmit={handleSubmit} className="login-form">
-                <h2>Logga in</h2>
-                <div>
-                    <label>Email:</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
+            {!showCreateAccount &&
+                <div className='loginDiv'>
+                    <form onSubmit={handleSubmit} className="login-form">
+                        <h2>Logga in</h2>
+                        <div>
+                            <label>Email:</label>
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label>Lösenord:</label>
+                            <input
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+                        {error && <p style={{ color: 'red' }}>{error.message}</p>}
+                        <button type="submit" className="button-small">Logga in</button>
+                        <p className='createAccountButton' onClick={handleCreateAccountClick}>Skapa konto</p>
+                    </form>
+                </div>
+            }
+            {showCreateAccount && 
+                <div className='createAccountDiv'>
+                    <CreateAccount
+                        setShowCreateAccount={setShowCreateAccount}
                     />
                 </div>
-                <div>
-                    <label>Lösenord:</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                {error && <p style={{ color: 'red' }}>{error.message}</p>}
-                <button type="submit" className="button-small">Logga in</button>
-                <a href="/profile/create-account">Skapa konto</a>
-            </form>
+            }
         </div>
     );
 };

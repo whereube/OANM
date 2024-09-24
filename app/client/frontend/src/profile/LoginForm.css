@@ -16,7 +16,8 @@
     box-sizing: border-box;
     display: inline-block;
     margin-top: 40px;
-}
+    text-align: left;
+}  
 
 .login-form > div {
     margin: 40px 40px;
@@ -31,4 +32,32 @@
 .login-form a {
     margin: 100px 10px 10px 10px;
     color: #666;
+}
+
+.loginDiv{
+    text-align: center;
+}
+
+.createAccountButton{
+    appearance: button;
+    background-color: #ffffff;
+    background-image: none;
+    border: 1px solid var(--tertiary);
+    border-radius: 4px;
+    box-shadow: var(--tertiary) 3px 3px 0 0, var(--tertiary) 3px 3px 0 1px;
+    padding: 3px 7px ;
+    box-sizing: border-box;
+    color: #000000;
+    font-size: 17px;
+    padding-bottom: 5px;
+    cursor: pointer;
+    display: inline-block;
+    overflow: visible;
+    text-align: center;
+    text-transform: none;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    vertical-align: middle;
+    margin: 0px;
 }
