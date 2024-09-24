@@ -50,8 +50,8 @@
 
 .meetingButtons{
     display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+    flex-direction: column;
+    justify-content: space-between;
     margin-top: 20px;
 }
 
@@ -67,4 +67,29 @@
 .navigateButton .buttonDesc{
     flex-grow: 1;
     text-align: center;
+}
+
+.link{
+    font-size: 10px;
+    min-height: 12px;
+    width: 100%;
+}
+
+.inputWrapper{
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+label[for=link]{
+    margin-top: 10px;
+}
+
+.inputWrapper button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
 }

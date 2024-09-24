@@ -33,6 +33,11 @@ function AdminPage() {
         setMeetingsIsCollapsed((prevMeetingsIsCollapsed) => !prevMeetingsIsCollapsed);
     }
 
+    const copyLink = (link) => {
+        navigator.clipboard.writeText(link);
+        alert('Länken har kopierats')
+    }
+
 
     return (
         <div className="adminPage">
@@ -57,7 +62,13 @@ function AdminPage() {
                         <p>{meeting.meeting_name}</p> 
                         <div className="meetingButtons">
                             <Link to={'/whiteboard/' + meeting.id} className='button-small small'>Mötets whiteboard</Link>
-                            <Link to={'/article/add/' + meeting.id} className='button-small small' >Deltagarnas länk</Link>
+                            <label for='link'>Deltagarnas länk</label>
+                            <div className="inputWrapper">
+                                <input readOnly className='link' value={'https://oanm-ecubuntu-b3e74bbc7ba9.herokuapp.com/article/add/' + meeting.id}></input>
+                                <button onClick={() => copyLink('https://oanm-ecubuntu-b3e74bbc7ba9.herokuapp.com/article/add/' + meeting.id)}>
+                                    &#128203;
+                                </button>
+                            </div>
                         </div>
                     </div>
                 ))}
