@@ -93,6 +93,13 @@ function AddCategoryForm() {
   };
 
   const handleRemoveCategory = async (categoryId) => {
+    // Confirmation dialog
+    const confirmed = window.confirm("Denna kategori kan eventuellt ha en koppling till ett existerande möte. Är du säker på att du vill ta bort?");
+    
+    if (!confirmed) {
+      return; // If the user cancels, exit the function
+    }
+
     try {
       const response = await fetch(`${API_URL}/category/deleteCategory/${categoryId}`, {
         method: 'DELETE',
@@ -111,6 +118,7 @@ function AddCategoryForm() {
       setResponseMessage('An error occurred while deleting the category.');
     }
   };
+
   const handleSaveAndExit = () => {
     navigate('/admin'); // Redirect to /admin
   };
@@ -155,7 +163,6 @@ function AddCategoryForm() {
           Spara och avsluta
         </button>
         <button type="submit" className="button-small">Lägg till</button>
-
       </form>
 
       <CategoryList
