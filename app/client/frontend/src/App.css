@@ -31,6 +31,7 @@
     vertical-align: middle;
     white-space: normal;
     float: right;
+    margin-right: 10px;
 }
 
 .button-50:focus {
@@ -68,4 +69,6 @@ body {
     background-repeat: repeat;
     background-position: center center;
     min-height: 100vh;
+    padding-bottom: 200px;
+
 }
