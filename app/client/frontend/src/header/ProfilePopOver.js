@@ -24,11 +24,6 @@ const ProfilePopOver = (props) => {
     checkAdminStatus();
   }, []);
 
-
-    useEffect(() => {
-        console.log(isAdmin)
-    }, [isAdmin]);
-
     // Close popover if clicked outside
     const handleClickOutside = (event) => {
         if (popoverRef.current && !popoverRef.current.contains(event.target)) {
