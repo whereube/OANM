@@ -43,7 +43,7 @@ const CreateAccount = () => {
             if (response.status === 201) {
                 const userData = await response.json();
                 localStorage.setItem('sessionId', userData.result.id);
-                navigate('/');
+                navigate('/profile/login');
             } else if (response.status === 401) {
                 const errorData = await response.json();
                 setError(errorData.message);

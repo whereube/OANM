@@ -74,7 +74,7 @@ function AddMeetingForm() {
       const data = await response.json();
 
       if (response.ok) {
-        alert("Meeting created");
+        alert("Möte skapat");
         handleSaveAndExit();
       } else {
         setResponseMessage(data.message);

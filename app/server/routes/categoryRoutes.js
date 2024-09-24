@@ -49,32 +49,43 @@ export const getCategoryRoutes = () => {
       }
   });
 
-  router.delete('/deleteCategory/:id', async (req, res, next) => {
+  router.delete('/deleteCategory/:id', async (req, res) => {
     const { id } = req.params; // Extract ID from URL parameters
-  
+
     // Validate the ID
     const validate = validateInput({ id });
-  
+
     if (validate.valid) {
-      try {
-        const result = await object.category.destroy({
-          where: {
-            id: id,
-          }
-        });
-  
-        if (result === 0) {
-          return res.status(404).json({ message: 'Category not found' });
+        try {
+            // Step 1: Delete related entries from the 'meeting_category' table
+            const meetingCategoryResult = await object.meetingCategory.destroy({
+                where: {
+                    category_id: id, // Match category_id with the id of the category being deleted
+                },
+            });
+
+            // Step 2: Delete the category from the 'category' table
+            const categoryResult = await object.category.destroy({
+                where: {
+                    id: id,
+                },
+            });
+
+            if (categoryResult === 0) {
+                return res.status(404).json({ message: 'Category not found' });
+            }
+
+            res.sendStatus(204); // No content to send back
+        } catch (error) {
+            console.error('Error deleting category or related meeting categories:', error);
+            res.status(500).json({ message: 'Internal Server Error' });
         }
-        res.sendStatus(204); // No content to send back
-      } catch (error) {
-        console.error('Error deleting category:', error);
-        res.status(500).json({ message: 'Internal Server Error' });
-      }
     } else {
-      res.status(400).json({ message: validate.message });
+        res.status(400).json({ message: validate.message });
     }
-  });
+});
+
+  
 
 
   return router;
