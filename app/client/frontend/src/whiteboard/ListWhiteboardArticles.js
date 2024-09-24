@@ -40,9 +40,11 @@ const ListWhiteboardArticles = (props) => {
                                 <div className={`categoryCollapse ${props.categoryCollapse[meetingCategory.category.id] && 'collapsed'} `}>
                                     {props.allArticles.filter(props.filterOffers(meetingCategory.category.id, 1)).map(article =>
                                         <div key={article.id} className='offerDiv'> 
-                                            <p className="postedBy">Upplagt av: {article.end_user.user_name}</p>
-                                            <h3>{article.title}</h3>
-                                            <p>Beskrivning: {article.description}</p>
+                                            <p className='articleTitle'>{article.title}</p>
+                                            <div className='articleDescAndPoster'>
+                                                <p className='articleDesc'>{article.description}</p>
+                                                <p className="postedBy">Upplagt av: {article.end_user.user_name}</p>
+                                            </div>
                                         </div>
                                     )}
                                     {props.meetingCategories.map(subMeetingCategory => (
@@ -53,17 +55,19 @@ const ListWhiteboardArticles = (props) => {
                                                         <h3>{subMeetingCategory.category.category_name}</h3>
                                                         <p>{props.categoryCounter[subMeetingCategory.category.id]}</p>
                                                         {props.categoryCollapse[subMeetingCategory.category.id] ? (
-                                                            <p className='arrowIcon sub'>&#x25BC;</p>
+                                                            <p className='arrowIcon sub'>&#43;</p>
                                                         ):(
-                                                            <p className='arrowIcon sub'>&#x25B2;</p>
+                                                            <p className='arrowIcon sub'>&#8722;</p>
                                                         )}
                                                     </div>
                                                     <div className={`categoryCollapse ${props.categoryCollapse[subMeetingCategory.category.id] && 'collapsed'} `}>
                                                         {props.allArticles.filter(props.filterOffers(subMeetingCategory.category.id, 2)).map(article =>
-                                                            <div key={article.id} className='offerDiv'> 
-                                                                <p className="postedBy">Upplagt av: {article.end_user.user_name}</p>
-                                                                <h3>{article.title}</h3>
-                                                                <p>Beskrivning: {article.description}</p>
+                                                            <div key={article.id} className='offerDiv offerDivSub'> 
+                                                                <h4 className='articleTitle'>{article.title}</h4>
+                                                                <div className='articleDescAndPoster'>
+                                                                    <p className='articleDesc'>{article.description}</p>
+                                                                    <p className="postedBy">Upplagt av: {article.end_user.user_name}</p>
+                                                                </div>
                                                             </div>
                                                         )}
                                                     </div>

@@ -25,15 +25,16 @@
 }
 
 .categoryDiv{
-    width: 40%;
+    width: 80%;
     margin-top: 20px;
     cursor: pointer;
+    margin: auto;
 }
 
 .offerDiv{
     border: 1px solid rgb(228, 228, 228);
     border-radius: 4px;
-    padding: 10px;
+    padding: 3px;
     text-align: center;
     background-color: white;
     margin-bottom: 20px;
@@ -43,11 +44,20 @@
     0 0 0px 5px var(--secondary),   
     0 0 0px 7px var(--quaternary); 
     cursor: auto;
+    display: flex;
+    flex-direction: column;
+    min-width: 100%;
+    align-items: center;
+    position: relative;
 }
 
 .postedBy{
-    font-size: 12px;
+    font-size: 10px;
     color: rgb(94, 92, 92);
+    position: absolute;
+    right: 8px;
+    top: 3px;
+    max-width: 20%;
 }
 
 .categoryCollapseButton{
@@ -68,6 +78,7 @@
     width: 90%;
     font-size: smaller;
     padding: 0px 10px;
+    margin: auto;
     margin-top: 10px;
 }
 
@@ -85,4 +96,26 @@
 .collapseText{
     flex-grow: 1;
     text-align: center;
+}
+
+.articleDesc{
+    min-width: 40%;
+    font-size: 12px;
+    margin-right: 5px;
+    max-height: 50px;
+    overflow-y: auto;  /* Enable vertical scrolling if needed */
+    overflow-x: hidden;  /* Hide horizontal scrollbar */
+}
+
+
+.articleTitle{
+    margin: 5px;
+    font-size: 16px;
+    font-weight: bolder;
+    max-width: 75%;
+}
+
+.articleDescAndPoster{
+    display: flex;
+    flex-direction: row;
 }
