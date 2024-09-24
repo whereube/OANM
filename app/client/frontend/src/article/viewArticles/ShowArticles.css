@@ -7,7 +7,37 @@
     margin: auto;
 }
 
-.offerBox{
+.articleTable {
+    width: 96%;
+    margin: 40px 20px;
+    border-collapse: collapse; 
+    text-align: left;
+    table-layout: fixed;
+}
+
+.articleTable th{
+    background-color: var(--primary);
+    padding: 10px;
+    color: white;
+}
+
+.title-td {
+    font-weight: bold;
+}
+
+.articleButtons{
+    float: right;
+}
+
+.articleTable td {
+    border-bottom: 1px solid var(--tertiary); 
+    padding: 10px; 
+    width: 33%;
+    word-wrap: break-word; 
+}
+
+
+/* .offerBox{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -17,7 +47,7 @@
     border-radius: 20px;
     padding: 15px 5px;
     background-color: white;
-}
+} */
 
 .offerDesc{
     font-size: 12px;
