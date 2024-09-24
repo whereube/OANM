@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './AddCategoryForm.css';
 import '../App.css';
 import CategoryList from './CategoryList';
+import { useNavigate } from 'react-router-dom';
 
 function AddCategoryForm() {
   const [formData, setFormData] = useState({
@@ -14,6 +15,8 @@ function AddCategoryForm() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [isBlinking, setIsBlinking] = useState(false);
+
+  const navigate = useNavigate();
 
   // Fetch categories from the API
   const fetchCategories = async () => {
@@ -108,6 +111,9 @@ function AddCategoryForm() {
       setResponseMessage('An error occurred while deleting the category.');
     }
   };
+  const handleSaveAndExit = () => {
+    navigate('/admin'); // Redirect to /admin
+  };
 
   return (
     <div className="category-container">
@@ -132,20 +138,24 @@ function AddCategoryForm() {
             value={formData.parent_id}
             onChange={handleChange}
           >
-            <option value="">
-              Inte en underkategori
-            </option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.category_name}
-              </option>
-            ))}
+            <option value="">Inte en underkategori</option>
+            {categories
+              .filter((category) => !category.parent_id) // Only categories without parent_id
+              .map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.category_name}
+                </option>
+              ))}
           </select>
         </div>
 
         {responseMessage && <p>{responseMessage}</p>}
 
+        <button type="button" onClick={handleSaveAndExit} className="button-small">
+          Spara och avsluta
+        </button>
         <button type="submit" className="button-small">Lägg till</button>
+
       </form>
 
       <CategoryList

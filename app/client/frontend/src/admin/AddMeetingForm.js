@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import './AddMeetingForm.css';
 import '../App.css';
+import { useNavigate } from 'react-router-dom';
+
 
 function AddMeetingForm() {
   let API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_LOCAL_API_URL;
@@ -12,6 +14,8 @@ function AddMeetingForm() {
   const [responseMessage, setResponseMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch categories on component mount
@@ -38,6 +42,10 @@ function AddMeetingForm() {
       ...formData,
       [event.target.name]: event.target.value,
     });
+  };
+
+  const handleSaveAndExit = () => {
+    navigate('/admin'); // Redirect to /admin
   };
 
   const handleCategoryToggle = (categoryId) => {
@@ -67,7 +75,7 @@ function AddMeetingForm() {
 
       if (response.ok) {
         alert("Meeting created");
-        window.location.reload();
+        handleSaveAndExit();
       } else {
         setResponseMessage(data.message);
       }

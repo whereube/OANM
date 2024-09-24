@@ -23,8 +23,6 @@ const ShowArticles = () => {
     const [viewOffers, setViewOffers] = useState(true)
     const { user } = useAuth();
 
-
-
     const { getOffers, navigateToOfferArticle} = HandleOffers();
     const { getNeeds, navigateToNeedArticle } = HandleNeeds();
     const { getArticleInterests, getArticleCategories, addArticleInterests, removeArticleInterest } = HandleArticles();
