@@ -48,8 +48,8 @@ const CategoryFilter = (props) => {
     }
 
     const handleClick = (categoryId, levelIndex) => {
-
         setCurrentLevel(levelIndex)
+
         setFilterActivated(prevState => (!prevState))
         setSelectedCategoryId(prevState => {
             // Create a copy of the previous state
@@ -72,6 +72,7 @@ const CategoryFilter = (props) => {
         });
 
         props.activeCategoryFilter(props.setFilterByCategory, categoryId, levelIndex); 
+
     };
 
     const checkNbrOfLevels = () => {
@@ -105,11 +106,11 @@ const CategoryFilter = (props) => {
 
                 </div>
                 {Array.from({ length: (currentLevel + 1) }).map((_, levelIndex) => (
-                    <div className='categoryLevelDiv' key={currentLevel + 1}>
+                    <div className='categoryLevelDiv' key={`levelDiv_${levelIndex}`}>
                         {categories.map(category => (
                             category.parent_id === selectedCategoryId[`level_${levelIndex}`] && (
                                 <div key={category.id} className='categoryDivForBtn'>
-                                    <div className={`categoryButton ${selectedCategoryId[`level_${(levelIndex + 1)}`] === category.id ? 'active' : ''}`} role='button' key={category.id} onClick={ () => handleClick(category.id, (levelIndex + 1))}>{category.category_name}</div>
+                                    <div className={`categoryButton ${selectedCategoryId[`level_${(levelIndex + 1)}`] === category.id ? 'active' : ''}`} role='button' key={'button' + category.id} onClick={ () => handleClick(category.id, (levelIndex + 1))}>{category.category_name}</div>
                                 </div>
                             )
                         ))}
