@@ -2,14 +2,20 @@
     margin-bottom: 30px;
     display: flex;
     flex-direction: column;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: auto;  
 }
 
 .categoryLevelDiv{
     display: flex;
     flex-direction: row;
+    flex-wrap: no-wrap;
+    overflow-x: auto;
     justify-content: space-around;
     padding: 10px;
     margin: auto;
+    box-sizing: border-box;
 }
 
 

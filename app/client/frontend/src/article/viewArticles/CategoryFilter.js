@@ -102,8 +102,9 @@ const CategoryFilter = (props) => {
                             </div>
                         )
                     ))}
-                    <div className={`categoryButton ${selectedCategoryId[`level_0`] === `all_0` ? 'active' : ''}`}  role='button' onClick={() => handleClick(`all_0`, 0)}>Alla</div>
-
+                    <div className='categoryDivForBtn'>
+                        <div className={`categoryButton ${selectedCategoryId[`level_0`] === `all_0` ? 'active' : ''}`}  role='button' onClick={() => handleClick(`all_0`, 0)}>Alla</div>
+                    </div>
                 </div>
                 {Array.from({ length: (currentLevel + 1) }).map((_, levelIndex) => (
                     <div className='categoryLevelDiv' key={`levelDiv_${levelIndex}`}>
