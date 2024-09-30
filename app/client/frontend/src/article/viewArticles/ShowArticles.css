@@ -12,7 +12,7 @@
     margin: 40px 20px;
     border-collapse: collapse; 
     text-align: left;
-    table-layout: fixed;
+    table-layout: auto;
 }
 
 .articleTable th{
@@ -32,7 +32,6 @@
 .articleTable td {
     border-bottom: 1px solid var(--tertiary); 
     padding: 10px; 
-    width: 33%;
     word-wrap: break-word; 
 }
 
@@ -107,8 +106,8 @@
     0 0 0px 13px var(--quaternary);
     border-radius: 4px;
     width: 80%;
+    overflow: auto;
     box-sizing: border-box;
-    overflow-x: auto;    
     margin-top: 80px;
     margin-bottom: 40px;
     background-color: white;
@@ -138,4 +137,34 @@
 
 .liked{
     background-color: rgba(18, 189, 18, 0.57);
+}
+
+
+
+@media only screen and (max-width: 650px) {
+
+    .articleTable{
+        margin-left: 0px;
+        width: 100%;
+    }
+
+    .articleTable td{
+        padding-right: 3px;
+    }
+
+    .articleButtons button {
+        font-size: 10px;
+    }
+
+    .desc-td, .desc-th{
+        display: none;
+    }
+
+    .title-td{
+        font-size: smaller;
+    }
+ 
+    .categoryButton {
+        font-size: smaller;
+    }
 }

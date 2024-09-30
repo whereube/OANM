@@ -35,15 +35,15 @@ const ArticleList = (props) => {
                 <thead>
                     <tr>
                         <th>Titel</th>
-                        <th>Beskrivning</th>
+                        <th className='desc-th'>Beskrivning</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {props.filteredArticles.map((article) => (
-                        <tr key={article.id}>
+                        <tr key={article.id} className='articleRow'>
                             <td className='title-td'>{article.title}</td>
-                            <td>{article.description.substr(0, 60)}{article.description.length > 60 ? '...' : ''}</td>
+                            <td className='desc-td'>{article.description.substr(0, 60)}{article.description.length > 60 ? '...' : ''}</td>
                             <td>
                                 <div className='articleButtons'>
                                     <button
