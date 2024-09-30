@@ -95,8 +95,14 @@
 
 .collapseText{
     flex-grow: 1;
-    text-align: center;
+    text-align: left;
 }
+
+.collapseCounter{
+    text-align: right;
+    padding-right: 10px;
+}
+
 
 .articleDesc{
     min-width: 40%;
