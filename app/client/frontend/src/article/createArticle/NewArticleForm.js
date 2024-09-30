@@ -10,6 +10,7 @@ const NewArticleForm = () => {
     const [categories, setCategories] = useState([])
     const [meetingCategories, setMeetingCategories] = useState([])
     const [addOffer, setAddOffer] = useState(true)
+    const [loading, setLoading] = useState(true)
     const [formData, setFormData] = useState({
         userId: '',
         title: '',
@@ -19,7 +20,7 @@ const NewArticleForm = () => {
         price: 0,
         link: '', 
         availableDigitaly: false,
-        meetingId: meetingIdParam != undefined ? meetingIdParam : null,
+        meetingId: meetingIdParam !== undefined ? meetingIdParam : null,
         articleCategories: {}
     });
 
@@ -37,13 +38,9 @@ const NewArticleForm = () => {
     }, []);
 
     useEffect(() => {
-        getCategories();
         getMeetingCategories();
+        getCategories();
     }, []);
-
-    useEffect(() => {
-        console.log(meetingCategories)
-    }, [meetingCategories]);
 
     const handleChange = (e) =>{
 
@@ -168,6 +165,7 @@ const NewArticleForm = () => {
 
         const result = await response.json();
         setMeetingCategories(result)
+        setLoading(false)
     }
 
     useEffect(() => {
@@ -187,163 +185,167 @@ const NewArticleForm = () => {
 
     return (
         <>
-            <div className="newOfferPage">
-                <div className='AddOfferOrNeed'>
-                    <div className='buttonsDiv'>
-                        <p className={`OfferOrNeedButton ${addOffer && 'active'} `} onClick={() => toggleOffersOrNeeds(true)}>Erbjudanden</p>
-                        <p className={`OfferOrNeedButton ${addOffer === false && 'active'} `} onClick={() => toggleOffersOrNeeds(false)}>Behov</p>
+            {!loading ? (
+                <div className="newOfferPage">
+                    <div className='AddOfferOrNeed'>
+                        <div className='buttonsDiv'>
+                            <p className={`OfferOrNeedButton ${addOffer && 'active'} `} onClick={() => toggleOffersOrNeeds(true)}>Erbjudanden</p>
+                            <p className={`OfferOrNeedButton ${addOffer === false && 'active'} `} onClick={() => toggleOffersOrNeeds(false)}>Behov</p>
+                        </div>
                     </div>
-                </div>
-                <form onSubmit={handleSubmit} className="newOffer">
-                    {addOffer ? (
-                        <h2>Skapa erbjudande</h2>
-                    ) : (
-                        <h2>Skapa behov</h2>
-                    )}
-                    <div className='formFields'>
-                        <div className='formDiv'>
-                            <label htmlFor="title">Titel</label>
-                            <input
-                                className="input-fields"
-                                type="text"
-                                id="title"
-                                name="title"
-                                value={formData.title}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                        <div className='formDiv'>
-                            <label htmlFor="description">Beskrivning</label>
-                            <textarea
-                                className="input-fields"
-                                id="description"
-                                name="description"
-                                value={formData.description}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                        {meetingIdParam == undefined && (
-                            <div>
-                                <div className='formDiv'>
-                                    <label htmlFor="available">Tillgänglig</label>
-                                    <select
-                                        className="input-fields"
-                                        id="available"
-                                        name="available"
-                                        value={formData.available}
-                                        onChange={handleChange}
-                                        required
-                                    >
-                                        <option value="begränsad">Begränsad</option>
-                                        <option value="alltid">Alltid</option>
-                                    </select>
-                                </div>
-                                <div className='formDiv selectDiv'>
-                                    <label htmlFor="availableDigitaly">Plats</label>
-                                    <select
-                                        className="input-fields"
-                                        id="availableDigitaly"
-                                        name="availableDigitaly"
-                                        value={formData.availableDigitaly}
-                                        onChange={handleChange}
-                                        required
-                                    >
-                                        <option value="true">Digitalt tillgänglig (oberoende av plats)</option>
-                                        <option value="false">Specifik plats</option>
-                                    </select>
-                                    {formData.availableDigitaly == false && (
+                    <form onSubmit={handleSubmit} className="newOffer">
+                        {addOffer ? (
+                            <h2>Skapa erbjudande</h2>
+                        ) : (
+                            <h2>Skapa behov</h2>
+                        )}
+                        <div className='formFields'>
+                            <div className='formDiv'>
+                                <label htmlFor="title">Titel</label>
+                                <input
+                                    className="input-fields"
+                                    type="text"
+                                    id="title"
+                                    name="title"
+                                    value={formData.title}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                            <div className='formDiv'>
+                                <label htmlFor="description">Beskrivning</label>
+                                <textarea
+                                    className="input-fields"
+                                    id="description"
+                                    name="description"
+                                    value={formData.description}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                            {meetingIdParam == undefined && (
+                                <div>
+                                    <div className='formDiv'>
+                                        <label htmlFor="available">Tillgänglig</label>
+                                        <select
+                                            className="input-fields"
+                                            id="available"
+                                            name="available"
+                                            value={formData.available}
+                                            onChange={handleChange}
+                                            required
+                                        >
+                                            <option value="begränsad">Begränsad</option>
+                                            <option value="alltid">Alltid</option>
+                                        </select>
+                                    </div>
+                                    <div className='formDiv selectDiv'>
+                                        <label htmlFor="availableDigitaly">Plats</label>
+                                        <select
+                                            className="input-fields"
+                                            id="availableDigitaly"
+                                            name="availableDigitaly"
+                                            value={formData.availableDigitaly}
+                                            onChange={handleChange}
+                                            required
+                                        >
+                                            <option value="true">Digitalt tillgänglig (oberoende av plats)</option>
+                                            <option value="false">Specifik plats</option>
+                                        </select>
+                                        {formData.availableDigitaly == false && (
+                                            <div className='formDiv'>
+                                                <label htmlFor="physicalLocation">Ort (alternativt stad eller kommun)</label>
+                                                <input
+                                                    className="input-fields"
+                                                    type="text"
+                                                    id="physicalLocation"
+                                                    name="location"
+                                                    value={formData.location}
+                                                    onChange={handleChange}
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className='formDiv'>
+                                        <label htmlFor="price">Pris</label>
+                                        <input
+                                            className="input-fields"
+                                            type="number"
+                                            id="price"
+                                            name="price"
+                                            value={formData.price}
+                                            onChange={handleChange}
+                                        />
+                                    </div>
+                                    {addOffer === true && (
                                         <div className='formDiv'>
-                                            <label htmlFor="physicalLocation">Ort (alternativt stad eller kommun)</label>
+                                            <label htmlFor="link">Länk</label>
                                             <input
                                                 className="input-fields"
                                                 type="text"
-                                                id="physicalLocation"
-                                                name="location"
-                                                value={formData.location}
+                                                id="link"
+                                                name="link"
+                                                value={formData.link}
                                                 onChange={handleChange}
                                             />
                                         </div>
                                     )}
                                 </div>
-                                <div className='formDiv'>
-                                    <label htmlFor="price">Pris</label>
-                                    <input
-                                        className="input-fields"
-                                        type="number"
-                                        id="price"
-                                        name="price"
-                                        value={formData.price}
-                                        onChange={handleChange}
-                                    />
-                                </div>
-                                {addOffer === true && (
-                                    <div className='formDiv'>
-                                        <label htmlFor="link">Länk</label>
-                                        <input
-                                            className="input-fields"
-                                            type="text"
-                                            id="link"
-                                            name="link"
-                                            value={formData.link}
-                                            onChange={handleChange}
-                                        />
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                        <div className='formDiv selectDiv'>
-                                <label htmlFor="category_1">Kategori</label>
-                                <select
-                                    className="input-fields select"
-                                    id="category_1"
-                                    name="category_1"
-                                    value={formData.category_1}
-                                    onChange={handleChange}
-                                    required
-                                    defaultValue={""}
-                                >
-                                    <option value="" disabled>Välj en kategori</option>
-                                    {meetingCategories.map(category => (
-                                        category.category.parent_id === null && (
-                                            <option className="option" key={category.category.id} value={category.category.id}>{category.category.category_name}</option>
-                                        )
-                                    ))}
-                                </select>
-                                {formData.articleCategories['category_1'] !== undefined && formData.articleCategories['category_1'] !== '' &&(
+                            )}
+                            <div className='formDiv selectDiv'>
+                                    <label htmlFor="category_1">Kategori</label>
                                     <select
                                         className="input-fields select"
-                                        id="category_2"
-                                        name="category_2"
-                                        value={formData.category_2}
+                                        id="category_1"
+                                        name="category_1"
+                                        value={formData.category_1}
                                         onChange={handleChange}
+                                        required
                                         defaultValue={""}
                                     >
                                         <option value="" disabled>Välj en kategori</option>
-                                        {meetingCategories.map(subCategory => (
-                                                subCategory.category.parent_id === formData.articleCategories['category_1'] && (
-                                                    <option className="option" key={subCategory.category.id} value={subCategory.category.id}>{subCategory.category.category_name}</option>
-                                                )
+                                        {meetingCategories.map(category => (
+                                            category.category.parent_id === null && (
+                                                <option className="option" key={category.category.id} value={category.category.id}>{category.category.category_name}</option>
+                                            )
                                         ))}
                                     </select>
-                                )}
+                                    {formData.articleCategories['category_1'] !== undefined && formData.articleCategories['category_1'] !== '' &&(
+                                        <select
+                                            className="input-fields select"
+                                            id="category_2"
+                                            name="category_2"
+                                            value={formData.category_2}
+                                            onChange={handleChange}
+                                            defaultValue={""}
+                                        >
+                                            <option value="" disabled>Välj en kategori</option>
+                                            {meetingCategories.map(subCategory => (
+                                                    subCategory.category.parent_id === formData.articleCategories['category_1'] && (
+                                                        <option className="option" key={subCategory.category.id} value={subCategory.category.id}>{subCategory.category.category_name}</option>
+                                                    )
+                                            ))}
+                                        </select>
+                                    )}
+                            </div>
                         </div>
-                    </div>
-                    <button type="submit" className="button-small" role="button">
-                        Skapa
-                    </button>
-                </form>
-                {status && (
-                    <div>
-                        {status.success ? (
-                            <p style={{ color: 'green' }}>{status.message}</p>
-                        ) : (
-                            <p style={{ color: 'red' }}>{status.message}</p>
-                        )}
-                    </div>
-                )}
-            </div>
+                        <button type="submit" className="button-small" role="button">
+                            Skapa
+                        </button>
+                    </form>
+                    {status && (
+                        <div>
+                            {status.success ? (
+                                <p style={{ color: 'green' }}>{status.message}</p>
+                            ) : (
+                                <p style={{ color: 'red' }}>{status.message}</p>
+                            )}
+                        </div>
+                    )}
+                </div>
+            ): (
+                <p>Laddar...</p>
+            )}
         </>
     )
 }
