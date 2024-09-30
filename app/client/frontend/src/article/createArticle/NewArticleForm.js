@@ -8,6 +8,7 @@ const NewArticleForm = () => {
     let { meetingId } = useParams();
     const meetingIdParam = meetingId
     const [categories, setCategories] = useState([])
+    const [meetingCategories, setMeetingCategories] = useState([])
     const [addOffer, setAddOffer] = useState(true)
     const [formData, setFormData] = useState({
         userId: '',
@@ -37,7 +38,12 @@ const NewArticleForm = () => {
 
     useEffect(() => {
         getCategories();
+        getMeetingCategories();
     }, []);
+
+    useEffect(() => {
+        console.log(meetingCategories)
+    }, [meetingCategories]);
 
     const handleChange = (e) =>{
 
@@ -151,6 +157,18 @@ const NewArticleForm = () => {
         setCategories(result)
     }
 
+    const getMeetingCategories = async () => {
+        const response = await fetch(`${API_URL}/meetingCategory/byMeetingId/` + meetingId);
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.log(errorData)
+            console.error('Error:', errorData); 
+            throw new Error(errorData);
+        }
+
+        const result = await response.json();
+        setMeetingCategories(result)
+    }
 
     useEffect(() => {
         document.querySelectorAll('.select').forEach(child => {
@@ -287,9 +305,9 @@ const NewArticleForm = () => {
                                     defaultValue={""}
                                 >
                                     <option value="" disabled>Välj en kategori</option>
-                                    {categories.map(category => (
-                                        category.parent_id === null && (
-                                            <option className="option" key={category.id} value={category.id}>{category.category_name}</option>
+                                    {meetingCategories.map(category => (
+                                        category.category.parent_id === null && (
+                                            <option className="option" key={category.category.id} value={category.category.id}>{category.category.category_name}</option>
                                         )
                                     ))}
                                 </select>
@@ -303,9 +321,9 @@ const NewArticleForm = () => {
                                         defaultValue={""}
                                     >
                                         <option value="" disabled>Välj en kategori</option>
-                                        {categories.map(subCategory => (
-                                                subCategory.parent_id === formData.articleCategories['category_1'] && (
-                                                    <option className="option" key={subCategory.id} value={subCategory.id}>{subCategory.category_name}</option>
+                                        {meetingCategories.map(subCategory => (
+                                                subCategory.category.parent_id === formData.articleCategories['category_1'] && (
+                                                    <option className="option" key={subCategory.category.id} value={subCategory.category.id}>{subCategory.category.category_name}</option>
                                                 )
                                         ))}
                                     </select>

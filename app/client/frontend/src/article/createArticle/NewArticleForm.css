@@ -60,3 +60,8 @@
 .formDiv select {
     margin-bottom: 10px;
 }
+
+
+#description{
+    font-family: inherit;
+}
