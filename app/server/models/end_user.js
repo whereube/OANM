@@ -13,7 +13,7 @@ export const end_user = db.define(
       },
       company_id: {
         type: DataTypes.UUID,
-        allowNull: false,
+        allowNull: true,
       },
       user_name: {
         type: DataTypes.STRING,

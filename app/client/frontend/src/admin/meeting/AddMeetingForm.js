@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import './AddMeetingForm.css';
-import '../App.css';
 import { useNavigate } from 'react-router-dom';
+import HandleMeetingParticipants from "./HandleMeetingParticipants";
 
 
 function AddMeetingForm() {
@@ -117,7 +117,7 @@ function AddMeetingForm() {
   };
 
   return (
-    <div>
+    <div className="addMeeting">
       <form onSubmit={handleSubmit} className="create-meeting-form">
         <h2>Skapa nytt möte</h2>
         <div>
@@ -148,6 +148,7 @@ function AddMeetingForm() {
         {responseMessage && <p>{responseMessage}</p>}
         <button type="submit" className="button-small">Skapa möte</button>
       </form>
+      <HandleMeetingParticipants/>
     </div>
   );
 }

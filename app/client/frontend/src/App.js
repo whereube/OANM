@@ -7,7 +7,7 @@ import Article from './article/Article.js';
 import CreateAccount from './profile/CreateAccount.js';
 import Whiteboard from './whiteboard/Whiteboard.js';
 import AddCategoryForm from './admin/AddCategoryForm.js';
-import AddMeetingForm from './admin/AddMeetingForm.js';
+import AddMeetingForm from './admin/meeting/AddMeetingForm.js';
 import AdminPage from './admin/AdminPage.js';
 import NotAdmin from './auth/NotAdmin.js';
 import { BrowserRouter, Routes, Route, Navigate, useLocation, Outlet } from "react-router-dom";

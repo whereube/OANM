@@ -151,6 +151,71 @@ export const getUserRoutes = () => {
         }
     });
 
+
+    router.post('/createBasicUser', async (req, res, next) => {
+        const {
+            email,
+            password
+        } = req.body;
+
+        const validateStr = validateString({ email, password });
+
+        if (validateStr.valid) {
+
+            const checkEmail = await object.end_user.findAll({
+                where: {
+                    email: email
+                }
+            });
+            
+            const userId = uuidv4();
+            const hashedPassword = await hashPassword(password);
+            if (checkEmail.length === 0){
+                try {
+                    const result = await object.end_user.create({
+                        id: userId,
+                        password:hashedPassword,
+                        user_name: email,
+                        email: email,
+                    });
+                    
+                    if (result === null) {
+                        return res.status(404).json('No new user created');
+                    } else {
+                        res.status(201).json({result});
+                    }
+    
+                } catch (error) {
+                    console.error('Error creating user', error);
+                    res.status(500).json('Internal Server Error');
+                }
+            } else{
+                return res.status(401).json({ message: 'Email already exist' });
+            }
+        } else {
+            return res.status(401).json({ message: 'Wrong data type' });
+        }
+    });
+
+
+    router.post('/getUser/byEmailList', async (req, res, next) => {
+        const {
+            emails,
+        } = req.body;
+        try {
+            const users = await object.end_user.findAll({
+                where: {
+                    email: emails
+                }
+            });
+            res.status(200).send(users);
+
+        } catch (error) {
+            console.error('Error finding user', error);
+            res.status(500).json('Internal Server Error');
+        }
+    });
+
     // router.put('/update', async (req, res, next) => {
     //     const {
     //         creator_id,
