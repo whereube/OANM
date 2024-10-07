@@ -17,6 +17,9 @@ const Header = () => {
     <>
         <div className='header'>
             <div className='logoImage'>
+              <div className='vinnovaLogoDiv'>
+                <img src='/Vinnova_green_finansiering_RGB.png' alt='Vinnova logotyp' className='vinnovaLogoImg'/>
+              </div>
             </div>
             <div className='profileDiv'>
               {user !== null && user ? (

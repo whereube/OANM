@@ -46,5 +46,67 @@
     padding: 10px;
 }
 
+.vinnovaLogoDiv{
+    position: absolute;
+    bottom: 0;
+    right: 0px;
+    width: 20%;
+    padding: 15px;
+    padding-right: 10px;
+    padding-bottom: 25px;
+}
 
+.vinnovaLogoImg {
+    width: clamp(46px, 60%, 200px); 
+    height: auto; 
+    min-width: 46px;
+}
+
+@media only screen and (max-width: 1000px) and (min-width: 800px){
+    .vinnovaLogoDiv{
+        width: 15%;
+    }
+
+    .vinnovaLogoImg {
+        width: clamp(46px, 100%, 200px); 
+    }
+
+}
+
+
+@media only screen and (max-width: 800px) and (min-width: 500px){
+
+    .vinnovaLogoDiv{
+        bottom: 0;
+        padding: 15px;
+        padding-right: 5px;
+        width: 20%;
+    }
+
+    .vinnovaLogoImg {
+        width: clamp(46px, 100%, 200px); 
+        height: auto; 
+        min-width: 46px;
+    }
+
+}
+
+
+@media only screen and (max-width: 500px) {
+
+    .vinnovaLogoDiv{
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        padding: 15px;
+        padding-right: 5px;
+        margin: auto;
+    }
+
+    .vinnovaLogoImg {
+        width: clamp(46px, 35%, 200px); 
+        height: auto; 
+    }
+
+}
 
