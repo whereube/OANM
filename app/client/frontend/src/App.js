@@ -13,6 +13,7 @@ import NotAdmin from './auth/NotAdmin.js';
 import { BrowserRouter, Routes, Route, Navigate, useLocation, Outlet } from "react-router-dom";
 import {AuthProvider, useAuth, checkIfAdmin} from './auth/AuthProvider.js';
 import Header from './header/Header.js';
+import EditMeeting from './admin/meeting/EditMeeting.js';
 
 function App() {
 
@@ -44,6 +45,7 @@ function App() {
                   <Route path="" element={<AdminPage />}/>
                   <Route path="add-category" element={<AddCategoryForm />}/>
                   <Route path="add-meeting" element={<AddMeetingForm />}/>
+                  <Route path="edit-meeting/:meetingId" element={<EditMeeting />}/>
               </Route>
           </Routes>
         </AuthProvider>

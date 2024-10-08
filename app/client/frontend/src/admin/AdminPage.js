@@ -59,7 +59,8 @@ function AdminPage() {
             <div className={`allMeetings ${meetingsIsCollapsed && 'collapsed'}`}>
                 {meetings.map(meeting => (
                     <div key={meeting.id} className="meeting">
-                        <p>{meeting.meeting_name}</p> 
+                        <p>{meeting.meeting_name}</p>
+                        <a href={'https://oanm-ecubuntu-b3e74bbc7ba9.herokuapp.com/admin/edit-meeting/' + meeting.id}>Redigera</a>
                         <div className="meetingButtons">
                             <Link to={'/whiteboard/' + meeting.id} className='button-small small'>Mötets whiteboard</Link>
                             <label for='link'>Deltagarnas länk</label>

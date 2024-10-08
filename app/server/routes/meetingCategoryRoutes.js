@@ -77,5 +77,81 @@ export const getMeetingCategoryRoutes = () => {
     });
 
 
+    router.post('/addCategories', async (req, res, next) => {
+      const { category_id, meeting_id } = req.body; 
+    
+      // Ensure category_id is an array
+      if (!Array.isArray(category_id) || category_id.length === 0) {
+        return res.status(400).json({ message: 'category_id must be a non-empty array' });
+      }
+      try {
+        const createdEntries = [];
+        for (const catId of category_id) {
+          const id = uuidv4();
+    
+          // Create each meetingCategory entry
+          const result = await object.meetingCategory.create({
+            id: id,
+            meeting_id: meeting_id,
+            category_id: catId
+          });
+    
+          createdEntries.push(result);
+        }
+    
+        if (createdEntries.length === category_id.length) {
+          res.status(201).json({ message: 'New meeting and categories created', createdEntries });
+        } else {
+          res.status(500).json({ message: 'Not all meeting categories were created successfully' });
+        }
+    
+      } catch (error) {
+        console.error('Error creating meeting and categories', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+      }
+
+    });
+
+    router.post('/removeCategories', async (req, res, next) => {
+      const { category_id, meeting_id } = req.body; 
+
+      const validate1 = validateInput({ category_id });
+      const validate2 = validateInput({ meeting_id });
+
+
+      if (validate1.valid && validate2.valid) {
+        // Ensure category_id is an array
+        if (!Array.isArray(category_id) || category_id.length === 0) {
+          return res.status(400).json({ message: 'category_id must be a non-empty array' });
+        }
+        try {
+          const removed = [];
+          for (const catId of category_id) {    
+            const result = await object.meetingCategory.destroy({
+              where: {
+                meeting_id: meeting_id,
+                category_id: category_id
+              },
+            });
+      
+            removed.push(result);
+          }
+      
+          if (removed.length === category_id.length) {
+            res.status(201).json({ message: 'Categories removed' });
+          } else {
+            res.status(500).json({ message: 'Not all meeting categories were removed successfully' });
+          }
+      
+        } catch (error) {
+          console.error('Error removing meeting categories', error);
+          res.status(500).json({ message: 'Internal Server Error' });
+        }
+      } else {
+          res.status(400).json({ message: validate1.message + '; ' + validate2.message });
+      }
+
+    });
+
   return router;
 };
