@@ -93,3 +93,7 @@ label[for=link]{
     background-color: transparent;
     cursor: pointer;
 }
+
+.errorMessage{
+    color: red;
+}
