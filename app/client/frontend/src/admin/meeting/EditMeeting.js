@@ -92,8 +92,58 @@ function EditMeeting() {
         const newCategories = selectedCategories.filter((element) => !oldSelectedCategories.includes(element));
         const removedCategories = oldSelectedCategories.filter((element) => !selectedCategories.includes(element))
 
-        console.log(newCategories);
-        console.log(removedCategories);
+        let removedOk = false
+        let addedOk = false
+
+        try {
+            if (newCategories.length > 0){
+                const addResponse = await fetch(`${API_URL}/meetingCategory/addCategories`, {
+                    method: "POST",
+                    headers: {
+                    "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({category_id: newCategories, meeting_id: meetingId}),
+                });
+
+                const dataAdd = await addResponse.json();
+
+                if (addResponse.ok) {
+                    addedOk = true
+                } else {
+                    setResponseMessage(dataAdd.message);
+                }
+
+            }
+            if(removedCategories.length > 0){
+                const removeResponse = await fetch(`${API_URL}/meetingCategory/removeCategories`, {
+                    method: "POST",
+                    headers: {
+                    "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({category_id: removedCategories, meeting_id: meetingId}),
+                });
+
+                const dataRemove = await removeResponse.json();
+
+                if (removeResponse.ok) {
+                    removedOk = true
+                } else {
+                    setResponseMessage(dataRemove.message);
+                }
+            }
+            if(removedOk && addedOk){
+                alert('Mötets kategorier har uppdaterats')
+            }
+            else if (removedOk && !addedOk){
+                alert('Kategorier har tagit borts från mötet')
+            }
+            else if (!removedOk && addedOk){
+                alert('Kategorier har lagts till på mötet')
+            }
+        } catch (error) {
+            console.error("Error editing categories:", error);
+            setResponseMessage("An error occurred while editing the categories.");
+        }
         /*Kod för att använda addCategories och removeCategories med dessa listor*/
 
         /*

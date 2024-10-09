@@ -115,11 +115,9 @@ export const getMeetingCategoryRoutes = () => {
     router.post('/removeCategories', async (req, res, next) => {
       const { category_id, meeting_id } = req.body; 
 
-      const validate1 = validateInput({ category_id });
-      const validate2 = validateInput({ meeting_id });
+      const validate = validateInput({ meeting_id });
 
-
-      if (validate1.valid && validate2.valid) {
+      if (validate.valid) {
         // Ensure category_id is an array
         if (!Array.isArray(category_id) || category_id.length === 0) {
           return res.status(400).json({ message: 'category_id must be a non-empty array' });
@@ -148,7 +146,7 @@ export const getMeetingCategoryRoutes = () => {
           res.status(500).json({ message: 'Internal Server Error' });
         }
       } else {
-          res.status(400).json({ message: validate1.message + '; ' + validate2.message });
+          res.status(400).json({ message: validate.message});
       }
 
     });
