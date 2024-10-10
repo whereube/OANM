@@ -54,7 +54,7 @@ function HandleMeetingParticipants() {
             const listWithoutWhitespace = emailInput.replace(/\s/g, '');
             const listOfEmails = listWithoutWhitespace.split(';')
             listOfEmails.forEach(email => {
-                if(email != ''){
+                if(email !== ''){
                     emailsToCreate.push(email)
                 }
             });
@@ -69,30 +69,33 @@ function HandleMeetingParticipants() {
                 });
 
                 const data = await response.json();
-
+                console.log(response)
                 if (response.ok) {
                     alert("Användare skapade");
                 } else {
-                    /*setResponseMessage(data.message);*/
+                    setError(data.message);
                 }
             } catch (error) {
                 console.error("Fel vid skapande av mötesdeltagare:", error);
-                /*setResponseMessage("Ett fel uppstod medans mötesdeltagarna skapades.");*/
             }
         }
     }
 
     return (
-        <>
-            <p>Skriv in mailadresser för deltagare i mötet, varje mailadress måste separeras med ett semikolon</p>
-            <input value={emailInput} onChange={handleEmailChange}></input>
-            <input type="password" value={passwordInput} name="password" onChange={handlePasswordChange}></input>
-            <input type="password" value={passwordInput2} name="password2" onChange={handlePasswordChange}></input>
-            <button type="submit" className="button-small" onClick={handleSubmit}>Skapa användare</button>
-            {error &&
-                <p className="errorMessage">{error}</p>
-            }   
-        </>
+        <div className="meetingParticipantsContainer">
+            <div className="meetingParticipants"> 
+                <p>Skriv in mailadresser för deltagare i mötet, varje mailadress måste separeras med ett semikolon</p>
+                <textarea value={emailInput} onChange={handleEmailChange} placeholder="Mailadresser (separerade med ;)"></textarea>
+                <label for="password">Välj ett lösenord som kommer för alla skapade användare</label>
+                <input type="password" value={passwordInput} name="password" onChange={handlePasswordChange}></input>
+                <label for="password2">Bekräfta lösenordet</label>
+                <input type="password" value={passwordInput2} name="password2" onChange={handlePasswordChange}></input>
+                {error &&
+                    <p className="errorMessage">{error}</p>
+                }   
+            </div>
+            <button type="submit" className="button-small addMeetingParticipants" onClick={handleSubmit}>Skapa användare</button>
+        </div>
     );
 }
 

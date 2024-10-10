@@ -59,15 +59,22 @@ export const getMeetingParticipantRoutes = () => {
             console.error('Error creating meeting user', error);
             res.status(500).json('Internal Server Error');
         }
-        try {
+        try {   
+            let createdUsers = []
             for (const user of allUsers){
                 const id = uuidv4();
 
-                await object.meetingParticipant.create({
+                const createdUser = await object.meetingParticipant.create({
                 id: id,
                 meeting_id: meetingId,
                 user_id: user.id
                 });
+                createdUsers.push(createdUser)
+            }
+            if (allUsers === null) {
+                return res.status(404).json('No new user created');
+            } else {
+                res.status(201).json({createdUsers});
             }
         } catch (error) {
             console.error('Error creating meeting user', error);

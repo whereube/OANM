@@ -1,0 +1,58 @@
+.editMeeting{
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+    border: none;
+    box-shadow: 
+        0 0 0px 2px var(--tertiary),     
+        0 0 0px 6px var(--primary),   
+        0 0 0px 10px var(--secondary),   
+        0 0 0px 13px var(--quaternary); 
+    padding: 20px;
+}
+
+.editNameDiv{
+    display: flex;
+    flex-direction: row;
+}
+
+.editNameInput{
+    width: 70%;
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+.saveEditName{
+    flex-grow: 1;
+}
+
+.meetingParticipants{
+    display: flex;
+    flex-direction: column;
+    border: solid black 1px;
+    border-radius: 4px;
+    margin-top: 20px;
+    padding: 5px;
+}
+
+.meetingParticipants input, .meetingParticipants textarea{
+    margin-bottom: 10px;
+}
+
+.meetingParticipants textarea{
+    font-family: inherit;
+}
+
+.addMeetingParticipants{
+    margin-top: 10px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    width: 30%;
+}
+
+.meetingParticipantsContainer{
+    display: flex;
+    flex-direction: column;
+    align-items:end;
+    margin: auto;
+}

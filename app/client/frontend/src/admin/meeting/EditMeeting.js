@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import './AddMeetingForm.css';
+import './EditMeeting.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import HandleMeetingParticipants from "./HandleMeetingParticipants";
 
@@ -249,13 +249,17 @@ function EditMeeting() {
     };
 
     return (
-        <div className="addMeeting">
+        <div className="editMeeting">
             <h2>Redigera möte</h2>
-            <input value={meetingNameInput} onChange={handleMeetingNameChange}></input>
-            <button className="button-small" onClick={handleFormSubmit}>Spara namnbyte</button>
+            <div className="editNameDiv">
+                <input value={meetingNameInput} onChange={handleMeetingNameChange} className="editNameInput"></input>
+                <button className="button-small saveEditName" onClick={handleFormSubmit}>Spara namnbyte</button>
+            </div>
+
+            <HandleMeetingParticipants/>
 
             <div className="categories">
-                <h3>Tillgängliga kategorier</h3>
+                <h3>Kategorier</h3>
                 {loading ? (
                     <p>Loading categories...</p>
                 ) : error ? (
@@ -267,7 +271,6 @@ function EditMeeting() {
                 )}
                 <button onClick={handleCategoriesSubmit} className="button-small">Spara ändringar i kategorier</button>
             </div>
-            <HandleMeetingParticipants/>
         </div>
     );
 }
