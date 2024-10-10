@@ -15,6 +15,8 @@ function EditMeeting() {
     const [responseMessage, setResponseMessage] = useState("");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [meetingData, setMeetingData] = useState({})
+    const [meetingNameInput, setMeetingNameInput] = useState('')
     const { meetingId } = useParams();
 
 
@@ -22,49 +24,63 @@ function EditMeeting() {
 
 
     useEffect(() => {
-        const fetchMeetingCategories = async () => {
-        try {
-            const response = await fetch(`${API_URL}/meetingCategory/byMeetingId/` + meetingId)
-            if (!response.ok) {
-            throw new Error("Failed to fetch meeting categories");
-            }
-            const data = await response.json();
-            const listOfCategoryId = []
-            for(const category of data){
-                listOfCategoryId.push(category.category_id)
-            }
-
-            setOldSelectedCategories(listOfCategoryId);
-            setSelectedCategories(listOfCategoryId);
-        } catch (error) {
-            setError(error.message);
-        } finally {
-            setLoading(false);
+        if('meeting_name' in meetingData){
+            setMeetingNameInput(meetingData.meeting_name)
         }
-        };
-
-        fetchMeetingCategories();
-    }, []);
+    }, [meetingData]);
 
 
     useEffect(() => {
         // Fetch categories on component mount
         const fetchCategories = async () => {
-        try {
-            const response = await fetch(`${API_URL}/category/getAll`); // Update URL as needed
-            if (!response.ok) {
-                throw new Error("Failed to fetch categories");
+            try {
+                const response = await fetch(`${API_URL}/category/getAll`);
+                if (!response.ok) {
+                    throw new Error("Failed to fetch categories");
+                }
+                const data = await response.json();
+                setCategories(data);
+            } catch (error) {
+                setError(error.message);
             }
-            const data = await response.json();
-            setCategories(data);
-        } catch (error) {
-            setError(error.message);
-        } finally {
-            setLoading(false);
-        }
+        };
+
+        const fetchMeetingCategories = async () => {
+            try {
+                const response = await fetch(`${API_URL}/meetingCategory/byMeetingId/` + meetingId)
+                if (!response.ok) {
+                throw new Error("Failed to fetch meeting categories");
+                }
+                const data = await response.json();
+                const listOfCategoryId = []
+                for(const category of data){
+                    listOfCategoryId.push(category.category_id)
+                }
+
+                setOldSelectedCategories(listOfCategoryId);
+                setSelectedCategories(listOfCategoryId);
+            } catch (error) {
+                setError(error.message);
+            }
+        };
+
+        const fetchMeetingData = async () => {
+            try {
+                const response = await fetch(`${API_URL}/meeting/byId/` + meetingId)
+                if (!response.ok) {
+                    throw new Error("Failed to fetch meeting data");
+                }
+                const data = await response.json();
+                setMeetingData(data);
+            } catch (error) {
+                setError(error.message);
+            }
         };
 
         fetchCategories();
+        fetchMeetingCategories();
+        fetchMeetingData()
+        setLoading(false);
     }, []);
 
     const handleChange = (event) => {
@@ -86,8 +102,31 @@ function EditMeeting() {
         );
     };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+    const handleFormSubmit = async (event) => {
+
+        try {
+            const response = await fetch(`${API_URL}/meeting/editMeeting`, {
+                method: "PUT",
+                headers: {
+                "Content-Type": "application/json",
+                },
+                body: JSON.stringify({meeting_name: meetingNameInput, meeting_id: meetingId}),
+            });
+
+            const data = await response.json();
+            console.log(data)
+            if (data[0] === 1) {
+                alert('Mötets namn har uppdaterats')
+            } else {
+                setResponseMessage(data.message);
+            }
+        } catch (error) {
+            console.error("Error editing meeting name:", error);
+            setResponseMessage("An error occurred while updating the meeting name.");
+        }
+    }
+
+    const handleCategoriesSubmit = async (event) => {
 
         const newCategories = selectedCategories.filter((element) => !oldSelectedCategories.includes(element));
         const removedCategories = oldSelectedCategories.filter((element) => !selectedCategories.includes(element))
@@ -174,6 +213,10 @@ function EditMeeting() {
         */
     };
 
+    const handleMeetingNameChange = (event) => {
+        setMeetingNameInput(event.target.value)
+    };
+
     // Recursive function to render categories and subcategories
     const renderCategories = (parentId = null) => {
         // Filter categories by parent_id
@@ -207,37 +250,24 @@ function EditMeeting() {
 
     return (
         <div className="addMeeting">
-        <form onSubmit={handleSubmit} className="create-meeting-form">
-            <h2>Skapa nytt möte</h2>
-            <div>
-            <label htmlFor="meeting_name">Namn:</label>
-            <input
-                type="text"
-                id="meeting_name"
-                name="meeting_name"
-                value={formData.meeting_name}
-                onChange={handleChange}
-                required
-            />
-            </div>
+            <h2>Redigera möte</h2>
+            <input value={meetingNameInput} onChange={handleMeetingNameChange}></input>
+            <button className="button-small" onClick={handleFormSubmit}>Spara namnbyte</button>
 
             <div className="categories">
-            <h3>Tillgängliga kategorier</h3>
-            {loading ? (
-                <p>Loading categories...</p>
-            ) : error ? (
-                <p>{error}</p>
-            ) : (
-                <ul>
-                {renderCategories()} {/* Render top-level categories and their subcategories */}
-                </ul>
-            )}
+                <h3>Tillgängliga kategorier</h3>
+                {loading ? (
+                    <p>Loading categories...</p>
+                ) : error ? (
+                    <p>{error}</p>
+                ) : (
+                    <ul>
+                    {renderCategories()} {/* Render top-level categories and their subcategories */}
+                    </ul>
+                )}
+                <button onClick={handleCategoriesSubmit} className="button-small">Spara ändringar i kategorier</button>
             </div>
-
-            {responseMessage && <p>{responseMessage}</p>}
-            <button type="submit" className="button-small">Skapa möte</button>
-        </form>
-        <HandleMeetingParticipants/>
+            <HandleMeetingParticipants/>
         </div>
     );
 }
