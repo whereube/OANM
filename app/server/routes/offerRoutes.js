@@ -1,7 +1,9 @@
 import { Router } from 'express';
+import { Sequelize } from 'sequelize';
 import * as object from '../models/objectIndex.js';
 import { v4 as uuidv4 } from 'uuid';
 import { validateInput, validateString, validateInteger } from '../middleware/routeFunctions.js';
+import { db } from '../database/databaseConnection.js';
 
 export const getOfferRoutes = () => {
 
@@ -19,11 +21,18 @@ export const getOfferRoutes = () => {
         const validate = validateInput({ userId });
 
         if (validate.valid) {
-            const offers = await object.offers.findOne({
-                where:{
-                    user_id: userId
+            const offers = await db.query(
+                `SELECT * FROM offers
+                where exists (
+                    select * from meeting_participant mp 
+                    where offers.meeting_id = mp.meeting_id
+                    and mp.user_id = :userId
+                )`,
+                {
+                    replacements: { userId: userId }, 
+                    type: Sequelize.QueryTypes.SELECT
                 }
-            });
+            );
             res.status(200).send(offers);
         } else {
             res.status(400).json({ uuidError: validate.message }); 

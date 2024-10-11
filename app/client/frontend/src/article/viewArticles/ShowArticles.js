@@ -20,24 +20,30 @@ const ShowArticles = () => {
     const [filteredOffers, setFilteredOffers] = useState([]);
     const [filteredNeeds, setFilteredNeeds] = useState([]);
     const [filterByCategory, setFilterByCategory] = useState({});
-    const [viewOffers, setViewOffers] = useState(true)
+    const [viewOffers, setViewOffers] = useState(true);
+    const [participatingInMeetings, setParticipatingInMeetings] = useState([])
     const { user } = useAuth();
 
-    const { getOffers, navigateToOfferArticle} = HandleOffers();
+    const { getOffersForUser, navigateToOfferArticle} = HandleOffers();
     const { getNeeds, navigateToNeedArticle } = HandleNeeds();
-    const { getArticleInterests, getArticleCategories, addArticleInterests, removeArticleInterest } = HandleArticles();
+    const { getArticleInterests, getArticleCategories, addArticleInterests, removeArticleInterest, getMeetingParticipant } = HandleArticles();
 
 
     useEffect(() => {
-        getOffers('getAll', setAllOffers);
+        getOffersForUser(setAllOffers, user.userId);
         getNeeds('getAll', setAllNeeds);
         getArticleCategories(setAllArticleCategories);
         getArticleInterests(setAllArticleInterests)
+        getMeetingParticipant(user.userId, setParticipatingInMeetings)
     }, []);
 
     useEffect(() => {
         setFilteredOffers(allOffers)
     }, [allOffers]);
+
+    useEffect(() => {
+        console.log(participatingInMeetings)
+    }, [participatingInMeetings]);
 
     useEffect(() => {
         setFilteredNeeds(allNeeds)

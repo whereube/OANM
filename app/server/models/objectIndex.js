@@ -15,6 +15,8 @@ offers.belongsTo(end_user, { foreignKey: 'user_id' });
 needs.belongsTo(end_user, { foreignKey: 'user_id' });
 meetingCategory.belongsTo(category, { foreignKey: 'category_id' });
 meetingCategory.belongsTo(meeting, { foreignKey: 'meeting_id' });
+meetingParticipant.belongsTo(meeting, {foreignKey: 'meeting_id'})
+meetingParticipant.belongsTo(end_user, {foreignKey: 'user_id'})
 
 
 

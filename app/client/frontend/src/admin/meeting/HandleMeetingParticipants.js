@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import './AddMeetingForm.css';
 
-function HandleMeetingParticipants() {
+function HandleMeetingParticipants(props) {
     let API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_LOCAL_API_URL;
     
     const [meetingParticipants, setMeetingParticipants] = useState([]);
@@ -65,13 +65,16 @@ function HandleMeetingParticipants() {
                     headers: {
                     "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({meetingParticipants: emailsToCreate, meetingId: '9c6779c3-470d-4c09-855d-32d3d01b2b24', standardPassword: 'test'})
+                    body: JSON.stringify({meetingParticipants: emailsToCreate, meetingId: props.meetingId, standardPassword: passwordInput})
                 });
 
                 const data = await response.json();
-                console.log(response)
                 if (response.ok) {
-                    alert("Användare skapade");
+                    if(data.createdUsers.length === 0){
+                        alert("Användare tillagda i mötet, inga nya användare skapade");
+                    } else {
+                        alert("Nya användare skapade och tillagda i mötet");
+                    }
                 } else {
                     setError(data.message);
                 }
@@ -86,7 +89,7 @@ function HandleMeetingParticipants() {
             <div className="meetingParticipants"> 
                 <p>Skriv in mailadresser för deltagare i mötet, varje mailadress måste separeras med ett semikolon</p>
                 <textarea value={emailInput} onChange={handleEmailChange} placeholder="Mailadresser (separerade med ;)"></textarea>
-                <label for="password">Välj ett lösenord som kommer för alla skapade användare</label>
+                <label for="password">Välj ett lösenord för användare som skapas (gäller endast för nya användare som skapas)</label>
                 <input type="password" value={passwordInput} name="password" onChange={handlePasswordChange}></input>
                 <label for="password2">Bekräfta lösenordet</label>
                 <input type="password" value={passwordInput2} name="password2" onChange={handlePasswordChange}></input>

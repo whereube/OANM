@@ -256,7 +256,7 @@ function EditMeeting() {
                 <button className="button-small saveEditName" onClick={handleFormSubmit}>Spara namnbyte</button>
             </div>
 
-            <HandleMeetingParticipants/>
+            <HandleMeetingParticipants meetingId={meetingId}/>
 
             <div className="categories">
                 <h3>Kategorier</h3>

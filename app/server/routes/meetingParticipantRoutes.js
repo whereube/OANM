@@ -14,6 +14,17 @@ export const getMeetingParticipantRoutes = () => {
         res.status(200).send(data);
     });
 
+    router.get('/getByUserId/:userId', async (req, res, next) => {
+        const userId  = req.params.userId; 
+        console.log(userId)
+        const data = await object.meetingParticipant.findAll({
+            where:{
+                user_id: userId
+            }
+        });
+        res.status(200).send(data);
+    });
+
     router.post('/add', async (req, res, next) => {
         const {
                 meetingParticipants,
@@ -59,9 +70,26 @@ export const getMeetingParticipantRoutes = () => {
             console.error('Error creating meeting user', error);
             res.status(500).json('Internal Server Error');
         }
-        try {   
+        try {
+
+            let alreadyInMeetingParticipant = []
             let createdUsers = []
+
             for (const user of allUsers){
+                const alreadyExisting = await object.meetingParticipant.findOne({
+                    where:{
+                        meeting_id: meetingId,
+                        user_id: user.id
+                    }
+                });
+                if (alreadyExisting !== null){
+                    alreadyInMeetingParticipant.push(alreadyExisting.dataValues.user_id)
+                }
+            }
+
+            const notAlreadyInMeeting = allUsers.filter(user => !alreadyInMeetingParticipant.includes(user.id));
+
+            for (const user of notAlreadyInMeeting){
                 const id = uuidv4();
 
                 const createdUser = await object.meetingParticipant.create({
@@ -71,7 +99,7 @@ export const getMeetingParticipantRoutes = () => {
                 });
                 createdUsers.push(createdUser)
             }
-            if (allUsers === null) {
+            if (notAlreadyInMeeting.createdUser === 0) {
                 return res.status(404).json('No new user created');
             } else {
                 res.status(201).json({createdUsers});

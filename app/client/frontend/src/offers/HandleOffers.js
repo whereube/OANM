@@ -21,13 +21,28 @@ const HandleOffers = () => {
         setAllOffers(result)
     }
 
+    const getOffersForUser = async (setAllOffers, userId) => {
+
+        const response = await fetch(`${API_URL}/offers/byUserId/` + userId);
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.log(errorData)
+            console.error('Error:', errorData); 
+            throw new Error(errorData);
+        }
+
+        const result = await response.json();
+        setAllOffers(result)
+    }
+
     const navigateToOfferArticle = (offerId) =>{
         navigate(`/showArticle/offer/${offerId}`);
     }
 
     return {
         getOffers,
-        navigateToOfferArticle
+        navigateToOfferArticle,
+        getOffersForUser
     };
 
 }

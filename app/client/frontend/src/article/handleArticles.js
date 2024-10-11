@@ -82,11 +82,36 @@ const HandleArticles = () => {
         }
     }
 
+    const getMeetingParticipant = async (userId, setParticipatingInMeetings) => {
+
+        try {
+            const response = await fetch(`${API_URL}/meetingParticipant/getByUserId/` + userId, {
+                method: 'GET',
+                headers: {
+                'Content-Type': 'application/json',
+                }
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setParticipatingInMeetings(data)
+            } else {
+                console.error('Error:', data); 
+            }
+        } catch (error) {
+            console.error('Error fetching meeting participant:', error);
+        }
+    }
+
+
+
     return {
         getArticleCategories,
         getArticleInterests,
         addArticleInterests,
-        removeArticleInterest
+        removeArticleInterest,
+        getMeetingParticipant
     };
 
 }
