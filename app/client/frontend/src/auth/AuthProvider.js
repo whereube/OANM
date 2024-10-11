@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }) => {
     const checkIfAdmin = async () => {
 
         
-        if (user === null){
+        if (!user.hasOwnProperty('userId')){
             return false
         } else{
             const userid = {"userId": user.userId}
