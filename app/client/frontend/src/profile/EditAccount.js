@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './CreateAccount.css';
+import './EditAccount.css';
 import { useAuth } from '../auth/AuthProvider';
 
 const EditAccount = () => {
@@ -85,9 +85,14 @@ const EditAccount = () => {
         }
     };
 
+    const deleteUser = () => {
+        if (window.confirm('Är du säker på att du vill ta bort ditt konto? Ingen data kommer kunna återskapas')) {
+            console.log("hej")
+        }
+    }
 
     return (
-        <div>
+        <div className='editAccount'>
             <form onSubmit={handleSubmit} className="create-account-form">
                 <h2>Redigera användare</h2>
                 <div>
@@ -151,6 +156,9 @@ const EditAccount = () => {
                 {error && <p style={{ color: 'red' }}>{error}</p>}
                 <button type="submit" className="button-small">Spara ändringar</button>
             </form>
+            <div onClick={deleteUser} className='deleteAccount'>
+                <p>Radera konto</p>
+            </div>
         </div>
     );
 };

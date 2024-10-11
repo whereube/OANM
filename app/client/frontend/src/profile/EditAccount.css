@@ -1,0 +1,16 @@
+.editAccount{
+    display: flex;
+    flex-direction: column;
+}
+
+.deleteAccount{
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: bold;
+    background-color: rgb(255, 61, 61);
+    text-align: center;
+    cursor: pointer; 
+    margin-top: 40px;
+    border-radius: 4px;
+    box-shadow: #000000 4px 4px 0 0, #000 2px 2px 0 1px;
+}

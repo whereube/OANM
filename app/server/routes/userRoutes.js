@@ -324,52 +324,24 @@ export const getUserRoutes = () => {
     });
 
 
-    // router.put('/update', async (req, res, next) => {
-    //     const {
-    //         creator_id,
-    //         username,
-    //         email,
-    //         password
-    //     } = req.body;
+    router.delete('/delete', async (req, res, next) => {
+        const { user_id } = req.body;
+        try {
+            const result = await object.end_user.destroy({
+            where: {
+                id: user_id,
+            }
+            });
 
-    //     const hashedPassword = await hashPassword(password);
-
-    //     try{
-    //         const creatorToUpdate = await object.creator.findByPk(creator_id);
-
-    //         creatorToUpdate.set({
-    //             username: username,
-    //             email: email,
-    //             password: hashedPassword
-    //         })
-
-    //         await creatorToUpdate.save();
-    //         res.status(200).json(creatorToUpdate);
-    //     } catch (error) {
-    //         console.error('Error updating creator', error);
-    //         res.status(500).json({ message: 'Internal Server Error' });
-    //     }  
-
-    // });
-
-    // router.delete('/delete', async (req, res, next) => {
-    //     const { creator_id } = req.body;
-    //     try {
-    //         const result = await object.creator.destroy({
-    //         where: {
-    //             id: creator_id,
-    //         }
-    //         });
-    
-    //         if (result === 0) {
-    //         return res.status(404).json({ message: 'Have not found' });
-    //         } 
-    //         res.sendStatus(204);
-    //     } catch (error) {
-    //     console.error('Error deleting creator', error);
-    //     res.status(500).json('Internal Server Error');
-    //     }
-    // });
+            if (result === 0) {
+                return res.status(401).json({ message: 'User not found' });
+            } 
+            res.sendStatus(204);
+        } catch (error) {
+        console.error('Error deleting user', error);
+        res.status(500).json('Internal Server Error');
+        }
+    });
 
   return router;
 };
