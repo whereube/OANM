@@ -25,13 +25,13 @@ const ShowArticles = () => {
     const { user } = useAuth();
 
     const { getOffersForUser, navigateToOfferArticle} = HandleOffers();
-    const { getNeeds, navigateToNeedArticle } = HandleNeeds();
+    const { getNeeds, navigateToNeedArticle, getNeedsForUser } = HandleNeeds();
     const { getArticleInterests, getArticleCategories, addArticleInterests, removeArticleInterest, getMeetingParticipant } = HandleArticles();
 
 
     useEffect(() => {
         getOffersForUser(setAllOffers, user.userId);
-        getNeeds('getAll', setAllNeeds);
+        getNeedsForUser(setAllNeeds, user.userId);
         getArticleCategories(setAllArticleCategories);
         getArticleInterests(setAllArticleInterests)
         getMeetingParticipant(user.userId, setParticipatingInMeetings)
@@ -42,13 +42,8 @@ const ShowArticles = () => {
     }, [allOffers]);
 
     useEffect(() => {
-        console.log(participatingInMeetings)
-    }, [participatingInMeetings]);
-
-    useEffect(() => {
         setFilteredNeeds(allNeeds)
     }, [allNeeds]);
-
 
     useEffect(() => {
         let filtered = []

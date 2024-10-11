@@ -1,7 +1,10 @@
 import { Router } from 'express';
+import { Sequelize } from 'sequelize';
 import * as object from '../models/objectIndex.js';
 import { v4 as uuidv4 } from 'uuid';
 import { validateInput, validateString, validateInteger } from '../middleware/routeFunctions.js';
+import { db } from '../database/databaseConnection.js';
+
 
 export const getNeedRoutes = () => {
 
@@ -18,16 +21,24 @@ export const getNeedRoutes = () => {
         const userId  = req.params.userId; 
         const validate = validateInput({ userId });
         if (validate.valid) {
-            const needs = await object.needs.findOne({
-                where:{
-                    user_id: userId
+            const needs = await db.query(
+                `SELECT * FROM needs
+                where exists (
+                    select * from meeting_participant mp 
+                    where needs.meeting_id = mp.meeting_id
+                    and mp.user_id = :userId
+                )`,
+                {
+                    replacements: { userId: userId }, 
+                    type: Sequelize.QueryTypes.SELECT
                 }
-            });
+            );
             res.status(200).send(needs);
         } else {
             res.status(400).json({ uuidError: validate.message }); 
         }
     });
+
 
     router.get('/byId/:needId', async (req, res, next) => {
         const needId  = req.params.needId; 
