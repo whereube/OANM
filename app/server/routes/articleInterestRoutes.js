@@ -62,7 +62,32 @@ export const getArticleInterestRoutes = () => {
         }
 
         } catch (error) {
-            console.error('Error creating category', error);
+            console.error('Error removing interest', error);
+            res.status(500).json('Internal Server Error');
+        }
+
+    });
+
+    router.post('/removeAll/byUserId', async (req, res, next) => {
+        const {
+            userId
+        } = req.body;
+
+        try {
+        const result = await object.articleInterest.destroy({
+            where: {
+                user_id: userId
+            }
+        });
+        
+        if (result === null) {
+            return res.status(404).json({ message: 'No article interest removed' });
+        } else{
+            res.status(201).json({ message: 'All interests removed'});
+        }
+
+        } catch (error) {
+            console.error('Error deleting interests', error);
             res.status(500).json('Internal Server Error');
         }
 

@@ -148,5 +148,31 @@ export const getNeedRoutes = () => {
         
     });
 
+
+    router.post('/removeAll/byUserId', async (req, res, next) => {
+        const {
+            userId
+        } = req.body;
+
+        try {
+        const result = await object.needs.destroy({
+            where: {
+                user_id: userId
+            }
+        });
+        
+        if (result === null) {
+            return res.status(404).json({ message: 'No needs deleted' });
+        } else{
+            res.status(201).json({ message: 'All users needs deleted'});
+        }
+
+        } catch (error) {
+            console.error('Error deleting needs', error);
+            res.status(500).json('Internal Server Error');
+        }
+
+    });
+
   return router;
 };

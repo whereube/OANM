@@ -111,6 +111,31 @@ export const getMeetingParticipantRoutes = () => {
 
     });
 
+    router.post('/removeAll/byUserId', async (req, res, next) => {
+        const {
+            userId
+        } = req.body;
+
+        try {
+        const result = await object.meetingParticipant.destroy({
+            where: {
+                user_id: userId
+            }
+        });
+        
+        if (result === null) {
+            return res.status(404).json({ message: 'No meeting participants deleted' });
+        } else{
+            res.status(201).json({ message: 'All participations deleted'});
+        }
+
+        } catch (error) {
+            console.error('Error deleting interests', error);
+            res.status(500).json('Internal Server Error');
+        }
+
+    });
+
 
   return router;
 };

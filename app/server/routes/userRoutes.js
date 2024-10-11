@@ -6,7 +6,9 @@ import { hashPassword, checkPassword } from '../middleware/encrypt.js';
 import { validateInput, validateString, validateInteger } from '../middleware/routeFunctions.js';
 
 export const getUserRoutes = () => {
-  const router = Router();
+    const router = Router();
+    let API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_LOCAL_API_URL;
+
 
     router.get('/getUser/:id', async (req, res, next) => {
         const id = req.params.id;
@@ -326,6 +328,21 @@ export const getUserRoutes = () => {
 
     router.delete('/delete', async (req, res, next) => {
         const { user_id } = req.body;
+        try {
+            const response = await fetch(`${API_URL}/user/meetingParticipant/removeAll/byUserId`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ userId: user_id })
+            });
+
+        } catch (error) {
+            console.error('Error deleting user', error);
+            res.status(500).json('Internal Server Error');
+        }
+
+
         try {
             const result = await object.end_user.destroy({
             where: {
