@@ -40,6 +40,33 @@ export const getArticleCategoryRoutes = () => {
 
     });
 
+    router.delete('/removeAll/byArticleList', async (req, res, next) => {
+        const {
+            articles
+        } = req.body;
+        try {
+            removedArticles = []
+            for(const article in articles){
+                const result = await object.articleCategory.destroy({
+                    where: {
+                        article_id: article.id
+                    }
+                });
+                removedArticles.append(result)
+            }
+            if (result === null) {
+                return res.status(404).json({ message: 'No article categories deleted' });
+            } else{
+                res.status(201).json({ message: 'All article categories deleted'});
+            }
+
+        } catch (error) {
+            console.error('Error deleting needs', error);
+            res.status(500).json('Internal Server Error');
+        }
+
+    });
+
 
   return router;
 };

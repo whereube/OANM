@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './EditAccount.css';
-import { useAuth } from '../auth/AuthProvider';
+import { useAuth, logOut} from '../auth/AuthProvider';
+
 
 const EditAccount = () => {
     let API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_LOCAL_API_URL;
@@ -14,6 +16,9 @@ const EditAccount = () => {
     const [error, setError] = useState(null);
     const [originalUserData, setOriginalUserData] = useState({})
     const { user } = useAuth();
+    const { logOut } = useAuth();
+    const navigate = useNavigate();
+
 
 
     useEffect(() => {
@@ -40,7 +45,7 @@ const EditAccount = () => {
             setUserName(originalUserData.user_name);
             setPhoneNumber(originalUserData.phone_number);
             setLink(originalUserData.link);
-            if(originalUserData.hasOwnProperty('company')){
+            if(originalUserData.hasOwnProperty('company') && originalUserData.company !== null){
                 setCompanyName(originalUserData.company.company_name)
             }
         }
@@ -85,9 +90,33 @@ const EditAccount = () => {
         }
     };
 
-    const deleteUser = () => {
+    const deleteUser = async() => {
         if (window.confirm('Är du säker på att du vill ta bort ditt konto? Ingen data kommer kunna återskapas')) {
-            console.log("hej")
+            try {
+                const response = await fetch(`${API_URL}/user/delete`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        user_id: originalUserData.id
+                    }),
+                });
+
+                if (response.status === 204) {
+                    alert('Kontot borttagen');
+                    navigate('/article/showAll');
+                    logOut();
+                } else if (response.status === 401) {
+                    const errorData = await response.json();
+                    setError(errorData.message);
+                } else {
+                    setError('An error occurred. Please try again.');
+                }
+            } catch (err) {
+                setError('An error occurred. Please try again.');
+                console.error('Account creation error:', err);
+            }
         }
     }
 

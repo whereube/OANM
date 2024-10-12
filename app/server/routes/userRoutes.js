@@ -328,75 +328,57 @@ export const getUserRoutes = () => {
 
     router.delete('/delete', async (req, res, next) => {
         const { user_id } = req.body;
-        try {
-            await fetch(`${API_URL}/user/meetingParticipant/removeAll/byUserId`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ userId: user_id })
-            });
-
-        } catch (error) {
-            console.error('Error deleting user', error);
-            res.status(500).json('Internal Server Error');
-        }
 
         try {
-            await fetch(`${API_URL}/user/articleInterest/removeAll/byUserId`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ userId: user_id })
-            });
+            const fetchRequests = [
+                fetch(`${API_URL}/meetingParticipant/removeAll/byUserId`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ userId: user_id })
+                }),
+                fetch(`${API_URL}/articleInterest/removeAll/byUserId`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ userId: user_id })
+                }),
+                fetch(`${API_URL}/needs/removeAll/byUserId`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ userId: user_id })
+                }),
+                fetch(`${API_URL}/offers/removeAll/byUserId`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ userId: user_id })
+                })
+            ];
 
-        } catch (error) {
-            console.error('Error deleting user', error);
-            res.status(500).json('Internal Server Error');
-        }
+            await Promise.all(fetchRequests);
 
-        try {
-            await fetch(`${API_URL}/user/needs/removeAll/byUserId`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ userId: user_id })
-            });
-
-        } catch (error) {
-            console.error('Error deleting user', error);
-            res.status(500).json('Internal Server Error');
-        }
-        try {
-            await fetch(`${API_URL}/user/offers/removeAll/byUserId`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ userId: user_id })
-            });
-
-        } catch (error) {
-            console.error('Error deleting user', error);
-            res.status(500).json('Internal Server Error');
-        }
-
-        try {
             const result = await object.end_user.destroy({
-            where: {
-                id: user_id,
-            }
+                where: {
+                    id: user_id,
+                }
             });
 
             if (result === 0) {
                 return res.status(401).json({ message: 'User not found' });
-            } 
+            }
+
+            console.log("User deleted");
             res.sendStatus(204);
+
         } catch (error) {
-        console.error('Error deleting user', error);
-        res.status(500).json('Internal Server Error');
+            console.error('Error deleting user', error);
+            res.status(500).json('Internal Server Error');
         }
     });
 

@@ -155,17 +155,32 @@ export const getNeedRoutes = () => {
         } = req.body;
 
         try {
-        const result = await object.needs.destroy({
-            where: {
-                user_id: userId
+            const userArticles = await object.needs.findAll({
+                where: {
+                    user_id: userId
+                }
+            })
+
+            await fetch(`${API_URL}/user/articleCategory/removeAll/byArticleList`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ userArticles })
+            });
+
+
+            const result = await object.needs.destroy({
+                where: {
+                    user_id: userId
+                }
+            });
+            
+            if (result === null) {
+                return res.status(404).json({ message: 'No needs deleted' });
+            } else{
+                res.status(201).json({ message: 'All users needs deleted'});
             }
-        });
-        
-        if (result === null) {
-            return res.status(404).json({ message: 'No needs deleted' });
-        } else{
-            res.status(201).json({ message: 'All users needs deleted'});
-        }
 
         } catch (error) {
             console.error('Error deleting needs', error);

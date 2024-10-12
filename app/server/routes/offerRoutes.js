@@ -154,20 +154,34 @@ export const getOfferRoutes = () => {
         } = req.body;
 
         try {
-        const result = await object.offers.destroy({
-            where: {
-                user_id: userId
+            const userArticles = await object.offers.findAll({
+                where: {
+                    user_id: userId
+                }
+            })
+            await fetch(`${API_URL}/user/articleCategory/removeAll/byArticleList`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ userArticles })
+            });
+
+
+            const result = await object.offers.destroy({
+                where: {
+                    user_id: userId
+                }
+            });
+            
+            if (result === null) {
+                return res.status(404).json({ message: 'No offers deleted' });
+            } else{
+                res.status(201).json({ message: 'All users offers deleted'});
             }
-        });
-        
-        if (result === null) {
-            return res.status(404).json({ message: 'No offers deleted' });
-        } else{
-            res.status(201).json({ message: 'All users offers deleted'});
-        }
 
         } catch (error) {
-            console.error('Error deleting offers', error);
+            console.error('Error deleting needs', error);
             res.status(500).json('Internal Server Error');
         }
 
