@@ -15,6 +15,7 @@ import {AuthProvider, useAuth, checkIfAdmin} from './auth/AuthProvider.js';
 import Header from './header/Header.js';
 import EditMeeting from './admin/meeting/EditMeeting.js';
 import EditAccount from './profile/EditAccount.js';
+import MyArticles from './profile/MyArticles.js';
 
 function App() {
 
@@ -45,6 +46,7 @@ function App() {
                 <Route path=":offerOrNeed/:id" element={<Article />}/>
               </Route>
               <Route path="/profile/login" element={<LoginForm />}></Route>
+              <Route path="/profile/myArticles" element={<MyArticles />}></Route>
               <Route path="/profile/edit" element={<EditAccount />}></Route>
               <Route path="/whiteboard/:meetingId" element={<Whiteboard />}/>
               <Route path='/admin' element={<AdminRoute />}>

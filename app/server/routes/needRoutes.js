@@ -39,6 +39,22 @@ export const getNeedRoutes = () => {
         }
     });
 
+    router.get('/usersOwnNeeds/:userId', async (req, res, next) => {
+        const userId  = req.params.userId; 
+        const validate = validateInput({ userId });
+
+        if (validate.valid) {
+            const needs = await object.needs.findAll({
+                where:{
+                    user_id: userId
+                }
+            });
+            res.status(200).send(needs);
+        } else {
+            res.status(400).json({ uuidError: validate.message }); 
+        }
+    });
+
 
     router.get('/byId/:needId', async (req, res, next) => {
         const needId  = req.params.needId; 

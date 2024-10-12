@@ -33,6 +33,21 @@ const HandleNeeds = () => {
         setAllNeeds(result)
     }
 
+    const getUsersOwnNeeds = async (setOwnNeeds, userId) => {
+
+        const response = await fetch(`${API_URL}/needs/usersOwnNeeds/` + userId);
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.log(errorData)
+            console.error('Error:', errorData); 
+            throw new Error(errorData);
+        }
+
+        const result = await response.json();
+        setOwnNeeds(result)
+    }
+
+
     const navigateToNeedArticle = (offerId) =>{
         navigate(`/showArticle/need/${offerId}`);
     }
@@ -40,7 +55,8 @@ const HandleNeeds = () => {
     return {
         getNeeds,
         navigateToNeedArticle,
-        getNeedsForUser
+        getNeedsForUser,
+        getUsersOwnNeeds
     };
 
 }

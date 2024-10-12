@@ -18,6 +18,7 @@ meetingCategory.belongsTo(category, { foreignKey: 'category_id' });
 meetingCategory.belongsTo(meeting, { foreignKey: 'meeting_id' });
 meetingParticipant.belongsTo(meeting, {foreignKey: 'meeting_id'})
 meetingParticipant.belongsTo(end_user, {foreignKey: 'user_id'})
+articleInterest.belongsTo(end_user, {foreignKey: 'user_id'})
 
 
 

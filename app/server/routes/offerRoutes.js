@@ -39,6 +39,22 @@ export const getOfferRoutes = () => {
         }
     });
 
+    router.get('/usersOwnOffers/:userId', async (req, res, next) => {
+        const userId  = req.params.userId; 
+        const validate = validateInput({ userId });
+
+        if (validate.valid) {
+            const offers = await object.offers.findAll({
+                where:{
+                    user_id: userId
+                }
+            });
+            res.status(200).send(offers);
+        } else {
+            res.status(400).json({ uuidError: validate.message }); 
+        }
+    });
+
 
     router.get('/byId/:offerId', async (req, res, next) => {
         const offerId  = req.params.offerId; 
