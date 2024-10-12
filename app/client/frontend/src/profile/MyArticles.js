@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import HandleOffers from '../offers/HandleOffers';
 import HandleNeeds from '../needs/HandleNeeds';
 import { useAuth } from '../auth/AuthProvider';
+import './MyArticles.css'
 
 
 
@@ -16,6 +17,7 @@ const MyArticles = () => {
     const [allArticleIds, setAllArticleIds] = useState([])
     const [articleInterest, setArticleInterest] = useState([])
     const [loading, setLoading] = useState(true)
+    const [viewOffers, setViewOffers] = useState(true);
 
 
 
@@ -39,6 +41,10 @@ const MyArticles = () => {
     useEffect(() => {
         console.log(articleInterest)
     }, [articleInterest]);
+
+    const toggleOffersOrNeeds = (displayOffers) => {
+        setViewOffers(displayOffers)
+    }
 
     useEffect(() => {
         const fetchArticleInterest = async () => {
@@ -70,33 +76,62 @@ const MyArticles = () => {
     }, [allArticleIds]);
 
     return (
-        <div>
-            <h2>Erbjudanden</h2>
-            {ownOffers.map(article => (
-                <div key={article.id}>
-                    <p>{article.title}</p>
-                    <input
-                        readOnly
-                        value={articleInterest
-                        .filter(interest => interest.article_id === article.id)
-                        .map(interest => interest.end_user.email)
-                        .join('; ')}
-                    />
+        <div className='myArticlesDiv'>
+            <div className='showOffersOrNeeds'>
+                <div className='buttonsDiv'>
+                    <p className={`OfferOrNeedButton ${viewOffers && 'active'} `} onClick={() => toggleOffersOrNeeds(true)}>Erbjudanden</p>
+                    <p className={`OfferOrNeedButton ${viewOffers === false && 'active'} `} onClick={() => toggleOffersOrNeeds(false)}>Behov</p>
                 </div>
-            ))}
-            <h2>Behov</h2>
-            {ownNeeds.map(article => (
-                <div key={article.id}>
-                    <p>{article.title}</p>
-                    <input
-                        readOnly
-                        value={articleInterest
-                        .filter(interest => interest.article_id === article.id)
-                        .map(interest => interest.end_user.email)
-                        .join('; ')}
-                    />
-                </div>
-            ))}
+            </div>
+            {viewOffers ? (
+                <h1>Mina erbjudanden</h1>
+            ):(
+                <h1>Mina behov</h1>
+            )}
+            <table className='articleTable'>
+                <thead>
+                    <tr>
+                        <th>Titel</th>
+                        <th>Redigera</th>
+                        <th>Intresserade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {viewOffers ? (
+                        ownOffers.map(article => (
+                            <tr className='listOfArticles'>
+                                <td>{article.title}</td>
+                                <td>&#9998;</td>
+                                <td>
+                                    <input
+                                        readOnly
+                                        value={articleInterest
+                                        .filter(interest => interest.article_id === article.id)
+                                        .map(interest => interest.end_user.email)
+                                        .join('; ')}
+                                    />
+                                </td>
+                            </tr>
+                        ))
+                    ) : (
+                        ownNeeds.map(article => (
+                            <tr className='listOfArticles'>
+                                <td>{article.title}</td>
+                                <td>&#9998;</td>
+                                <td>
+                                    <input
+                                        readOnly
+                                        value={articleInterest
+                                        .filter(interest => interest.article_id === article.id)
+                                        .map(interest => interest.end_user.email)
+                                        .join('; ')}
+                                    />
+                                </td>
+                            </tr>
+                        ))
+                    )}
+                </tbody>
+            </table>
         </div>
     );
 };
