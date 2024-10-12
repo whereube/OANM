@@ -35,7 +35,11 @@ function App() {
                       <NewArticleForm />
                     </ProtectedRoute>
                   }/>
-                <Route path="showAll" element={<ShowArticles />}/>
+                <Route path="showAll" element={
+                  <ProtectedRoute>
+                    <ShowArticles />
+                  </ProtectedRoute>
+                }/>
               </Route>
               <Route path="/showArticle">
                 <Route path=":offerOrNeed/:id" element={<Article />}/>
