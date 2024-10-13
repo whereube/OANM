@@ -20,6 +20,13 @@
     margin-bottom: 40px;
 }
 
+.createAccountDiv > div{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .create-account-form > div {
     margin: 40px 40px;
     display: flex;
@@ -28,4 +35,11 @@
 
 .create-account-form > div > input {
     font-size: 30px;
+}
+
+@media screen and (max-width: 768px) {
+    .create-account-form{
+        min-width: 200px;
+        max-width: 80%;
+    }
 }
