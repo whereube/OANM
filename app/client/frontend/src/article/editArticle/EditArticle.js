@@ -222,7 +222,7 @@ const EditArticle = () => {
                 throw new Error(errorData);
             } else {
                 alert('Artikeln har uppdaterats')
-                navigate(0);
+                window.location.reload();
             }
         } catch (error) {
             console.error({ success: false, message: error.message });
@@ -270,11 +270,11 @@ const EditArticle = () => {
                                         value={formData.articleCategories['category_1'] || ""}
                                         onChange={handleChange}
                                         required
-                                        defaultValue={""}
                                     >
+                                        <option disabled value="">Välj kategori</option>
                                         {meetingCategories.map(category => (
                                             category.category.parent_id === null && (
-                                                <option className="option" key={category.category.id} value={category.category.id} selected={formData.articleCategories['category_1'] === category.category.id}>{category.category.category_name}</option>
+                                                <option className="option" key={category.category.id} value={category.category.id}>{category.category.category_name}</option>
                                             )
                                         ))}
                                     </select>
@@ -285,12 +285,11 @@ const EditArticle = () => {
                                             name="category_2"
                                             value={formData.articleCategories['category_2'] || ""}
                                             onChange={handleChange}
-                                            defaultValue={""}
                                         >
                                             <option disabled value="">Välj underkategori</option>
                                             {meetingCategories.map(subCategory => (
                                                     subCategory.category.parent_id === formData.articleCategories['category_1'] && (
-                                                        <option className="option" key={subCategory.category.id} value={subCategory.category.id} selected={formData.articleCategories['category_2'] === subCategory.category.id}>{subCategory.category.category_name}</option>
+                                                        <option className="option" key={subCategory.category.id} value={subCategory.category.id}>{subCategory.category.category_name}</option>
                                                     )
                                             ))}
                                         </select>

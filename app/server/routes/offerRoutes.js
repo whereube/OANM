@@ -207,8 +207,7 @@ export const getOfferRoutes = () => {
         const {
             articleId,
             title,
-            description, 
-            articleCategories
+            description
         } = req.body;
         
         const validateStr = validateString({ title, description });
@@ -233,25 +232,6 @@ export const getOfferRoutes = () => {
                 } else{
                     res.status(201).json({ message: 'Article updated'});
                 }
-                /*
-                for (const key in articleCategories) {
-                    if (articleCategories.hasOwnProperty(key)) {
-                        const articleCategoryResponse = await fetch(`${API_URL}/articleCategory/add`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ 'articleId': id, 'categoryId': articleCategories[key] })
-                        });
-                        
-                        if (articleCategoryResponse === null) {
-                            return res.status(404).json('No new article category created');
-                        }
-                    }
-                }
-
-                res.status(201).json({ message: 'New article category created'});
-                */
             } catch (error) {
                 console.error('Error creating offer', error);
                 res.status(500).json('Internal Server Error');
