@@ -1,4 +1,4 @@
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { useAuth, checkIfAdmin, logOut} from '../auth/AuthProvider.js';
 import { useState } from "react";
 import ProfilePopOver from './ProfilePopOver.js';
@@ -8,15 +8,20 @@ const Header = () => {
 
   const { user } = useAuth();
   const [dropdownIsOpen, setDropdownIsOpen] = useState(false)
+  const navigate = useNavigate()
 
     const togglePopover = () => {
         setDropdownIsOpen(!dropdownIsOpen);
     };
 
+    const navigateHome = () => {
+      navigate('/article/showAll')
+    }
+
   return (
     <>
         <div className='header'>
-            <div className='logoImage'>
+            <div className='logoImage' onClick={navigateHome}>
               <div className='vinnovaLogoDiv'>
                 <img src='/Vinnova_green_finansiering_RGB.png' alt='Vinnova logotyp' className='vinnovaLogoImg'/>
               </div>
