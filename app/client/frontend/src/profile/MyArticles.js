@@ -18,6 +18,7 @@ const MyArticles = () => {
     const [articleInterest, setArticleInterest] = useState([])
     const [loading, setLoading] = useState(true)
     const [viewOffers, setViewOffers] = useState(true);
+    const navigate = useNavigate()
 
 
 
@@ -37,10 +38,6 @@ const MyArticles = () => {
         }
         setAllArticleIds(articleIds)
     }, [ownOffers]);
-
-    useEffect(() => {
-        console.log(articleInterest)
-    }, [articleInterest]);
 
     const toggleOffersOrNeeds = (displayOffers) => {
         setViewOffers(displayOffers)
@@ -62,7 +59,6 @@ const MyArticles = () => {
                         throw new Error('Failed to fetch article interest');
                     }
                     const data = await response.json();
-                    console.log(data)
                     setArticleInterest(data);
                     setLoading(false);
                 } catch (error) {
@@ -74,6 +70,10 @@ const MyArticles = () => {
 
         fetchArticleInterest();
     }, [allArticleIds]);
+
+    const redirect = (url) => {
+        navigate(url)
+    }
 
     return (
         <div className='myArticlesDiv'>
@@ -93,15 +93,15 @@ const MyArticles = () => {
                     <tr>
                         <th>Titel</th>
                         <th>Redigera</th>
-                        <th>Intresserade</th>
+                        <th>Mailadresser till intresserade</th>
                     </tr>
                 </thead>
                 <tbody>
                     {viewOffers ? (
                         ownOffers.map(article => (
-                            <tr className='listOfArticles'>
+                            <tr className='listOfArticles' key={article.id}>
                                 <td>{article.title}</td>
-                                <td>&#9998;</td>
+                                <td onClick={() => redirect('/edit/offer/' + article.id)}>&#9998;</td>
                                 <td>
                                     <input
                                         readOnly
@@ -115,9 +115,9 @@ const MyArticles = () => {
                         ))
                     ) : (
                         ownNeeds.map(article => (
-                            <tr className='listOfArticles'>
+                            <tr className='listOfArticles' key={article.id}>
                                 <td>{article.title}</td>
-                                <td>&#9998;</td>
+                                <td onClick={() => redirect('/edit/need/' + article.id)}>&#9998;</td>
                                 <td>
                                     <input
                                         readOnly

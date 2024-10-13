@@ -16,6 +16,7 @@ import Header from './header/Header.js';
 import EditMeeting from './admin/meeting/EditMeeting.js';
 import EditAccount from './profile/EditAccount.js';
 import MyArticles from './profile/MyArticles.js';
+import EditArticle from './article/editArticle/EditArticle.js';
 
 function App() {
 
@@ -48,6 +49,7 @@ function App() {
               <Route path="/profile/login" element={<LoginForm />}></Route>
               <Route path="/profile/myArticles" element={<MyArticles />}></Route>
               <Route path="/profile/edit" element={<EditAccount />}></Route>
+              <Route path="edit/:offerOrNeed/:id" element={<EditArticle />}/>
               <Route path="/whiteboard/:meetingId" element={<Whiteboard />}/>
               <Route path='/admin' element={<AdminRoute />}>
                   <Route path="" element={<AdminPage />}/>

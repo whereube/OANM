@@ -12,6 +12,17 @@ export const getArticleCategoryRoutes = () => {
         res.status(200).send(data);
     });
 
+    router.get('/ByArticleId/:articleId', async (req, res, next) => {
+        const { articleId } = req.params;
+
+        const data = await object.articleCategory.findAll({
+            where: {
+                article_id: articleId
+            }
+        });
+        res.status(200).send(data);
+    });
+
     router.post('/add', async (req, res, next) => {
       const {
           articleId,
@@ -64,6 +75,82 @@ export const getArticleCategoryRoutes = () => {
             console.error('Error deleting needs', error);
             res.status(500).json('Internal Server Error');
         }
+
+    });
+
+    router.delete('/removeCategories', async (req, res, next) => {
+      const { categoryIds, articleId } = req.body; 
+
+      const validate = validateInput({ articleId });
+
+      if (validate.valid) {
+        if (!Array.isArray(categoryIds) || categoryIds.length === 0) {
+          return res.status(400).json({ message: 'category_id must be a non-empty array' });
+        }
+        try {
+          const removed = [];
+          for (const catId of categoryIds) {    
+            const result = await object.articleCategory.destroy({
+              where: {
+                article_id: articleId,
+                category_id: catId
+              },
+            });
+      
+            removed.push(result);
+          }
+      
+          if (removed.length === categoryIds.length) {
+            res.status(201).json({ message: 'Categories removed' });
+          } else {
+            res.status(500).json({ message: 'Not all categories were removed successfully' });
+          }
+      
+        } catch (error) {
+          console.error('Error removing categories', error);
+          res.status(500).json({ message: 'Internal Server Error' });
+        }
+      } else {
+          res.status(400).json({ message: validate.message});
+      }
+
+    });
+
+
+    router.post('/addCategoriesByList', async (req, res, next) => {
+      const { categoryIds, articleId } = req.body; 
+    
+      const validate = validateInput({ articleId });
+
+      // Ensure category_id is an array
+      if (!Array.isArray(categoryIds) || categoryIds.length === 0) {
+        return res.status(400).json({ message: 'category_id must be a non-empty array' });
+      }
+      try {
+        const createdEntries = [];
+        for (const catId of categoryIds) {
+          const id = uuidv4();
+    
+          // Create each meetingCategory entry
+          const result = await object.articleCategory.create({
+            id: id,
+            article_id: articleId,
+            category_id: catId
+          });
+    
+          createdEntries.push(result);
+        }
+    
+        if (createdEntries.length === categoryIds.length) {
+          res.status(201).json({ message: 'New categories added', createdEntries });
+        } else {
+          res.status(500).json({ message: 'Not all categories were added successfully' });
+        }
+    
+      } catch (error) {
+        console.error('Error adding categories', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+      }
 
     });
 
