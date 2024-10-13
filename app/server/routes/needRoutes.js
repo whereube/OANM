@@ -39,6 +39,22 @@ export const getNeedRoutes = () => {
         }
     });
 
+    router.get('/usersOwnNeeds/:userId', async (req, res, next) => {
+        const userId  = req.params.userId; 
+        const validate = validateInput({ userId });
+
+        if (validate.valid) {
+            const needs = await object.needs.findAll({
+                where:{
+                    user_id: userId
+                }
+            });
+            res.status(200).send(needs);
+        } else {
+            res.status(400).json({ uuidError: validate.message }); 
+        }
+    });
+
 
     router.get('/byId/:needId', async (req, res, next) => {
         const needId  = req.params.needId; 
@@ -187,6 +203,44 @@ export const getNeedRoutes = () => {
             res.status(500).json('Internal Server Error');
         }
 
+    });
+
+    router.post('/edit', async (req, res, next) => {
+        const {
+            articleId,
+            title,
+            description, 
+        } = req.body;
+        
+        const validateStr = validateString({ title, description });
+        const validate = validateInput({ articleId });
+
+        if (validate.valid && validateStr.valid) {
+            try {
+                const result = await object.needs.update(
+                    {
+                        title,
+                        description
+                    },
+                    {
+                        where: {
+                            id: articleId,
+                        }
+                    }
+                );
+
+                if (result === 0) {
+                    return res.status(404).json('Article not updated');
+                } else{
+                    res.status(201).json({ message: 'Article updated'});
+                }
+            } catch (error) {
+                console.error('Error creating offer', error);
+                res.status(500).json('Internal Server Error');
+            }
+        } else {
+            res.status(400).json({ uuidError: validate.message, StrError: validateStr.message, IntError: validateInt.message }); 
+        }
     });
 
   return router;

@@ -35,6 +35,20 @@ const HandleOffers = () => {
         setAllOffers(result)
     }
 
+    const getUsersOwnOffers = async (setOwnOffers, userId) => {
+
+        const response = await fetch(`${API_URL}/offers/usersOwnOffers/` + userId);
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.log(errorData)
+            console.error('Error:', errorData); 
+            throw new Error(errorData);
+        }
+
+        const result = await response.json();
+        setOwnOffers(result)
+    }
+
     const navigateToOfferArticle = (offerId) =>{
         navigate(`/showArticle/offer/${offerId}`);
     }
@@ -42,7 +56,8 @@ const HandleOffers = () => {
     return {
         getOffers,
         navigateToOfferArticle,
-        getOffersForUser
+        getOffersForUser,
+        getUsersOwnOffers
     };
 
 }

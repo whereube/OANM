@@ -183,34 +183,6 @@ function EditMeeting() {
             console.error("Error editing categories:", error);
             setResponseMessage("An error occurred while editing the categories.");
         }
-        /*Kod för att använda addCategories och removeCategories med dessa listor*/
-
-        /*
-        try {
-        const response = await fetch(`${API_URL}/meetingCategory/addMeetingAndCategory`, {
-            method: "POST",
-            headers: {
-            "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-            ...formData,
-            category_id: selectedCategories
-            }),
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            alert("Möte skapat");
-            handleSaveAndExit();
-        } else {
-            setResponseMessage(data.message);
-        }
-        } catch (error) {
-        console.error("Error submitting form:", error);
-        setResponseMessage("An error occurred while submitting the form.");
-        }
-        */
     };
 
     const handleMeetingNameChange = (event) => {

@@ -49,6 +49,8 @@ const ProfilePopOver = (props) => {
             {props.dropdownIsOpen && (
                 <div className="popover-content">
                     <p className='popOverAlt' onClick={logOut}>Logga ut</p>
+                    <Link className='popOverAlt linkButton' to={'/profile/edit'} >Min profil</Link>
+                    <Link className='popOverAlt linkButton' to={'/profile/myArticles'} >Mina artiklar</Link>
                     {isAdmin && 
                         <>
                             <Link className='popOverAlt linkButton' to={'/admin'} >Adminportal</Link>

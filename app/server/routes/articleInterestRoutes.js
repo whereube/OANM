@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { Sequelize } from 'sequelize';
 import * as object from '../models/objectIndex.js';
 import { v4 as uuidv4 } from 'uuid';
 import { validateInput, validateString, validateInteger } from '../middleware/routeFunctions.js';
@@ -11,6 +12,26 @@ export const getArticleInterestRoutes = () => {
         });
         res.status(200).send(data);
     });
+
+
+    router.post('/getAll/fromArticleList', async (req, res, next) => {
+        const {
+            articleList,
+        } = req.body;
+        const data = await object.articleInterest.findAll({
+            where: {
+                article_id: {
+                    [Sequelize.Op.in]: articleList
+                }
+            },
+            include: [{
+                model: object.end_user,
+                attributes: ['email']
+            }]
+        });
+        res.status(200).send(data);
+    });
+
 
     router.post('/add', async (req, res, next) => {
       const {
