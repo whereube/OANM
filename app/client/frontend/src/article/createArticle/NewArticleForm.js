@@ -436,7 +436,7 @@ const NewArticleForm = () => {
                             </div>
                         ) : (
                             <div className='previouslyCreatedDiv'>
-                                <h4>Dina tidigare skapade erbjudanden för detta möte: </h4>
+                                <h4>Dina tidigare skapade behov för detta möte: </h4>
                                 {previouslyCreatedNeeds.map(article => (
                                     <p key={article.id} className='previouslyCreatedArticle'>{article.title}</p>
                                 ))}

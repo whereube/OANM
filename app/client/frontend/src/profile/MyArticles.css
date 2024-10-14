@@ -18,6 +18,10 @@
     width: 100%;
 }
 
+.editIconIcon{
+  cursor: pointer;
+}
+
 
 @media only screen and (max-width: 700px) {
   .articleTable {

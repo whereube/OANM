@@ -194,7 +194,6 @@ const EditArticle = () => {
                 const newCategories = categoriesFromForm.filter((element) => !previousArticleCategories.includes(element));
                 const removedCategories = previousArticleCategories.filter((element) => !categoriesFromForm.includes(element))
                 if(removedCategories.length > 0){
-                    console.log(removedCategories)
                     response = await fetch(`${API_URL}/articleCategory/removeCategories`, {
                         method: 'DELETE',
                         headers: {
@@ -205,7 +204,6 @@ const EditArticle = () => {
                 }
 
                 if(newCategories.length > 0){
-                    console.log(newCategories)
                     response = await fetch(`${API_URL}/articleCategory/addCategoriesByList`, {
                         method: 'POST',
                         headers: {
