@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useAuth } from '../../auth/AuthProvider';
 import './NewArticleForm.css'
 
 const NewArticleForm = () => {
 
     let API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_LOCAL_API_URL;
     let { meetingId } = useParams();
+    const navigate = useNavigate(); 
+    const location = useLocation();
     const meetingIdParam = meetingId
     const [categories, setCategories] = useState([])
     const [meetingCategories, setMeetingCategories] = useState([])
@@ -25,7 +28,14 @@ const NewArticleForm = () => {
     });
 
     const [status, setStatus] = useState(null);
-    const navigate = useNavigate(); 
+    const [previouslyCreatedOffers, setPreviouslyCreatedOffers] = useState([]);
+    const [previouslyCreatedNeeds, setPreviouslyCreatedNeeds] = useState([]);
+    const [offerOrNeedParam, setOfferOrNeedParam] = useState(() => {
+        const params = new URLSearchParams(location.search);
+        return params.get('offerOrNeed') || '';
+    });
+    const { user } = useAuth();
+
 
     useEffect(() => {
         const storedUserId = localStorage.getItem('sessionId');
@@ -41,6 +51,72 @@ const NewArticleForm = () => {
         getMeetingCategories();
         getCategories();
     }, []);
+
+    useEffect(() => {
+        if(offerOrNeedParam === 'offer'){
+            setAddOffer(true)
+        }
+        else if(offerOrNeedParam === 'need'){
+            setAddOffer(false)
+        }
+    }, [offerOrNeedParam]);
+
+    useEffect(() => {
+        if(user.userId !== undefined){
+            getPreviouslyCreatedOffers();
+            getPreviouslyCreatedNeeds();
+        }
+    }, [meetingId, user]);
+
+    const getPreviouslyCreatedOffers = async () => {
+        try {
+            const response = await fetch(`${API_URL}/offers/byMeetingAndUserId`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json' // Indicates that the body of the request contains JSON
+                },
+                body: JSON.stringify({userId: user.userId, meetingId: meetingId}) // Convert dataToSend to JSON string
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.log(errorData)
+                console.error('Error:', errorData); 
+                throw new Error(errorData);
+            } else {
+                const result = await response.json();
+                setPreviouslyCreatedOffers(result)
+            }
+        } catch (error) {
+            console.error('Error:', error); 
+        }
+    }
+
+    const getPreviouslyCreatedNeeds = async () => {
+        try {
+            const response = await fetch(`${API_URL}/needs/byMeetingAndUserId`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json' // Indicates that the body of the request contains JSON
+                },
+                body: JSON.stringify({userId: user.userId, meetingId: meetingId}) // Convert dataToSend to JSON string
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.log(errorData)
+                console.error('Error:', errorData); 
+                throw new Error(errorData);
+            } else {
+                const result = await response.json();
+                setPreviouslyCreatedNeeds(result)
+            }
+        } catch (error) {
+            console.error('Error:', error); 
+        }
+    }
+
+
 
     const handleChange = (e) =>{
 
@@ -121,7 +197,11 @@ const NewArticleForm = () => {
             }
 
             const result = await response.json();
-            setStatus({ success: true, message: 'Offer added successfully!' });
+            if (addOffer) {
+                setStatus({ success: true, message: 'Erbjudande tillagt' });
+            } else {
+                setStatus({ success: true, message: 'Behov tillagt' });
+            }
             // Clear form fields
             setFormData({
                 userId: '',
@@ -135,8 +215,13 @@ const NewArticleForm = () => {
                 meetingId: meetingIdParam != undefined ? meetingIdParam : null,
                 articleCategories: {}
             });
-            navigate(0); 
-            } catch (error) {
+            if (addOffer) {
+                navigate(`?offerOrNeed=offer`);
+            } else {
+                navigate(`?offerOrNeed=need`);
+            }
+            window.location.reload();
+        } catch (error) {
             setStatus({ success: false, message: error.message });
         }
     };
@@ -342,6 +427,22 @@ const NewArticleForm = () => {
                             )}
                         </div>
                     )}
+                        {addOffer ? (
+                            <div className='previouslyCreatedDiv'>
+                                <h4>Dina tidigare skapade erbjudanden för detta möte: </h4>
+                                {previouslyCreatedOffers.map(article => (
+                                    <p key={article.id} className='previouslyCreatedArticle'>{article.title}</p>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className='previouslyCreatedDiv'>
+                                <h4>Dina tidigare skapade erbjudanden för detta möte: </h4>
+                                {previouslyCreatedNeeds.map(article => (
+                                    <p key={article.id} className='previouslyCreatedArticle'>{article.title}</p>
+                                ))}
+                            </div>
+                        )}
+
                 </div>
             ): (
                 <p>Laddar...</p>

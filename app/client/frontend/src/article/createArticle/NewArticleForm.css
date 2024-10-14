@@ -65,3 +65,20 @@
 #description{
     font-family: inherit;
 }
+
+.previouslyCreatedDiv{
+    text-align: center;
+    padding: 2%;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    margin-left: 8px;
+    margin-right: 8px;
+    border-radius: 4px;
+
+}
+
+.previouslyCreatedArticle{
+    border-radius: 4px;
+    box-shadow: 1px 1px 1px 1px #141414;
+    padding: 1%;
+}

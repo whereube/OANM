@@ -76,6 +76,27 @@ export const getOfferRoutes = () => {
     });
 
 
+    router.post('/byMeetingAndUserId', async (req, res, next) => {
+        const {
+            userId,
+            meetingId
+        } = req.body;
+        const validate = validateInput({ userId, meetingId });
+
+        if (validate.valid) {
+            const offers = await object.offers.findAll({
+                where:{
+                    user_id: userId,
+                    meeting_id: meetingId
+                }
+            });
+            res.status(200).send(offers);
+        } else {
+            res.status(400).json({ uuidError: validate.message }); 
+        }
+    });
+
+
     router.get('/byMeetingId/:meetingId', async (req, res, next) => {
         const meetingId  = req.params.meetingId; 
         const validate = validateInput({ meetingId });
