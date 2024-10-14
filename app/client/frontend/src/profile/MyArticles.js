@@ -92,7 +92,7 @@ const MyArticles = () => {
                 <thead>
                     <tr>
                         <th>Titel</th>
-                        <th>Redigera</th>
+                        <th className='editIcon'>Redigera</th>
                         <th>Mailadresser till intresserade</th>
                     </tr>
                 </thead>
@@ -101,7 +101,7 @@ const MyArticles = () => {
                         ownOffers.map(article => (
                             <tr className='listOfArticles' key={article.id}>
                                 <td>{article.title}</td>
-                                <td onClick={() => redirect('/edit/offer/' + article.id)}>&#9998;</td>
+                                <td className='editIcon' onClick={() => redirect('/edit/offer/' + article.id)}>&#9998;</td>
                                 <td>
                                     <input
                                         readOnly
@@ -117,7 +117,7 @@ const MyArticles = () => {
                         ownNeeds.map(article => (
                             <tr className='listOfArticles' key={article.id}>
                                 <td>{article.title}</td>
-                                <td onClick={() => redirect('/edit/need/' + article.id)}>&#9998;</td>
+                                <td className='editIcon' onClick={() => redirect('/edit/need/' + article.id)}>&#9998;</td>
                                 <td>
                                     <input
                                         readOnly

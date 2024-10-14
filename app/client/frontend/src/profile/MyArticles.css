@@ -9,6 +9,8 @@
     color: #000000;
     text-align: center;
     width: 80%;
+    overflow: auto;
+
 }
 
 
@@ -19,7 +21,24 @@
 
 @media only screen and (max-width: 700px) {
   .articleTable {
-    width: 95%;
+    width: 100%;
+    max-width: 100%;
     margin: auto;
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+
+  .editIcon{
+    width: 8%;
+  }
+
+  .listOfArticles input{
+    max-width: 90%;
+  }
+
+  td, th {
+    word-wrap: break-word;
+    white-space: normal;
+    width: 10%; /* Set to your preferred width */
   }
 }
