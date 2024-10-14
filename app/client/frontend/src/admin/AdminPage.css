@@ -97,3 +97,7 @@ label[for=link]{
 .errorMessage{
     color: red;
 }
+
+.editButton{
+    margin-bottom: 15px;
+}

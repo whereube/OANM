@@ -47,9 +47,9 @@ function App() {
                 <Route path=":offerOrNeed/:id" element={<Article />}/>
               </Route>
               <Route path="/profile/login" element={<LoginForm />}></Route>
-              <Route path="/profile/myArticles" element={<MyArticles />}></Route>
-              <Route path="/profile/edit" element={<EditAccount />}></Route>
-              <Route path="edit/:offerOrNeed/:id" element={<EditArticle />}/>
+              <Route path="/profile/myArticles" element={<ProtectedRoute><MyArticles /></ProtectedRoute>}></Route>
+              <Route path="/profile/edit" element={<ProtectedRoute><EditAccount /></ProtectedRoute>}></Route>
+              <Route path="edit/:offerOrNeed/:id" element={<ProtectedRoute><EditArticle /></ProtectedRoute>}/>
               <Route path="/whiteboard/:meetingId" element={<Whiteboard />}/>
               <Route path='/admin' element={<AdminRoute />}>
                   <Route path="" element={<AdminPage />}/>
