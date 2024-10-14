@@ -36,7 +36,7 @@ const LoginForm = () => {
     }
 
     return (
-        <div>
+        <div className='main-div'>
             {!showCreateAccount &&
                 <div className='loginDiv'>
                     <form onSubmit={handleSubmit} className="login-form">

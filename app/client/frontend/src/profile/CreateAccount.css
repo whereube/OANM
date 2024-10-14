@@ -20,6 +20,10 @@
     margin-bottom: 40px;
 }
 
+.main-div{
+    max-width: 99%;
+}
+
 .createAccountDiv > div{
     display: flex;
     flex-direction: column;
@@ -40,6 +44,19 @@
 @media screen and (max-width: 768px) {
     .create-account-form{
         min-width: 200px;
-        max-width: 80%;
+        max-width: 90%;
     }
+
+    .deleteAccount{
+        width: 60%;
+    }
+
+    .create-account-form {
+        padding: 5px 5px 10px 5px;
+    }
+
+    .createAccountTitle{
+        text-align: center;
+    }
+
 }

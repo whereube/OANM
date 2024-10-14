@@ -57,7 +57,7 @@ const CreateAccount = (props) => {
     return (
         <div>
             <form onSubmit={handleSubmit} className="create-account-form">
-                <h2>Ny användare</h2>
+                <h2 className='createAccountTitle'>Ny användare</h2>
                 <div>
                     <label>Email:</label>
                     <input
