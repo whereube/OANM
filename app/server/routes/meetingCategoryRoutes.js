@@ -71,7 +71,10 @@ export const getMeetingCategoryRoutes = () => {
             include: object.category,
             where: {
                 meeting_id: meetingId
-            }
+            },
+            order: [
+                [{ model: object.category, as: 'category' }, 'category_name', 'ASC']
+            ]
       });
         res.status(200).send(data);
     });

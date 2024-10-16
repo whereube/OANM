@@ -8,6 +8,7 @@ export const getCategoryRoutes = () => {
 
     router.get('/getAll', async (req, res, next) => {
         const allCategories = await object.category.findAll({
+            order: [['category_name', 'ASC']]
         });
         res.status(200).send(allCategories);
     });
