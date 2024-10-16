@@ -122,6 +122,7 @@ const EditAccount = () => {
 
     return (
         <div className='editAccount'>
+            <p>Läs mer om hanteringen av dina personuppgifter genom att ladda ner: <a href='/Ecubuntu_dataskyddspolicy.pdf' download='/Ecubuntu_dataskyddspolicy.pdf'>Ecubuntus GDPR-policy</a></p>
             <form onSubmit={handleSubmit} className="create-account-form">
                 <h2>Redigera användare</h2>
                 <div>
