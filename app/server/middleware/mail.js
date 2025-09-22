@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
  */
 
 export async function sendPasswordResetEmail(toEmail, token) {
-  const resetLink = `${process.env.FRONTEND_URL}/reset-password?/${token}`;
+  const resetLink = `${process.env.FRONTEND_URL}/reset-password/${token}`;
 
   const mailOptions = {
     from: process.env.GMAIL_USER,
@@ -23,7 +23,7 @@ export async function sendPasswordResetEmail(toEmail, token) {
     subject: 'Återställning av lösenord',
     html: `
       <p>Hej,</p>
-      <p>Du har begärt en länk för att återställa ditt lösenord. Klicka på länken nedan och följ instruktionerna :</p>
+      <p>Du har begärt en länk för att återställa ditt lösenord. Klicka på länken nedan och följ instruktionerna:</p>
       <a href="${resetLink}">Återställ lösenord</a>
       <p>Om du inte har begärt en länk för att återställa ditt lösenord kan du ignorera detta medelande</p>
     `

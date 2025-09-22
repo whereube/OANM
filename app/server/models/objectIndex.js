@@ -8,6 +8,7 @@ import { articleCategory } from "./articleCategory.js";
 import { meetingCategory } from "./meetingCategory.js";
 import { articleInterest } from "./articleInterest.js";
 import { meetingParticipant } from "./meetingParticipant.js";
+import { password_reset_requests } from "./password_reset_requests.js";
 
 const environment = process.env.DEV_ENVIRONMENT;
 
@@ -19,6 +20,8 @@ meetingCategory.belongsTo(meeting, { foreignKey: 'meeting_id' });
 meetingParticipant.belongsTo(meeting, {foreignKey: 'meeting_id'})
 meetingParticipant.belongsTo(end_user, {foreignKey: 'user_id'})
 articleInterest.belongsTo(end_user, {foreignKey: 'user_id'})
+password_reset_requests.belongsTo(end_user, { foreignKey: 'user_id' });
+
 
 
 
@@ -50,5 +53,6 @@ export {
   articleCategory,
   meetingCategory,
   articleInterest, 
-  meetingParticipant
+  meetingParticipant, 
+  password_reset_requests
 }
