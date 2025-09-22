@@ -10,6 +10,7 @@ import { getArticleCategoryRoutes } from './routes/articleCategoryRoutes.js';
 import { getMeetingCategoryRoutes } from './routes/meetingCategoryRoutes.js';
 import { getArticleInterestRoutes } from './routes/articleInterestRoutes.js';
 import { getMeetingParticipantRoutes } from './routes/meetingParticipantRoutes.js';
+import { getEmailRoutes } from './routes/emailRoutes.js';
 export const createServer = () => {
   const app = express();
 
@@ -26,6 +27,8 @@ export const createServer = () => {
   app.use('/api/meetingCategory', getMeetingCategoryRoutes());
   app.use('/api/articleInterest', getArticleInterestRoutes());
   app.use('/api/meetingParticipant', getMeetingParticipantRoutes());
+  app.use('/api/resetPassword', getEmailRoutes());
+
 
 
   return app;
