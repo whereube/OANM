@@ -10,7 +10,7 @@ const LoginForm = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const [showCreateAccount, setShowCreateAccount] = useState(false)
-    const [showResetPassword, setResetPassword] = useState(false)
+    const [showResetPassword, setShowResetPassword] = useState(false)
     const auth = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -37,7 +37,7 @@ const LoginForm = () => {
         setShowCreateAccount(true)
     }
     const handleResetPasswordClick = () => {
-        setResetPassword(true)
+        setShowResetPassword(true)
     }
 
     return (
@@ -81,7 +81,7 @@ const LoginForm = () => {
             {showResetPassword && 
                 <div className='resetPasswordDiv'>
                     <ResetPasswordRequest
-                        setShowCreateAccount={setShowCreateAccount}
+                        setShowResetPassword={setShowResetPassword}
                     />
                 </div>
             }

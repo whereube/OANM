@@ -25,6 +25,7 @@ export async function sendPasswordResetEmail(toEmail, token) {
       <p>Hej,</p>
       <p>Du har begärt en länk för att återställa ditt lösenord. Klicka på länken nedan och följ instruktionerna:</p>
       <a href="${resetLink}">Återställ lösenord</a>
+      <p>Observera att denna länk endast är giltig till slutet av dagen.</p>
       <p>Om du inte har begärt en länk för att återställa ditt lösenord kan du ignorera detta medelande</p>
     `
   };

@@ -20,6 +20,10 @@ export const password_reset_requests = db.define(
         expires_at: {
         type: DataTypes.DATE,
         allowNull: false,
+        },
+        used: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
         }
     },
     {

@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import './CreateAccount.css';
+import './ResetPasswordRequest.css';
 
 const CreateAccount = (props) => {
     let API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_LOCAL_API_URL;
     const [email, setEmail] = useState('');
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
+    const [emailSent, setEmailSent] = useState(null);
+
 
 
     const handleSubmit = async (e) => {
@@ -13,6 +16,7 @@ const CreateAccount = (props) => {
         setError(null);
 
         try {
+            setEmailSent(true);
             const response = await fetch(`${API_URL}/resetPassword/forgot-password`, {
                 method: 'POST',
                 headers: {
@@ -22,18 +26,16 @@ const CreateAccount = (props) => {
                     email: email
                 }),
             });
-            console.log('Response status:', response);
             if (response.status === 200) {
-                /*props.setResetPassword(false)*/
-                setSuccess('Återställningslänk skickad! Kontrollera din email, inklusive skräppostmappen.');
+                setSuccess('Finns ett konto kopplat till den angivna emailadressen har en återställningslänk skickats! Kontrollera din email, inklusive skräppostmappen.');
             } else if (response.status === 401) {
                 const errorData = await response.json();
                 setError(errorData.message);
             } else {
-                setError('An error occurred. Please try again.');
+                setError('Ett fel uppstod, var god försök igen.');
             }
         } catch (err) {
-            setError('An error occurred. Please try again.');
+            setError('Ett fel uppstod, var god försök igen.');
             console.error('Account creation error:', err);
         }
     };
@@ -41,20 +43,30 @@ const CreateAccount = (props) => {
 
     return (
         <div>
-            <form onSubmit={handleSubmit} className="create-account-form">
-                <h2 className='createAccountTitle'>Återställ lösenord</h2>
-                <div>
-                    <label>Email:</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
+            {!emailSent &&
+                <form onSubmit={handleSubmit} className="create-account-form">
+                    <h2 className='createAccountTitle'>Återställ lösenord</h2>
+                    <div>
+                        <label>Email:</label>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </div>
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    <button type="submit" className="button-small">Skicka återställningslänk</button>
+                </form>
+            }
+            {emailSent &&
+                <div className="success-message">
+                    <h2>Länk skickad!</h2>
+                    {success && <p style={{ color: 'black' }}>{success}</p>}
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    <button className="button-small" onClick={() => props.setShowResetPassword(false)}>Tillbaka till inloggning</button>
                 </div>
-                {error && <p style={{ color: 'red' }}>{error}</p>}
-                <button type="submit" className="button-small">Skicka återställningslänk</button>
-            </form>
+            }
         </div>
     );
 };
