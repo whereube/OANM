@@ -17,6 +17,7 @@ const CreateAccount = (props) => {
 
         try {
             setEmailSent(true);
+            setSuccess('Finns ett konto kopplat till den angivna emailadressen har en återställningslänk skickats! Kontrollera din email, inklusive skräppostmappen.');
             const response = await fetch(`${API_URL}/resetPassword/forgot-password`, {
                 method: 'POST',
                 headers: {

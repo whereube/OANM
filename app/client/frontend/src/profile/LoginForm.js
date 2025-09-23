@@ -29,7 +29,7 @@ const LoginForm = () => {
         if (result.success) {
             navigate(from, { replace: true });
         } else {
-            setError({ success: false, message: result.message });
+            setError({ success: false, message: "Felaktiga inloggningsuppgifter" });
         }
     };
 
@@ -67,7 +67,7 @@ const LoginForm = () => {
                         {error && <p style={{ color: 'red' }}>{error.message}</p>}
                         <button type="submit" className="button-small">Logga in</button>
                         <p className='createAccountButton' onClick={handleCreateAccountClick}>Skapa konto</p>
-                        <p className='createAccountButton' onClick={handleResetPasswordClick}>Glömt lösenord</p>
+                        <p className='createAccountButton forgot' onClick={handleResetPasswordClick}>Glömt lösenord</p>
                     </form>
                 </div>
             }
