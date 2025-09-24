@@ -32,3 +32,31 @@ export async function sendPasswordResetEmail(toEmail, token) {
 
   await transporter.sendMail(mailOptions);
 }
+
+
+export async function sendInterestNotification(toEmail, offerName, emailsToInterested) {
+
+  const mailOptions = {
+    from: process.env.GMAIL_USER,
+    to: toEmail,
+    subject: 'Nytt intresse för ditt erbjudande ' + offerName,
+    html: `
+      <div style="text-align: center;">
+        <img src="cid:bannerimg" alt="Banner" style="max-width: 100%; height: auto;" />
+      </div>
+      <p>Hej,</p>
+      <p>En annan användare har visat intresse för erbjudandet du har skapat. Nedan står mailadresserna till alla som har markerat sig som intresserade, så att ni kan ta kontakt med varandra och komma igång med att göra det till verklighet</p>
+      <p>${emailsToInterested.join('; ')}</p>
+      <p>Lycka till!</p>
+    `,
+    attachments: [
+      {
+        filename: 'Ecubuntu_logo_resize.png',
+        path: './assets/Ecubuntu_logo_resize.png', 
+        cid: 'bannerimg' // same cid as in HTML
+      }
+    ]
+  };
+
+  await transporter.sendMail(mailOptions);
+}
