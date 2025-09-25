@@ -61,7 +61,7 @@ export const getArticleInterestRoutes = () => {
                 },
                 include: [{
                     model: object.end_user,
-                    attributes: ['email']
+                    attributes: ['email', "id"]
                 }]
             });
             const allInterested = await object.articleInterest.findAll({
@@ -73,7 +73,7 @@ export const getArticleInterestRoutes = () => {
                     attributes: ['email']
                 }]
             });
-            await sendInterestNotification(articleInfo.end_user.email, articleInfo.title, allInterested.map(i => i.end_user.email).join('; '), articleId);
+            await sendInterestNotification(articleInfo.end_user.email, articleInfo.title, allInterested.map(i => i.end_user.email).join('; '), articleId, articleInfo.end_user.id);
         }
 
       } catch (error) {

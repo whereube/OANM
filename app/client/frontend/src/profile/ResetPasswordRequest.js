@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './CreateAccount.css';
 import './ResetPasswordRequest.css';
 
-const CreateAccount = (props) => {
+const ResetPasswordRequest = (props) => {
     let API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_LOCAL_API_URL;
     const [email, setEmail] = useState('');
     const [error, setError] = useState(null);
@@ -72,4 +72,4 @@ const CreateAccount = (props) => {
     );
 };
 
-export default CreateAccount;
+export default ResetPasswordRequest;

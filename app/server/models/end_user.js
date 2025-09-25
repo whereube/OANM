@@ -38,6 +38,10 @@ export const end_user = db.define(
       is_admin: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
+      },
+      no_email_notification: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
       }
     },
     {

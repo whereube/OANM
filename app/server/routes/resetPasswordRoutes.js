@@ -7,7 +7,7 @@ import { hashPassword, checkPassword } from '../middleware/encrypt.js';
 import { validateInput, validateString } from '../middleware/routeFunctions.js';
 
 
-export const getEmailRoutes = () => {
+export const getResetPasswordRoutes = () => {
 
     const router = express.Router();
 
@@ -64,6 +64,70 @@ export const getEmailRoutes = () => {
     }
 
     router.post('/password-change', async (req, res) => {
+
+
+        const { token, password } = req.body;
+
+        try {
+            const reset_request = await object.password_reset_requests.findOne({
+                where: {
+                    token: token,
+                }
+            });
+            if (reset_request != null && isSameDay(reset_request.expires_at, new Date()) && !reset_request.used) {
+                console.log(reset_request)
+                const user_id = reset_request.user_id;
+                const validateStr = validateString({ password });
+                if (validateStr.valid) {
+                    const hashedPassword = await hashPassword(password);
+                    try {
+                        if(password !== '') {
+                            const result = await object.end_user.update({                        
+                                password:hashedPassword
+                            },
+                            {
+                                where: {
+                                    id: user_id
+                                }
+                            }
+                            );
+                            if (result === null) {
+                                return res.status(500).json('User not updated');
+                            } else {
+                                object.password_reset_requests.update(
+                                    {used: true},
+                                    {
+                                        where: {
+                                            token: token,
+                                        }
+                                    }
+                                );
+                                res.status(200).json({ message: 'Password changed' });
+                            }
+                        } else {
+                            return res.status(400).json('Password cannot be empty');
+                        }
+        
+                    } catch (error) {
+                        console.error('Error updating password', error);
+                        res.status(500).json('Internal Server Error');
+                    }
+
+                }
+            }
+            else {
+                res.status(403).json({ message: 'Invalid token' });
+            }
+        
+
+        } catch (error) {
+            console.error('Error creating reset request', error);
+            res.status(500).json('Error creating reset request');
+        }
+
+    });
+
+    router.post('/unsubscribe', async (req, res) => {
 
 
         const { token, password } = req.body;
