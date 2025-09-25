@@ -34,25 +34,53 @@ export async function sendPasswordResetEmail(toEmail, token) {
 }
 
 
-export async function sendInterestNotification(toEmail, offerName, emailsToInterested) {
+export async function sendInterestNotification(toEmail, offerName, emailsToInterested, offerId) {
+
+  const offerLink = `${process.env.FRONTEND_URL}/showArticle/offer/${offerId}`;
 
   const mailOptions = {
     from: process.env.GMAIL_USER,
     to: toEmail,
     subject: 'Nytt intresse för ditt erbjudande ' + offerName,
     html: `
-      <div style="text-align: center;">
-        <img src="cid:bannerimg" alt="Banner" style="max-width: 100%; height: auto;" />
-      </div>
-      <p>Hej,</p>
-      <p>En annan användare har visat intresse för erbjudandet du har skapat. Nedan står mailadresserna till alla som har markerat sig som intresserade, så att ni kan ta kontakt med varandra och komma igång med att göra det till verklighet</p>
-      <p>${emailsToInterested.join('; ')}</p>
-      <p>Lycka till!</p>
+        <div style="text-align: center;">
+            <img src="cid:bannerimg" alt="Banner" style="width: auto; max-height: 5%; object-fit: contain;" />
+        </div>
+        <body style="background-color: #f0f0f0; padding: 20px;">
+            <div style="text-align: center; max-width: 80%; margin: auto;">
+                <p style="font-size: 26px;">Hej!</p>
+                <p>En användare har visat intresse för ditt erbjudande: </p>
+                <div>
+                    <a 
+                    href="${offerLink}" 
+                    style="
+                        display: inline-block;
+                        padding: 16px 24px;
+                        margin: 10px 0;
+                        border: 2px solid rgb(15, 16, 16);
+                        border-radius: 8px;
+                        background-color: #f0f8ff;
+                        color: rgb(0, 0, 0);
+                        font-size: 18px;
+                        font-weight: bold;
+                        text-decoration: none;
+                        font-family: Arial, sans-serif;
+                        box-shadow: 5px 5px 10px rgba(0,0,0,0.2);
+                    "
+                    >
+                    ${offerName}
+                    </a>
+                </div>
+                <p>Nedan står mailadresserna till alla som har markerat sig som intresserade, så att ni kan ta kontakt med varandra och komma igång med att göra det till verklighet</p>
+                <p style="font-size: 16px;">${emailsToInterested};</p>
+                <p>Lycka till!</p>
+            </div>
+        </body>
     `,
     attachments: [
       {
         filename: 'Ecubuntu_logo_resize.png',
-        path: './assets/Ecubuntu_logo_resize.png', 
+        path: './assets/Ecubuntu_logo_resize_150px.png', 
         cid: 'bannerimg' // same cid as in HTML
       }
     ]
