@@ -13,6 +13,7 @@ const EditAccount = () => {
     const [companyName, setCompanyName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [link, setLink] = useState('');
+    const [noEmails, setNoEmails] = useState(false);
     const [error, setError] = useState(null);
     const [originalUserData, setOriginalUserData] = useState({})
     const { user } = useAuth();
@@ -45,6 +46,8 @@ const EditAccount = () => {
             setUserName(originalUserData.user_name);
             setPhoneNumber(originalUserData.phone_number);
             setLink(originalUserData.link);
+            setNoEmails(originalUserData.no_email_notification);
+            console.log(originalUserData.no_email_notification)
             if(originalUserData.hasOwnProperty('company') && originalUserData.company !== null){
                 setCompanyName(originalUserData.company.company_name)
             }
@@ -72,7 +75,8 @@ const EditAccount = () => {
                     password, 
                     company_name: companyName, 
                     phone_number: phoneNumber, 
-                    link 
+                    link,
+                    noEmails
                 }),
             });
 
@@ -181,6 +185,14 @@ const EditAccount = () => {
                         type="text"
                         value={link}
                         onChange={(e) => setLink(e.target.value)}
+                    />
+                </div>
+                <div className='noEmailsCheckbox'>
+                    <label>Jag vill inte få några e-postmeddelanden: </label>
+                    <input
+                        type="checkbox"
+                        checked={noEmails}
+                        onChange={(e) => setNoEmails(e.target.checked)}
                     />
                 </div>
                 {error && <p style={{ color: 'red' }}>{error}</p>}
