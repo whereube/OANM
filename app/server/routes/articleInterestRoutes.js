@@ -61,7 +61,7 @@ export const getArticleInterestRoutes = () => {
                 },
                 include: [{
                     model: object.end_user,
-                    attributes: ['email', "id"]
+                    attributes: ['email', "id", "no_email_notification"]
                 }]
             });
             const allInterested = await object.articleInterest.findAll({
@@ -73,8 +73,12 @@ export const getArticleInterestRoutes = () => {
                     attributes: ['email']
                 }]
             });
-            await sendInterestNotification(articleInfo.end_user.email, articleInfo.title, allInterested.map(i => i.end_user.email).join('; '), articleId, articleInfo.end_user.id);
-        }
+            if(articleInfo.end_user.no_email_notification){
+                return; // Do not send email if user has unsubscribed
+            } else {
+                await sendInterestNotification(articleInfo.end_user.email, articleInfo.title, allInterested.map(i => i.end_user.email).join('; '), articleId, articleInfo.end_user.id);
+            }       
+    }
 
       } catch (error) {
           console.error('Error adding interest', error);
