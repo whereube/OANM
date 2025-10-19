@@ -82,7 +82,7 @@ export const getArticleInterestRoutes = () => {
 
       } catch (error) {
           console.error('Error adding interest', error);
-          res.status(500).json('Internal Server Error');
+          //res.status(500).json('Internal Server Error');
       }
 
     });
