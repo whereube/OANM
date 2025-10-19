@@ -18,7 +18,7 @@ import EditAccount from './profile/EditAccount.js';
 import MyArticles from './profile/MyArticles.js';
 import EditArticle from './article/editArticle/EditArticle.js';
 import ResetPasswordForm from './profile/ResetPasswordForm.js';
-import DeregisterFromEmail from './profile/deregisterFromEmail.js';
+import DeregisterFromEmail from './profile/DeregisterFromEmail.js';
 
 function App() {
 
