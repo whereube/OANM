@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
  */
 
 export async function sendPasswordResetEmail(toEmail, token) {
-  const resetLink = `${process.env.FRONTEND_URL}/reset-password/${token}`;
+  const resetLink = `https://oanm-ecubuntu-b3e74bbc7ba9.herokuapp.com/reset-password/${token}`;
 
   const mailOptions = {
     from: process.env.GMAIL_USER,
@@ -69,8 +69,8 @@ export async function sendPasswordResetEmail(toEmail, token) {
 
 export async function sendInterestNotification(toEmail, offerName, emailsToInterested, offerId, sentToUserId) {
 
-  const offerLink = `${process.env.FRONTEND_URL}/showArticle/offer/${offerId}`;
-  const deregisterLink = `${process.env.FRONTEND_URL}/unsubscribe/${sentToUserId}`;
+  const offerLink = `https://oanm-ecubuntu-b3e74bbc7ba9.herokuapp.com/showArticle/offer/${offerId}`;
+  const deregisterLink = `https://oanm-ecubuntu-b3e74bbc7ba9.herokuapp.com/unsubscribe/${sentToUserId}`;
 
   const mailOptions = {
     from: process.env.GMAIL_USER,
