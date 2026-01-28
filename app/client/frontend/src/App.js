@@ -17,6 +17,7 @@ import EditMeeting from './admin/meeting/EditMeeting.js';
 import EditAccount from './profile/EditAccount.js';
 import MyArticles from './profile/MyArticles.js';
 import EditArticle from './article/editArticle/EditArticle.js';
+import InfiniteCanvas from './whiteboard/Canvas.js';
 
 function App() {
 
@@ -51,6 +52,8 @@ function App() {
               <Route path="/profile/edit" element={<ProtectedRoute><EditAccount /></ProtectedRoute>}></Route>
               <Route path="edit/:offerOrNeed/:id" element={<ProtectedRoute><EditArticle /></ProtectedRoute>}/>
               <Route path="/whiteboard/:meetingId" element={<Whiteboard />}/>
+              <Route path="/whiteboard/canvas" element={<InfiniteCanvas />}/>
+
               <Route path='/admin' element={<AdminRoute />}>
                   <Route path="" element={<AdminPage />}/>
                   <Route path="add-category" element={<AddCategoryForm />}/>
