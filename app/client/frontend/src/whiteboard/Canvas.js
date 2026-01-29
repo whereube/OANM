@@ -24,7 +24,7 @@ const InfiniteCanvas = () => {
                     canvasRef.current?.fitContentToView({ scale: 1 });
                   }}
                 >
-                  fitToView
+                  Centrera
                 </button>
               ),
               position: COMPONENT_POSITIONS.TOP_LEFT,
@@ -32,10 +32,16 @@ const InfiniteCanvas = () => {
             },
           ]}
         >
-          <div style={{ width: "200px", height: "200px", background: "red" }}>
-            asdasdsdas
+          <div className="categoryBlock">
+            <div className="offerNeedCard">
+                <p>Title</p>
+                <div>
+                    <p>Some description</p>
+                    <p>Upplagt av: Ingen</p>
+                </div>
+            </div>
           </div>
-          <div style={{ width: "200px", height: "200px", background: "blue" }}>
+          <div className="categoryBlock" style={{left: 1000, top: 300}}>
             2
           </div>
         </ReactInfiniteCanvas>
