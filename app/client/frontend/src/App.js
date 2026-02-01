@@ -52,7 +52,7 @@ function App() {
               <Route path="/profile/edit" element={<ProtectedRoute><EditAccount /></ProtectedRoute>}></Route>
               <Route path="edit/:offerOrNeed/:id" element={<ProtectedRoute><EditArticle /></ProtectedRoute>}/>
               <Route path="/whiteboard/:meetingId" element={<Whiteboard />}/>
-              <Route path="/whiteboard/canvas" element={<InfiniteCanvas />}/>
+              <Route path="/canvas/:meetingId" element={<InfiniteCanvas />}/>
 
               <Route path='/admin' element={<AdminRoute />}>
                   <Route path="" element={<AdminPage />}/>
