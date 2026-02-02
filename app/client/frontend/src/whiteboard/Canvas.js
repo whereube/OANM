@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect} from "react";
 import { ReactInfiniteCanvas, ReactInfiniteCanvasHandle } from "react-infinite-canvas";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 import { COMPONENT_POSITIONS } from "./helpers/constants.js";
 import ReactDOM from "react-dom"; 
@@ -12,7 +12,7 @@ import HandleArticles from '../article/handleArticles.js';
 
 const InfiniteCanvas = () => {
 
-  const canvasRef = useRef(null);
+    const canvasRef = useRef(null);
     let API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_LOCAL_API_URL;
     const [allOffers, setAllOffers] = useState([]);
     const [allNeeds, setAllNeeds] = useState([]);
@@ -67,7 +67,7 @@ const InfiniteCanvas = () => {
         fetchOffers();
 
         // Set up interval
-        const intervalId = setInterval(fetchOffers, 1000);
+        const intervalId = setInterval(fetchOffers, 8000);
 
         // Cleanup interval on unmount
         return () => clearInterval(intervalId);
@@ -157,17 +157,39 @@ const InfiniteCanvas = () => {
               position: COMPONENT_POSITIONS.TOP_LEFT,
               offset: { x: 120, y: 10 },
             },
+            {
+              component: (
+                <Link className="link" to={'/article/add/' + meetingId}>
+                    <div className='addArticle'>
+                        <p className="linkText">+</p>
+                    </div>
+                </Link>
+              ),
+              position: COMPONENT_POSITIONS.BOTTOM_LEFT,
+              offset: { x: 50, y: 50 },
+            },
           ]}
         >
-            {meetingCategories.map((meetingCategory, index) => (
+            {meetingCategories
+                .filter(mc => mc.category.parent_id === null)
+                .map((meetingCategory, index) => (
                 meetingCategory.category.parent_id === null && (
                     <div key={meetingCategory.category.id} style={{left: index * 700, top: 0,}} className="categoryBlock">
                         {allOffers.filter(filterOffers(meetingCategory.category.id, 1)).map(article =>
-                            <div key={article.id}  className="offerNeedCard">
-                                <p>{article.title}</p>
-                                <div>
-                                    <p>Some description</p>
-                                    <p>Upplagt av: Ingen</p>
+                            <div key={article.id}  className="offerNeedCard offerCard">
+                                <p><b>{article.title}</b></p>
+                                <div className="aboutArticle">
+                                    <p>{article.description}</p>
+                                    <p>Upplagt av: {article.end_user.user_name}</p>
+                                </div>
+                            </div>
+                        )}
+                        {allNeeds.filter(filterOffers(meetingCategory.category.id, 1)).map(article =>
+                            <div key={article.id}  className="offerNeedCard needCard">
+                                <p><b>{article.title}</b></p>
+                                <div className="aboutArticle">
+                                    <p>{article.description}</p>
+                                    <p>Upplagt av: {article.end_user.user_name}</p>
                                 </div>
                             </div>
                         )}
