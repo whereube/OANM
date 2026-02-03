@@ -66,6 +66,10 @@
     max-width: 99%;
 }
 
+.forgot{
+    margin-left: 5px;
+}
+
 @media screen and (max-width: 768px) {
     .login-form {
         max-width: 80%;

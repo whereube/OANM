@@ -17,6 +17,8 @@ import EditMeeting from './admin/meeting/EditMeeting.js';
 import EditAccount from './profile/EditAccount.js';
 import MyArticles from './profile/MyArticles.js';
 import EditArticle from './article/editArticle/EditArticle.js';
+import ResetPasswordForm from './profile/ResetPasswordForm.js';
+import DeregisterFromEmail from './profile/DeregisterFromEmail.js';
 import InfiniteCanvas from './whiteboard/Canvas.js';
 
 function App() {
@@ -48,6 +50,8 @@ function App() {
                 <Route path=":offerOrNeed/:id" element={<Article />}/>
               </Route>
               <Route path="/profile/login" element={<LoginForm />}></Route>
+              <Route path="/reset-password/:token" element={<ResetPasswordForm />}></Route>
+              <Route path="/unsubscribe/:userId" element={<DeregisterFromEmail />}></Route>
               <Route path="/profile/myArticles" element={<ProtectedRoute><MyArticles /></ProtectedRoute>}></Route>
               <Route path="/profile/edit" element={<ProtectedRoute><EditAccount /></ProtectedRoute>}></Route>
               <Route path="edit/:offerOrNeed/:id" element={<ProtectedRoute><EditArticle /></ProtectedRoute>}/>

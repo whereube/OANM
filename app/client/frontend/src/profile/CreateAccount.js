@@ -17,7 +17,7 @@ const CreateAccount = (props) => {
         setError(null);
         // Check if passwords match
         if (password !== confirmPassword) {
-            setError('Passwords do not match. Please try again.');
+            setError('Lösenorden stämmer inte överens. Var god försök igen.');
             return;
         }
 

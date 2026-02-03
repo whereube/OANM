@@ -17,7 +17,7 @@ export const getUserRoutes = () => {
         if (validate.valid) {
             try {
                 const user = await object.end_user.findByPk(id,{
-                    attributes: ['id', 'user_name', 'email', 'phone_number', 'link', ],
+                    attributes: ['id', 'user_name', 'email', 'phone_number', 'link', 'no_email_notification'],
                     include: [{
                         model: object.company,
                         required: false
@@ -233,7 +233,8 @@ export const getUserRoutes = () => {
             email,
             phone_number,
             link,
-            password
+            password,
+            noEmails: no_email_notification
         } = req.body;
 
         const validateStr = validateString({ company_name, user_name, email, link, password });
@@ -283,7 +284,8 @@ export const getUserRoutes = () => {
                             email: email,
                             phone_number: phone_number,
                             link: link,
-                            password:hashedPassword
+                            password:hashedPassword,
+                            no_email_notification: no_email_notification
                         },
                         {
                             where: {
@@ -297,7 +299,8 @@ export const getUserRoutes = () => {
                             user_name: user_name,
                             email: email,
                             phone_number: phone_number,
-                            link: link
+                            link: link,
+                            no_email_notification: no_email_notification
                         },
                         {
                             where: {

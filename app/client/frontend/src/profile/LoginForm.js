@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from '../auth/AuthProvider';
 import CreateAccount from './CreateAccount';
+import ResetPasswordRequest from './ResetPasswordRequest';
 import './LoginForm.css'
 
 const LoginForm = () => {
@@ -9,6 +10,7 @@ const LoginForm = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const [showCreateAccount, setShowCreateAccount] = useState(false)
+    const [showResetPassword, setShowResetPassword] = useState(false)
     const auth = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -27,17 +29,20 @@ const LoginForm = () => {
         if (result.success) {
             navigate(from, { replace: true });
         } else {
-            setError({ success: false, message: result.message });
+            setError({ success: false, message: "Felaktiga inloggningsuppgifter" });
         }
     };
 
     const handleCreateAccountClick = () => {
         setShowCreateAccount(true)
     }
+    const handleResetPasswordClick = () => {
+        setShowResetPassword(true)
+    }
 
     return (
         <div className='main-div'>
-            {!showCreateAccount &&
+            {!showCreateAccount && !showResetPassword &&
                 <div className='loginDiv'>
                     <form onSubmit={handleSubmit} className="login-form">
                         <h2>Logga in</h2>
@@ -62,6 +67,7 @@ const LoginForm = () => {
                         {error && <p style={{ color: 'red' }}>{error.message}</p>}
                         <button type="submit" className="button-small">Logga in</button>
                         <p className='createAccountButton' onClick={handleCreateAccountClick}>Skapa konto</p>
+                        <p className='createAccountButton forgot' onClick={handleResetPasswordClick}>Glömt lösenord</p>
                     </form>
                 </div>
             }
@@ -69,6 +75,13 @@ const LoginForm = () => {
                 <div className='createAccountDiv'>
                     <CreateAccount
                         setShowCreateAccount={setShowCreateAccount}
+                    />
+                </div>
+            },
+            {showResetPassword && 
+                <div className='resetPasswordDiv'>
+                    <ResetPasswordRequest
+                        setShowResetPassword={setShowResetPassword}
                     />
                 </div>
             }

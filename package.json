@@ -3,12 +3,13 @@
   "scripts": {
     "client": "cd app/client/frontend && npm start",
     "server": "cd app && cd server && npm install && node index.js",
-    "start": "npm run server",  
+    "start": "npm run server",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "heroku-postbuild": "cd app/client/frontend && npm install && npm run build"
   },
   "dependencies": {
-    "concurrently": "^6.0.0"
+    "concurrently": "^6.0.0",
+    "nodemailer": "^7.0.6"
   },
   "type": "module"
 }
