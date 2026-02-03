@@ -174,10 +174,10 @@ const InfiniteCanvas = () => {
         }
     }
 
-    const filterOffers = (categoryId, level) => (offer) => {
+    const filterOffers = (categoryIds, categoryId, level) => (offer) => {
 
         const nbrOfCategoryLevels = countNbrOfCategoryLevels(offer)
-        const isIn = allArticleCategories.some(articleCategory => articleCategory.article_id === offer.id && articleCategory.category_id === categoryId && level === nbrOfCategoryLevels)
+        const isIn = allArticleCategories.some(articleCategory => articleCategory.article_id === offer.id && categoryIds.includes(articleCategory.category_id))
         if(isIn === false){
             return false
         } else {
@@ -246,27 +246,34 @@ const InfiniteCanvas = () => {
         setCurrentArticleId(article_id);
     };
 
+    const getCategoryAndChildrenIds = (parentId) => [
+        parentId,
+        ...meetingCategories
+            .filter(mc => mc.category.parent_id === parentId)
+            .map(mc => mc.category.id)
+    ];
+
   return (
     <>
       <div className='canvasDiv'>
         <ReactInfiniteCanvas
           ref={canvasRef}
           onCanvasMount={(mountFunc) => {
-            mountFunc.fitContentToView({ scale: 1 });
+            mountFunc.fitContentToView({ scale: 0.25 });
           }}
           customComponents={[
             {
               component: (
                 <button
                   onClick={() => {
-                    canvasRef.current?.fitContentToView({ scale: 1 });
+                    canvasRef.current?.fitContentToView({ scale: 0.25 });
                   }}
                 >
                   Centrera
                 </button>
               ),
               position: COMPONENT_POSITIONS.TOP_LEFT,
-              offset: { x: 120, y: 10 },
+              offset: { x: 50, y: 50 },
             },
             {
               component: (
@@ -278,50 +285,57 @@ const InfiniteCanvas = () => {
               ),
               position: COMPONENT_POSITIONS.BOTTOM_LEFT,
               offset: { x: 50, y: 50 },
-            },
+            }
           ]}
         >
-            {meetingCategories
-                .filter(mc => mc.category.parent_id === null)
-                .map((meetingCategory, index) => (
-                meetingCategory.category.parent_id === null && (
-                    <div key={meetingCategory.category.id} style={{left: index * 700, top: 0,}} className="categoryBlock">
-                        {allOffers.filter(filterOffers(meetingCategory.category.id, 1)).map(article =>
-                            <div key={article.id}  className="offerNeedCard offerCard">
-                                <p><b>{article.title}</b></p>
-                                <div className="aboutArticle">
-                                    <p>{article.description}</p>
-                                    <p>Upplagt av: {article.end_user.user_name}</p>
-                                    {ownArticleInterest.hasOwnProperty(article.id) ? (
-                                        <button
-                                            className={`button-small offerButton ${ownArticleInterest.hasOwnProperty(article.id) ? 'liked' : ''}`}
-                                            onClick={() => removeMarkAsInterested(ownArticleInterest[article.id].articleInterestId)}
-                                        >
-                                            Intresserad {articleInterestCounter.hasOwnProperty(article.id) ? articleInterestCounter[article.id].count : 0} &#128100;
-                                        </button>
-                                    ) : (
-                                        <button
-                                            className={`button-small offerButton`}
-                                            onClick={() => handleInterestClick(article.id)}
-                                        >
-                                            Intresserad {articleInterestCounter.hasOwnProperty(article.id) ? articleInterestCounter[article.id].count : 0} &#128100;
-                                        </button>
-                                    )}
+            {meetingCategories.filter(mc => mc.category.parent_id === null)
+                .map((meetingCategory, index) => {
+                    const spacing = 700;
+                    const totalWidth = (meetingCategories.length - 1) * spacing;
+                    const centerOffset = totalWidth / 2;
+                    const categoryIds = getCategoryAndChildrenIds(
+                    meetingCategory.category.id
+                    );
+
+                    return (
+                        <div key={meetingCategory.category.id} style={{left: (index+1) * 1000, top: 0,}} className="categoryBlock">
+                            {allOffers.filter(filterOffers(categoryIds, meetingCategory.category.id, 1)).map(article =>
+                                <div key={article.id}  className="offerNeedCard offerCard">
+                                    <p><b>{article.title}</b></p>
+                                    <div className="aboutArticle">
+                                        <p>{article.description}</p>
+                                        <p>Upplagt av: {article.end_user.user_name}</p>
+                                        {ownArticleInterest.hasOwnProperty(article.id) ? (
+                                            <button
+                                                className={`button-small offerButton ${ownArticleInterest.hasOwnProperty(article.id) ? 'liked' : ''}`}
+                                                onClick={() => removeMarkAsInterested(ownArticleInterest[article.id].articleInterestId)}
+                                            >
+                                                Intresserad {articleInterestCounter.hasOwnProperty(article.id) ? articleInterestCounter[article.id].count : 0} &#128100;
+                                            </button>
+                                        ) : (
+                                            <button
+                                                className={`button-small offerButton`}
+                                                onClick={() => handleInterestClick(article.id)}
+                                            >
+                                                Intresserad {articleInterestCounter.hasOwnProperty(article.id) ? articleInterestCounter[article.id].count : 0} &#128100;
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
-                        )}
-                        {allNeeds.filter(filterOffers(meetingCategory.category.id, 1)).map(article =>
-                            <div key={article.id}  className="offerNeedCard needCard">
-                                <p><b>{article.title}</b></p>
-                                <div className="aboutArticle">
-                                    <p>{article.description}</p>
-                                    <p>Upplagt av: {article.end_user.user_name}</p>
+                            )}
+                            {allNeeds.filter(filterOffers(categoryIds, meetingCategory.category.id, 1)).map(article =>
+                                <div key={article.id}  className="offerNeedCard needCard">
+                                    <p><b>{article.title}</b></p>
+                                    <div className="aboutArticle">
+                                        <p>{article.description}</p>
+                                        <p>Upplagt av: {article.end_user.user_name}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        )}
-                    </div>
-                )
-            ))}
+                            )}
+                        </div>
+                    )
+                }
+            )}
         </ReactInfiniteCanvas>
         <Modal
             content={<p>Markerar du dig som intresserad på en artikel delas dina mailadress med skaparen av artikeln, vill du detta?</p>}
