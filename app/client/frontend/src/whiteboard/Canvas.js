@@ -8,6 +8,9 @@ import './Canvas.css'
 import HandleOffers from '../offers/HandleOffers.js'
 import HandleNeeds from '../needs/HandleNeeds.js';
 import HandleArticles from '../article/handleArticles.js';
+import { useAuth } from '../auth/AuthProvider.js';
+import Modal from '../article/viewArticles/Modal.js';
+
 
 
 const InfiniteCanvas = () => {
@@ -21,12 +24,21 @@ const InfiniteCanvas = () => {
     const [viewOffers, setViewOffers] = useState(true)
     const [categoryCounter, setCategoryCounter] = useState({})
     const [categoryCollapse, setCategoryCollapse] = useState({})
+    const [allArticleInterests, setAllArticleInterests] = useState([]);
+    const [articleInterestCounter, setArticleInterestCounter] = useState({})
+    const [ownArticleInterest, setOwnArticleInterest] = useState([])
+    const [modalisOpen, setModalIsOpen] = useState(false);
+    const [currentArticleId, setCurrentArticleId] = useState(null);
+    const { user } = useAuth();
     const { getOffers, navigateToOfferArticle} = HandleOffers();
-    const { getArticleCategories} = HandleArticles();
     const { getNeeds } = HandleNeeds();
     const { meetingId } = useParams();
+    const { getArticleInterests, getArticleCategories, addArticleInterests, removeArticleInterest } = HandleArticles();
 
 
+    useEffect(() => {
+        getArticleInterests(setAllArticleInterests)
+    }, []);
 
     useEffect(() => {
         getMeetingCategories();
@@ -73,6 +85,54 @@ const InfiniteCanvas = () => {
         return () => clearInterval(intervalId);
     }, []);
 
+    useEffect(() => {
+        const listOfArticleInterests = {}
+        const objectOfOwnArticleInterests = {}
+
+        for (const index in allArticleInterests) {
+            listOfArticleInterests[allArticleInterests[index].article_id] = {
+                'count': 0
+            }
+        }
+
+        const keyCount = allArticleInterests.reduce((count, key) => {
+            const articleId = key.article_id;
+            // If the key already exists, increment the count, otherwise initialize it with count = 1 and id
+            if (!count[articleId]) {
+                count[articleId] = { count: 1, id: articleId };
+            } else {
+                count[articleId].count += 1;
+            }
+            return count;
+        }, {});
+
+        Object.keys(listOfArticleInterests).forEach(key => {
+        if (keyCount[key] !== undefined) {
+            listOfArticleInterests[key].count = keyCount[key].count;
+        }
+        });
+
+
+        if(user !== null){
+            let logedInUser = ''
+            if(user.hasOwnProperty('userId')){
+                logedInUser = user.userId
+            } else {
+                logedInUser = user.id
+            }
+            allArticleInterests.forEach(articleInterest => {
+                if(articleInterest.user_id === logedInUser){
+                    objectOfOwnArticleInterests[articleInterest.article_id] = {
+                        'articleInterestId': articleInterest.id 
+                    }
+                }
+            });
+        }       
+
+        setOwnArticleInterest(objectOfOwnArticleInterests)
+        setArticleInterestCounter(listOfArticleInterests)
+    }, [allArticleInterests]);
+
     const getMeetingCategories = async () => {
         const response = await fetch(`${API_URL}/meetingCategory/byMeetingId/` + meetingId);
         if (!response.ok) {
@@ -86,6 +146,34 @@ const InfiniteCanvas = () => {
         setMeetingCategories(result)
     }
 
+    const handleAccept = () => {
+        markAsInterested(currentArticleId);
+        setModalIsOpen(false);
+    };
+
+    const handleDecline = () => {
+        setCurrentArticleId(null);
+        setModalIsOpen(false);
+    };
+
+    const markAsInterested = async (articleId) => {
+        if (user !== null) {
+            let logedInUser = ''
+            if(user.hasOwnProperty('userId')){
+                logedInUser = user.userId
+            } else {
+                logedInUser = user.id
+            }
+
+            const data = {
+                'articleId': articleId,
+                'userId': logedInUser
+            }
+            await addArticleInterests(data);
+            getArticleInterests(setAllArticleInterests)
+        }
+    }
+
     const filterOffers = (categoryId, level) => (offer) => {
 
         const nbrOfCategoryLevels = countNbrOfCategoryLevels(offer)
@@ -97,6 +185,25 @@ const InfiniteCanvas = () => {
         }
     }  
 
+    const removeMarkAsInterested = async (interestId) => {
+
+        if (user !== null) {
+            let logedInUser = ''
+            if(user.hasOwnProperty('userId')){
+                logedInUser = user.userId
+            } else {
+                logedInUser = user.id
+            }
+
+            const data = {
+                'interestId': interestId,
+                'userId': logedInUser
+            }
+
+            await removeArticleInterest(data)
+            getArticleInterests(setAllArticleInterests)
+        }
+    }
 
     const filterOffersForCounter = (categoryId, level) => (offer) => {
 
@@ -134,6 +241,10 @@ const InfiniteCanvas = () => {
         }));
     };
 
+    const handleInterestClick = (article_id) => {
+        setModalIsOpen(true);
+        setCurrentArticleId(article_id);
+    };
 
   return (
     <>
@@ -181,6 +292,21 @@ const InfiniteCanvas = () => {
                                 <div className="aboutArticle">
                                     <p>{article.description}</p>
                                     <p>Upplagt av: {article.end_user.user_name}</p>
+                                    {ownArticleInterest.hasOwnProperty(article.id) ? (
+                                        <button
+                                            className={`button-small offerButton ${ownArticleInterest.hasOwnProperty(article.id) ? 'liked' : ''}`}
+                                            onClick={() => removeMarkAsInterested(ownArticleInterest[article.id].articleInterestId)}
+                                        >
+                                            Intresserad {articleInterestCounter.hasOwnProperty(article.id) ? articleInterestCounter[article.id].count : 0} &#128100;
+                                        </button>
+                                    ) : (
+                                        <button
+                                            className={`button-small offerButton`}
+                                            onClick={() => handleInterestClick(article.id)}
+                                        >
+                                            Intresserad {articleInterestCounter.hasOwnProperty(article.id) ? articleInterestCounter[article.id].count : 0} &#128100;
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         )}
@@ -197,6 +323,13 @@ const InfiniteCanvas = () => {
                 )
             ))}
         </ReactInfiniteCanvas>
+        <Modal
+            content={<p>Markerar du dig som intresserad på en artikel delas dina mailadress med skaparen av artikeln, vill du detta?</p>}
+            modalisOpen={modalisOpen}
+            handleDecline={handleDecline}
+            handleAccept={handleAccept}
+            setModalIsOpen={setModalIsOpen}
+        />
       </div>
     </>
   );
