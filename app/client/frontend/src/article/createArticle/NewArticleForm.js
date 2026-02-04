@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 import { useAuth } from '../../auth/AuthProvider';
 import './NewArticleForm.css'
 
@@ -270,6 +270,9 @@ const NewArticleForm = () => {
 
     return (
         <>
+            <Link className="link" to={'/canvas/' + meetingId}> 
+                <div className='backButton'>&#8249;-</div>
+            </Link>
             {!loading ? (
                 <div className="newOfferPage">
                     <div className='AddOfferOrNeed'>

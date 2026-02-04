@@ -253,6 +253,8 @@ const InfiniteCanvas = () => {
             .map(mc => mc.category.id)
     ];
 
+    const spacing = 1000;
+
   return (
     <>
       <div className='canvasDiv'>
@@ -273,7 +275,7 @@ const InfiniteCanvas = () => {
                 </button>
               ),
               position: COMPONENT_POSITIONS.TOP_LEFT,
-              offset: { x: 50, y: 50 },
+              offset: { x: 20, y: 20 },
             },
             {
               component: (
@@ -284,21 +286,19 @@ const InfiniteCanvas = () => {
                 </Link>
               ),
               position: COMPONENT_POSITIONS.BOTTOM_LEFT,
-              offset: { x: 50, y: 50 },
+              offset: { x: 20, y: 20 },
             }
           ]}
         >
             {meetingCategories.filter(mc => mc.category.parent_id === null)
                 .map((meetingCategory, index) => {
-                    const spacing = 700;
-                    const totalWidth = (meetingCategories.length - 1) * spacing;
-                    const centerOffset = totalWidth / 2;
                     const categoryIds = getCategoryAndChildrenIds(
                     meetingCategory.category.id
                     );
 
                     return (
-                        <div key={meetingCategory.category.id} style={{left: (index+1) * 1000, top: 0,}} className="categoryBlock">
+                        <div key={meetingCategory.category.id} style={{left: index * spacing, top: 0,}} className="categoryBlock">
+                            <h4 className="cardTitle">{meetingCategory.category.category_name}</h4>
                             {allOffers.filter(filterOffers(categoryIds, meetingCategory.category.id, 1)).map(article =>
                                 <div key={article.id}  className="offerNeedCard offerCard">
                                     <p><b>{article.title}</b></p>
