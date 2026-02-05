@@ -24,7 +24,7 @@
 .offerNeedCard{
     display: flex;
     flex-direction: column;
-    min-width: 40%;
+    max-width: 40%;
     box-shadow: 2px 2px 5px gray;
     margin: 10px;
     height: auto;
