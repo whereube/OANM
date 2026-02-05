@@ -263,7 +263,23 @@ const InfiniteCanvas = () => {
               ),
               position: COMPONENT_POSITIONS.BOTTOM_LEFT,
               offset: { x: 20, y: 20 },
-            }
+            },
+            {
+              component: (
+                <div className="labels">
+                    <div className="labelPart">
+                        <div className="offerLabel"></div>
+                        <p className="labelText">Erbjudande</p>
+                    </div>
+                    <div className="labelPart">
+                        <div className="needLabel"></div>
+                        <p className="labelText">Behov</p>
+                    </div>
+                </div>
+              ),
+              position: COMPONENT_POSITIONS.TOP_RIGHT,
+              offset: { x: 20, y: 20 },
+            },
           ]}
         >
             {meetingCategories.filter(mc => mc.category.parent_id === null)

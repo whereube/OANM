@@ -70,3 +70,33 @@
     width: 100%;
     text-align: center;
 }
+
+
+.labels{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.offerLabel{
+    background-color: rgb(147, 182, 224);
+    width: 10px;
+    height: 10px;
+}
+
+.needLabel{
+    background-color: rgb(138, 202, 161);
+    width: 10px;
+    height: 10px;
+}
+
+.labelPart{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px 5px;
+}
+
+.labelText{
+    font-size: smaller;
+}
