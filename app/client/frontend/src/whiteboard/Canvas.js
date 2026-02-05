@@ -205,18 +205,6 @@ const InfiniteCanvas = () => {
         }
     }
 
-    const filterOffersForCounter = (categoryId, level) => (offer) => {
-
-        const nbrOfCategoryLevels = countNbrOfCategoryLevels(offer)
-        const isIn = allArticleCategories.some(articleCategory => articleCategory.article_id === offer.id && articleCategory.category_id === categoryId)
-        if(isIn === false){
-            return false
-        } else {
-            return true
-        }
-    }  
-
-
     const filterArticleCategories = (articleCategory) => {
         return meetingCategories.some(meetingCategory => {
             return articleCategory.category_id === meetingCategory.category_id;
@@ -228,18 +216,6 @@ const InfiniteCanvas = () => {
             return articleCategory.article_id === offer.id ? count + 1 : count;
         }, 0);
     }
-
-    const toggleOffersOrNeeds = (displayOffers) => {
-        setViewOffers(displayOffers)
-    }
-
-    const changeCategoryCounter = (categoryId, amount) => {
-
-        setCategoryCounter((prevCategoryCounter) => ({
-            ...prevCategoryCounter,   
-            [categoryId]: amount
-        }));
-    };
 
     const handleInterestClick = (article_id) => {
         setModalIsOpen(true);
