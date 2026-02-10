@@ -103,3 +103,10 @@
 .labelText{
     font-size: smaller;
 }
+
+
+@media (max-width: 768px) {
+    .offerNeedCard {
+        width: 100%;
+    }
+}
