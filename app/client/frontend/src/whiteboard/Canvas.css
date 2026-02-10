@@ -30,7 +30,8 @@
     height: auto;
     padding: 10px;
     align-items: center;
-    overflow: wrap;
+    overflow-wrap: break-word;
+    word-break: break-all;
 }
 
 .offerCard{
