@@ -239,6 +239,14 @@ const InfiniteCanvas = () => {
           onCanvasMount={(mountFunc) => {
             mountFunc.fitContentToView({ scale: 0.25 });
           }}
+        scrollBarConfig={{
+            renderScrollBar: true,
+            startingPosition: { x: 0, y: 0 },
+            offset: { x: 0, y: 0 },
+            color: "grey",
+            thickness: "8px",
+            minSize: "15px"
+        }}
           customComponents={[
             {
               component: (
@@ -257,7 +265,7 @@ const InfiniteCanvas = () => {
               component: (
                 <Link className="link" to={'/article/add/' + meetingId}>
                     <div className='addArticle'>
-                        <p className="linkText">+</p>
+                        <p className="linkText">Lägg till</p>
                     </div>
                 </Link>
               ),

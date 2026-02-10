@@ -24,12 +24,13 @@
 .offerNeedCard{
     display: flex;
     flex-direction: column;
-    max-width: 40%;
+    width: 40%;
     box-shadow: 2px 2px 5px gray;
     margin: 10px;
     height: auto;
     padding: 10px;
     align-items: center;
+    overflow: wrap;
 }
 
 .offerCard{
@@ -59,6 +60,7 @@
 .linkText{
     color: black;
     text-decoration: None;
+    font-size: small;
 }
 
 .link{
