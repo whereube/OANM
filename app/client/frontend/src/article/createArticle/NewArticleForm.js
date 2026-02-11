@@ -270,7 +270,7 @@ const NewArticleForm = () => {
 
     return (
         <>
-            <Link className="link" to={'/canvas/' + meetingId}> 
+            <Link className="link" to={'/whiteboard/' + meetingId}> 
                 <div className='backButton'>&#8249;-</div>
             </Link>
             {!loading ? (
