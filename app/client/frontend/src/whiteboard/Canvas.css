@@ -9,16 +9,45 @@
     margin: 0px 30px;
 }
 
+.categoryWrapper{
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+}
+
 .categoryBlock{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    min-width: 150px;
+    min-width: 400px;
     max-width: 800px;
     min-height: 150px;
     margin: 10px;
     padding: 20px;
+    position: relative;
+}
+
+.subCategoryBlock{
     position: absolute;
+    top: 200%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    max-width: 800px;
+}
+
+.subCategory{
+    max-width: 50%;
+}
+
+.subCategoryDiv{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    min-width: 400px;
+    min-height: 150px;
+    margin: 10px;
+    padding: 20px;
 }
 
 .offerNeedCard{
