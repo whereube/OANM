@@ -24,3 +24,8 @@ export function dot(a, b) {
   }
   return a.reduce((sum, val, i) => sum + val * b[i], 0);
 }
+
+
+export function cosineDistance(a, b) {
+    return 1 - dot(a, b);
+}

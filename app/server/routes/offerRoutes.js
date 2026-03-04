@@ -4,7 +4,8 @@ import * as object from '../models/objectIndex.js';
 import { v4 as uuidv4 } from 'uuid';
 import { validateInput, validateString, validateInteger } from '../middleware/routeFunctions.js';
 import { db } from '../database/databaseConnection.js';
-import { dot, getExtractor } from '../middleware/embeddings.js';
+import { cosineDistance,dot, getExtractor } from '../middleware/embeddings.js';
+import clustering from 'density-clustering';
 
 export const getOfferRoutes = () => {
 
@@ -268,29 +269,40 @@ export const getOfferRoutes = () => {
     router.post('/similarity', async (req, res) => {
         const {sentences} = req.body;
         const extractor = getExtractor();
+        const dbscan = new clustering.DBSCAN();
 
         console.log(sentences)
         try {
             const embeddings = {};
+            const embeddings_vec = []
+            const id_index = []
             for (let sentence of sentences) {
                 const output = await extractor(sentence.text, {
                     pooling: 'mean',
                     normalize: true
                 });
                 embeddings[sentence.id] = (output.data);
+                embeddings_vec.push(output.data)
+                id_index.push(sentence.id)
             }
-            /*res.json({ embeddings });*/
-            const similarity = {}
-            for (let [id, embedding] of Object.entries(embeddings)){
-                similarity[id] = []
-                for (let [comp_id, comp_embedding] of Object.entries(embeddings)){
-                    if (id != comp_id){ 
-                        let sim_score = dot(embedding, comp_embedding)
-                        similarity[id].push({id: comp_id, "similarity": sim_score})
-                    }
-                }
-            }
-            console.log(similarity)
+
+            const clusters = dbscan.run(
+                embeddings_vec,
+                0.25,  // eps
+                2,     // minPts
+                cosineDistance
+            );
+            console.log(clusters)
+            console.log(dbscan.noise)
+            const id_clusters = clusters.map(cluster =>
+                cluster.map(index => id_index[index])
+            );
+
+            const noise_ids = dbscan.noise.map(index => id_index[index]);
+            id_clusters.push(noise_ids)
+            console.log(id_clusters)
+
+            res.status(200).send(id_clusters);
         } catch (err) {
             console.error(err);
             res.status(500).json({ error: 'Failed to compute embeddings' });

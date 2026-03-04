@@ -235,8 +235,10 @@ const InfiniteCanvas = () => {
             headers: {
             'Content-Type': 'application/json',
             },
-            body: JSON.stringify({sentences:[{"id": 1, "text": "Många bäckar små"}, {"id": 2, "text": "Grönska är bra för världen"} , {"id": 3, "text": "Jag vill skapa en delad verkstad"}, {"id": 4, "text": "Jag behöver en delad verkstad"}]}), 
+            body: JSON.stringify({sentences:[{"id": 1, "text": "Många bäckar små"}, {"id": 2, "text": "Grönska är bra för världen"} , {"id": 3, "text": "Jag vill skapa en delad verkstad"}, {"id": 1666, "text": "Jag behöver en delad verkstad"}]}), 
         });
+        const result = await response.json();
+        console.log(result)
     }
 
     const spacing = 1000;
