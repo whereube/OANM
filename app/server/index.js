@@ -3,11 +3,13 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { config } from 'dotenv';
+import { loadModel } from './middleware/embeddings.js'; 
 
 // Load environment variables from .env
 config();
 
 const port = process.env.PORT || process.env.SERVER_PORT;
+await loadModel();
 const server = createServer();
 
 // __filename and __dirname are not available in ES Modules

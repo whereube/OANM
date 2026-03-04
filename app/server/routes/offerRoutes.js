@@ -4,6 +4,7 @@ import * as object from '../models/objectIndex.js';
 import { v4 as uuidv4 } from 'uuid';
 import { validateInput, validateString, validateInteger } from '../middleware/routeFunctions.js';
 import { db } from '../database/databaseConnection.js';
+import { dot, getExtractor } from '../middleware/embeddings.js';
 
 export const getOfferRoutes = () => {
 
@@ -261,6 +262,40 @@ export const getOfferRoutes = () => {
             res.status(400).json({ uuidError: validate.message, StrError: validateStr.message, IntError: validateInt.message }); 
         }
     });
+
+
+
+    router.post('/similarity', async (req, res) => {
+        const {sentences} = req.body;
+        const extractor = getExtractor();
+
+        console.log(sentences)
+        try {
+            const embeddings = {};
+            for (let sentence of sentences) {
+                const output = await extractor(sentence.text, {
+                    pooling: 'mean',
+                    normalize: true
+                });
+                embeddings[sentence.id] = (output.data);
+            }
+            /*res.json({ embeddings });*/
+            const similarity = {}
+            for (let [id, embedding] of Object.entries(embeddings)){
+                similarity[id] = []
+                for (let [comp_id, comp_embedding] of Object.entries(embeddings)){
+                    if (id != comp_id){ 
+                        let sim_score = dot(embedding, comp_embedding)
+                        similarity[id].push({id: comp_id, "similarity": sim_score})
+                    }
+                }
+            }
+            console.log(similarity)
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Failed to compute embeddings' });
+        }
+        });
 
   return router;
 };

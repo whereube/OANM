@@ -229,6 +229,16 @@ const InfiniteCanvas = () => {
             .map(mc => mc.category.id)
     ];
 
+    const computeSimilarity = async() => {
+        const response = await fetch(`${API_URL}/offers/similarity`, {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({sentences:[{"id": 1, "text": "Många bäckar små"}, {"id": 2, "text": "Grönska är bra för världen"} , {"id": 3, "text": "Jag vill skapa en delad verkstad"}, {"id": 4, "text": "Jag behöver en delad verkstad"}]}), 
+        });
+    }
+
     const spacing = 1000;
 
   return (
@@ -381,6 +391,7 @@ const InfiniteCanvas = () => {
                 }
             )}
         </ReactInfiniteCanvas>
+        <button onClick={computeSimilarity}>Test</button>
         <Modal
             content={<p>Markerar du dig som intresserad på en artikel delas dina mailadress med skaparen av artikeln, vill du detta?</p>}
             modalisOpen={modalisOpen}
