@@ -10,6 +10,8 @@ import HandleNeeds from '../needs/HandleNeeds.js';
 import HandleArticles from '../article/handleArticles.js';
 import { useAuth } from '../auth/AuthProvider.js';
 import Modal from '../article/viewArticles/Modal.js';
+import ListCanvasArticles from './ListCanvasArticles.js';
+
 
 
 
@@ -28,7 +30,9 @@ const InfiniteCanvas = () => {
     const [articleInterestCounter, setArticleInterestCounter] = useState({})
     const [ownArticleInterest, setOwnArticleInterest] = useState([])
     const [modalisOpen, setModalIsOpen] = useState(false);
+    const [autoSortActive, setAutoSortActive] = useState(false);
     const [currentArticleId, setCurrentArticleId] = useState(null);
+    const [categoryClusters, setCategoryClusters] = useState([])
     const { user } = useAuth();
     const { getOffers, navigateToOfferArticle} = HandleOffers();
     const { getNeeds } = HandleNeeds();
@@ -133,6 +137,13 @@ const InfiniteCanvas = () => {
         setArticleInterestCounter(listOfArticleInterests)
     }, [allArticleInterests]);
 
+
+    useEffect(() => {
+        if(Object.keys(categoryClusters).length !== 0) {
+            console.log(categoryClusters)
+        }
+    }, [categoryClusters]);
+
     const getMeetingCategories = async () => {
         const response = await fetch(`${API_URL}/meetingCategory/byMeetingId/` + meetingId);
         if (!response.ok) {
@@ -185,6 +196,29 @@ const InfiniteCanvas = () => {
         }
     }  
 
+
+    const filterOffersIncSubcategory = (categoryId) => (offer) => {
+
+        const nbrOfCategoryLevels = countNbrOfCategoryLevels(offer)
+        const isIn = allArticleCategories.some(articleCategory => articleCategory.article_id === offer.id && articleCategory.category_id === categoryId)
+        if(isIn === false){
+            return false
+        } else {
+            return true
+        }
+    }  
+
+
+    const filterOffersOnCluster = (cluster) => (offer) => {
+        console.log(cluster)
+        console.log(offer.id)
+        if (String(offer.id) in cluster){
+            return true
+        } else {
+            return false
+        }
+    }  
+
     const removeMarkAsInterested = async (interestId) => {
 
         if (user !== null) {
@@ -230,16 +264,31 @@ const InfiniteCanvas = () => {
     ];
 
     const computeSimilarity = async() => {
-        const response = await fetch(`${API_URL}/offers/similarity`, {
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({sentences:[{"id": 1, "text": "Många bäckar små"}, {"id": 2, "text": "Grönska är bra för världen"} , {"id": 3, "text": "Jag vill skapa en delad verkstad"}, {"id": 1666, "text": "Jag behöver en delad verkstad"}]}), 
-        });
-        const result = await response.json();
-        console.log(result)
+        const promises = meetingCategories.filter(mc => mc.category.parent_id === null).map(async(meetingCategory) => {
+            const category_offers = allOffers.filter(filterOffersIncSubcategory(meetingCategory.category.id))
+            const category_needs = allNeeds.filter(filterOffersIncSubcategory(meetingCategory.category.id))
+            const category_articles = category_offers.concat(category_needs)
+            const response = await fetch(`${API_URL}/offers/similarity`, {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({category: meetingCategory.category.id, sentences: category_articles})
+                /*JSON.stringify({sentences:[{"id": 1, "text": "Många bäckar små"}, {"id": 2, "text": "Grönska är bra för världen"} , {"id": 3, "text": "Jag vill skapa en delad verkstad"}, {"id": 1666, "text": "Jag behöver en delad verkstad"}]}), */
+            });
+            return response.json();
+            
+        })
+        const results = await Promise.all(promises);
+        setCategoryClusters(results)
+        setAutoSortActive(true)
     }
+
+    const resetSorting = async() => {
+        setAutoSortActive(false)
+    }
+
+
 
     const spacing = 1000;
 
@@ -312,88 +361,149 @@ const InfiniteCanvas = () => {
                         <div className="categoryWrapper" style={{left: index * spacing, top: 0,}}>
                             <div key={meetingCategory.category.id}  className="categoryBlock">
                                 <h3 className="cardTitle">{meetingCategory.category.category_name}</h3>
-                                {allOffers.filter(filterOffers(categoryIds, meetingCategory.category.id, 1)).map(article =>
-                                    <div key={article.id}  className="offerNeedCard offerCard">
-                                        <p><b>{article.title}</b></p>
-                                        <div className="aboutArticle">
-                                            <p>{article.description}</p>
-                                            <p>Upplagt av: {article.end_user.user_name}</p>
-                                            {ownArticleInterest.hasOwnProperty(article.id) ? (
-                                                <button
-                                                    className={`button-small offerButton ${ownArticleInterest.hasOwnProperty(article.id) ? 'liked' : ''}`}
-                                                    onClick={() => removeMarkAsInterested(ownArticleInterest[article.id].articleInterestId)}
-                                                >
-                                                    Intresserad {articleInterestCounter.hasOwnProperty(article.id) ? articleInterestCounter[article.id].count : 0} &#128100;
-                                                </button>
-                                            ) : (
-                                                <button
-                                                    className={`button-small offerButton`}
-                                                    onClick={() => handleInterestClick(article.id)}
-                                                >
-                                                    Intresserad {articleInterestCounter.hasOwnProperty(article.id) ? articleInterestCounter[article.id].count : 0} &#128100;
-                                                </button>
-                                            )}
-                                        </div>
-                                    </div>
-                                )}
-                                {allNeeds.filter(filterOffers(categoryIds, meetingCategory.category.id, 1)).map(article =>
-                                    <div key={article.id}  className="offerNeedCard needCard">
-                                        <p><b>{article.title}</b></p>
-                                        <div className="aboutArticle">
-                                            <p>{article.description}</p>
-                                            <p>Upplagt av: {article.end_user.user_name}</p>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                            <div className="subCategoryBlock" style={{left: index * spacing}}>
-                                {meetingCategories.filter(sc => sc.category.parent_id === meetingCategory.category.id).map(subMeetingCategory => (
-                                    <div className="subCategories">
-                                        <div className='subCategoryDiv' key={subMeetingCategory.category.id}>
-                                            <h4 className="cardTitle">{subMeetingCategory.category.category_name}</h4>
-                                            {allOffers.filter(filterOffers(categoryIds, subMeetingCategory.category.id, 2)).map(article =>
-                                                <div key={article.id}  className="offerNeedCard offerCard">
-                                                    <p><b>{article.title}</b></p>
-                                                    <div className="aboutArticle">
-                                                        <p>{article.description}</p>
-                                                        <p>Upplagt av: {article.end_user.user_name}</p>
-                                                        {ownArticleInterest.hasOwnProperty(article.id) ? (
-                                                            <button
-                                                                className={`button-small offerButton ${ownArticleInterest.hasOwnProperty(article.id) ? 'liked' : ''}`}
-                                                                onClick={() => removeMarkAsInterested(ownArticleInterest[article.id].articleInterestId)}
-                                                            >
-                                                                Intresserad {articleInterestCounter.hasOwnProperty(article.id) ? articleInterestCounter[article.id].count : 0} &#128100;
-                                                            </button>
-                                                        ) : (
-                                                            <button
-                                                                className={`button-small offerButton`}
-                                                                onClick={() => handleInterestClick(article.id)}
-                                                            >
-                                                                Intresserad {articleInterestCounter.hasOwnProperty(article.id) ? articleInterestCounter[article.id].count : 0} &#128100;
-                                                            </button>
-                                                        )}
+                                {!autoSortActive &&
+                                    <>
+                                        {allOffers.filter(filterOffers(categoryIds, meetingCategory.category.id, 1)).map(article =>
+                                            /*
+                                            <div key={article.id}  className="offerNeedCard offerCard">
+                                                <p><b>{article.title}</b></p>
+                                                <div className="aboutArticle">
+                                                    <p>{article.description}</p>
+                                                    <p>Upplagt av: {article.end_user.user_name}</p>
+                                                    {ownArticleInterest.hasOwnProperty(article.id) ? (
+                                                        <button
+                                                            className={`button-small offerButton ${ownArticleInterest.hasOwnProperty(article.id) ? 'liked' : ''}`}
+                                                            onClick={() => removeMarkAsInterested(ownArticleInterest[article.id].articleInterestId)}
+                                                        >
+                                                            Intresserad {articleInterestCounter.hasOwnProperty(article.id) ? articleInterestCounter[article.id].count : 0} &#128100;
+                                                        </button>
+                                                    ) : (
+                                                        <button
+                                                            className={`button-small offerButton`}
+                                                            onClick={() => handleInterestClick(article.id)}
+                                                        >
+                                                            Intresserad {articleInterestCounter.hasOwnProperty(article.id) ? articleInterestCounter[article.id].count : 0} &#128100;
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            */
+                                            <ListCanvasArticles
+                                                article={article}
+                                                ownArticleInterest = {ownArticleInterest}
+                                                removeMarkAsInterested = {removeMarkAsInterested}
+                                                articleInterestCounter = {articleInterestCounter}
+                                                handleInterestClick = {handleInterestClick}
+                                            ></ListCanvasArticles>
+                                        )}
+                                        {allNeeds.filter(filterOffers(categoryIds, meetingCategory.category.id, 1)).map(article =>
+                                            <div key={article.id}  className="offerNeedCard needCard">
+                                                <p><b>{article.title}</b></p>
+                                                <div className="aboutArticle">
+                                                    <p>{article.description}</p>
+                                                    <p>Upplagt av: {article.end_user.user_name}</p>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </>
+                                }
+                                {autoSortActive &&
+                                    <>
+                                        {(() => {
+                                            const clusterObj = categoryClusters.find(cc => Object.keys(cc)[0] === String(meetingCategory.category.id));
+                                            const clusters = clusterObj?.[String(meetingCategory.category.id)] || [];
+                                            console.log(clusters)
+                                            return clusters.map((subCluster, subIndex) => (
+                                                <div className="subCategoryBlock" style={{left: index * spacing}}>
+                                                    <div className="subCategories">
+                                                        <div className='subCategoryDiv' key={subIndex}>
+                                                            <h4 className="cardTitle">{subIndex}</h4>
+                                                            {allOffers.filter(filterOffersOnCluster(subCluster)).map(article =>
+                                                                <ListCanvasArticles
+                                                                    article={article}
+                                                                    ownArticleInterest = {ownArticleInterest}
+                                                                    removeMarkAsInterested = {removeMarkAsInterested}
+                                                                    articleInterestCounter = {articleInterestCounter}
+                                                                    handleInterestClick = {handleInterestClick}
+                                                                ></ListCanvasArticles>
+                                                            )}
+                                                            {allNeeds.filter(filterOffersOnCluster(subCluster)).map(article =>
+                                                                <div key={article.id}  className="offerNeedCard needCard">
+                                                                    <p><b>{article.title}</b></p>
+                                                                    <div className="aboutArticle">
+                                                                        <p>{article.description}</p>
+                                                                        <p>Upplagt av: {article.end_user.user_name}</p>
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            )}
-                                            {allNeeds.filter(filterOffers(categoryIds, subMeetingCategory.category.id, 2)).map(article =>
-                                                <div key={article.id}  className="offerNeedCard needCard">
-                                                    <p><b>{article.title}</b></p>
-                                                    <div className="aboutArticle">
-                                                        <p>{article.description}</p>
-                                                        <p>Upplagt av: {article.end_user.user_name}</p>
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                ))}
+                                            ))
+                                        })()}
+                                    </>
+                                }
                             </div>
+                            {!autoSortActive &&
+                                <div className="subCategoryBlock" style={{left: index * spacing}}>
+                                    {meetingCategories.filter(sc => sc.category.parent_id === meetingCategory.category.id).map(subMeetingCategory => (
+                                        <div className="subCategories">
+                                            <div className='subCategoryDiv' key={subMeetingCategory.category.id}>
+                                                <h4 className="cardTitle">{subMeetingCategory.category.category_name}</h4>
+                                                {allOffers.filter(filterOffers(categoryIds, subMeetingCategory.category.id, 2)).map(article =>
+                                                    /*
+                                                    <div key={article.id}  className="offerNeedCard offerCard">
+                                                        <p><b>{article.title}</b></p>
+                                                        <div className="aboutArticle">
+                                                            <p>{article.description}</p>
+                                                            <p>Upplagt av: {article.end_user.user_name}</p>
+                                                            {ownArticleInterest.hasOwnProperty(article.id) ? (
+                                                                <button
+                                                                    className={`button-small offerButton ${ownArticleInterest.hasOwnProperty(article.id) ? 'liked' : ''}`}
+                                                                    onClick={() => removeMarkAsInterested(ownArticleInterest[article.id].articleInterestId)}
+                                                                >
+                                                                    Intresserad {articleInterestCounter.hasOwnProperty(article.id) ? articleInterestCounter[article.id].count : 0} &#128100;
+                                                                </button>
+                                                            ) : (
+                                                                <button
+                                                                    className={`button-small offerButton`}
+                                                                    onClick={() => handleInterestClick(article.id)}
+                                                                >
+                                                                    Intresserad {articleInterestCounter.hasOwnProperty(article.id) ? articleInterestCounter[article.id].count : 0} &#128100;
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                    */
+                                                    <ListCanvasArticles
+                                                        article={article}
+                                                        ownArticleInterest = {ownArticleInterest}
+                                                        removeMarkAsInterested = {removeMarkAsInterested}
+                                                        articleInterestCounter = {articleInterestCounter}
+                                                        handleInterestClick = {handleInterestClick}
+                                                    ></ListCanvasArticles>
+                                                )}
+                                                {allNeeds.filter(filterOffers(categoryIds, subMeetingCategory.category.id, 2)).map(article =>
+                                                    <div key={article.id}  className="offerNeedCard needCard">
+                                                        <p><b>{article.title}</b></p>
+                                                        <div className="aboutArticle">
+                                                            <p>{article.description}</p>
+                                                            <p>Upplagt av: {article.end_user.user_name}</p>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            }
                         </div>
                     )
                 }
             )}
         </ReactInfiniteCanvas>
         <button onClick={computeSimilarity}>Test</button>
+        <button onClick={resetSorting}>Kategori Sortering</button>
         <Modal
             content={<p>Markerar du dig som intresserad på en artikel delas dina mailadress med skaparen av artikeln, vill du detta?</p>}
             modalisOpen={modalisOpen}

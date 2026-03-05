@@ -267,17 +267,17 @@ export const getOfferRoutes = () => {
 
 
     router.post('/similarity', async (req, res) => {
-        const {sentences} = req.body;
+        const {category, sentences} = req.body;
         const extractor = getExtractor();
         const dbscan = new clustering.DBSCAN();
 
-        console.log(sentences)
         try {
             const embeddings = {};
             const embeddings_vec = []
             const id_index = []
             for (let sentence of sentences) {
-                const output = await extractor(sentence.text, {
+                console.log(sentence.title.concat(" ", sentence.description))
+                const output = await extractor(sentence.title.concat(sentence.description), {
                     pooling: 'mean',
                     normalize: true
                 });
@@ -288,12 +288,10 @@ export const getOfferRoutes = () => {
 
             const clusters = dbscan.run(
                 embeddings_vec,
-                0.25,  // eps
+                0.7,  // eps
                 2,     // minPts
                 cosineDistance
             );
-            console.log(clusters)
-            console.log(dbscan.noise)
             const id_clusters = clusters.map(cluster =>
                 cluster.map(index => id_index[index])
             );
@@ -302,7 +300,7 @@ export const getOfferRoutes = () => {
             id_clusters.push(noise_ids)
             console.log(id_clusters)
 
-            res.status(200).send(id_clusters);
+            res.status(200).send({[category]: id_clusters});
         } catch (err) {
             console.error(err);
             res.status(500).json({ error: 'Failed to compute embeddings' });
