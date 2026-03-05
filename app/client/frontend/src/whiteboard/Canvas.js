@@ -208,17 +208,6 @@ const InfiniteCanvas = () => {
         }
     }  
 
-
-    const filterOffersOnCluster = (cluster) => (offer) => {
-        console.log(cluster)
-        console.log(offer.id)
-        if (String(offer.id) in cluster){
-            return true
-        } else {
-            return false
-        }
-    }  
-
     const removeMarkAsInterested = async (interestId) => {
 
         if (user !== null) {
@@ -408,40 +397,35 @@ const InfiniteCanvas = () => {
                                     </>
                                 }
                                 {autoSortActive &&
-                                    <>
+                                    <div className="subCategoryBlock" style={{left: index * spacing}}>
                                         {(() => {
                                             const clusterObj = categoryClusters.find(cc => Object.keys(cc)[0] === String(meetingCategory.category.id));
                                             const clusters = clusterObj?.[String(meetingCategory.category.id)] || [];
-                                            console.log(clusters)
                                             return clusters.map((subCluster, subIndex) => (
-                                                <div className="subCategoryBlock" style={{left: index * spacing}}>
-                                                    <div className="subCategories">
-                                                        <div className='subCategoryDiv' key={subIndex}>
-                                                            <h4 className="cardTitle">{subIndex}</h4>
-                                                            {allOffers.filter(filterOffersOnCluster(subCluster)).map(article =>
-                                                                <ListCanvasArticles
-                                                                    article={article}
-                                                                    ownArticleInterest = {ownArticleInterest}
-                                                                    removeMarkAsInterested = {removeMarkAsInterested}
-                                                                    articleInterestCounter = {articleInterestCounter}
-                                                                    handleInterestClick = {handleInterestClick}
-                                                                ></ListCanvasArticles>
-                                                            )}
-                                                            {allNeeds.filter(filterOffersOnCluster(subCluster)).map(article =>
-                                                                <div key={article.id}  className="offerNeedCard needCard">
-                                                                    <p><b>{article.title}</b></p>
-                                                                    <div className="aboutArticle">
-                                                                        <p>{article.description}</p>
-                                                                        <p>Upplagt av: {article.end_user.user_name}</p>
-                                                                    </div>
-                                                                </div>
-                                                            )}
+                                                <div className='subCategoryDiv' key={subIndex}>
+                                                    <h4 className="cardTitle">{subIndex}</h4>
+                                                    {allOffers.filter(offer => subCluster.includes(String(offer.id))).map(article =>
+                                                        <ListCanvasArticles
+                                                            article={article}
+                                                            ownArticleInterest = {ownArticleInterest}
+                                                            removeMarkAsInterested = {removeMarkAsInterested}
+                                                            articleInterestCounter = {articleInterestCounter}
+                                                            handleInterestClick = {handleInterestClick}
+                                                        ></ListCanvasArticles>
+                                                    )}
+                                                    {allNeeds.filter(offer => subCluster.includes(String(offer.id))).map(article =>
+                                                        <div key={article.id}  className="offerNeedCard needCard">
+                                                            <p><b>{article.title}</b></p>
+                                                            <div className="aboutArticle">
+                                                                <p>{article.description}</p>
+                                                                <p>Upplagt av: {article.end_user.user_name}</p>
+                                                            </div>
                                                         </div>
-                                                    </div>
+                                                    )}
                                                 </div>
                                             ))
                                         })()}
-                                    </>
+                                    </div>
                                 }
                             </div>
                             {!autoSortActive &&
