@@ -132,6 +132,29 @@
     font-size: smaller;
 }
 
+.autoSortButton:hover, .originalSortButton:hover{
+    cursor: pointer;
+}
+
+.autoSortButton, .originalSortButton{
+    border: 1px black solid;
+    width: fit-content; 
+    text-align: center;
+}
+
+.sortingDiv{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 40%;
+}
+
+.autoSortDiv{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 
 @media (max-width: 768px) {
     .offerNeedCard {

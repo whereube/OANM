@@ -267,7 +267,7 @@ export const getOfferRoutes = () => {
 
 
     router.post('/similarity', async (req, res) => {
-        const {category, sentences} = req.body;
+        const {epsilon, category, sentences} = req.body;
         const extractor = getExtractor();
         const dbscan = new clustering.DBSCAN();
 
@@ -288,7 +288,7 @@ export const getOfferRoutes = () => {
 
             const clusters = dbscan.run(
                 embeddings_vec,
-                0.7,  // eps
+                epsilon,  // eps
                 2,     // minPts
                 cosineDistance
             );

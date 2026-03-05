@@ -17,7 +17,7 @@ const ListCanvasArticles = (props) => {
                     </button>
                 ) : (
                     <button
-                        className={`button-small offerButton`}
+                        className={`button-small offerButton interestButton`}
                         onClick={() => props.handleInterestClick(props.article.id)}
                     >
                         Intresserad {props.articleInterestCounter.hasOwnProperty(props.article.id) ? props.articleInterestCounter[props.article.id].count : 0} &#128100;

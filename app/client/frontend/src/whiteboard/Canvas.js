@@ -2,7 +2,7 @@ import { useRef, useState, useEffect} from "react";
 import { ReactInfiniteCanvas, ReactInfiniteCanvasHandle } from "react-infinite-canvas";
 import { useParams, Link } from "react-router-dom";
 
-import { COMPONENT_POSITIONS } from "./helpers/constants.js";
+import { COMPONENT_POSITIONS, SCROLL_NODE_POSITIONS } from "./helpers/constants.js";
 import ReactDOM from "react-dom"; 
 import './Canvas.css'
 import HandleOffers from '../offers/HandleOffers.js'
@@ -33,6 +33,7 @@ const InfiniteCanvas = () => {
     const [autoSortActive, setAutoSortActive] = useState(false);
     const [currentArticleId, setCurrentArticleId] = useState(null);
     const [categoryClusters, setCategoryClusters] = useState([])
+    const [epsilonSlider, setEpsilonSlider] = useState(0.5)
     const { user } = useAuth();
     const { getOffers, navigateToOfferArticle} = HandleOffers();
     const { getNeeds } = HandleNeeds();
@@ -262,7 +263,7 @@ const InfiniteCanvas = () => {
                 headers: {
                 'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({category: meetingCategory.category.id, sentences: category_articles})
+                body: JSON.stringify({epsilon: epsilonSlider, category: meetingCategory.category.id, sentences: category_articles})
                 /*JSON.stringify({sentences:[{"id": 1, "text": "Många bäckar små"}, {"id": 2, "text": "Grönska är bra för världen"} , {"id": 3, "text": "Jag vill skapa en delad verkstad"}, {"id": 1666, "text": "Jag behöver en delad verkstad"}]}), */
             });
             return response.json();
@@ -276,6 +277,10 @@ const InfiniteCanvas = () => {
     const resetSorting = async() => {
         setAutoSortActive(false)
     }
+
+    const handleSliderChange = (e) => {
+        setEpsilonSlider(Number(e.target.value));
+    };
 
 
 
@@ -337,7 +342,7 @@ const InfiniteCanvas = () => {
               ),
               position: COMPONENT_POSITIONS.TOP_RIGHT,
               offset: { x: 20, y: 20 },
-            },
+            }
           ]}
         >
             {meetingCategories.filter(mc => mc.category.parent_id === null)
@@ -397,13 +402,13 @@ const InfiniteCanvas = () => {
                                     </>
                                 }
                                 {autoSortActive &&
-                                    <div className="subCategoryBlock" style={{left: index * spacing}}>
+                                    <div className="subCategoryBlock">
                                         {(() => {
                                             const clusterObj = categoryClusters.find(cc => Object.keys(cc)[0] === String(meetingCategory.category.id));
                                             const clusters = clusterObj?.[String(meetingCategory.category.id)] || [];
                                             return clusters.map((subCluster, subIndex) => (
                                                 <div className='subCategoryDiv' key={subIndex}>
-                                                    <h4 className="cardTitle">{subIndex}</h4>
+                                                    <h4 className="cardTitle">Kategori {subIndex + 1}</h4>
                                                     {allOffers.filter(offer => subCluster.includes(String(offer.id))).map(article =>
                                                         <ListCanvasArticles
                                                             article={article}
@@ -429,7 +434,7 @@ const InfiniteCanvas = () => {
                                 }
                             </div>
                             {!autoSortActive &&
-                                <div className="subCategoryBlock" style={{left: index * spacing}}>
+                                <div className="subCategoryBlock">
                                     {meetingCategories.filter(sc => sc.category.parent_id === meetingCategory.category.id).map(subMeetingCategory => (
                                         <div className="subCategories">
                                             <div className='subCategoryDiv' key={subMeetingCategory.category.id}>
@@ -486,8 +491,28 @@ const InfiniteCanvas = () => {
                 }
             )}
         </ReactInfiniteCanvas>
-        <button onClick={computeSimilarity}>Test</button>
-        <button onClick={resetSorting}>Kategori Sortering</button>
+        <div className="sortingDiv">
+            <div className="autoSortDiv">
+                <p className="autoSortButton" onClick={computeSimilarity}> 
+                    Sortera automatiskt ✨
+                </p>
+                <div class="slidecontainer">
+                    <label for="narrow">Smala kategorier</label>
+                    <input 
+                        type="range"
+                        min="0.2"
+                        max="0.8"
+                        step="0.1"
+                        value={epsilonSlider}
+                        onChange={handleSliderChange}
+                        class="slider"
+                    />
+                    <label for="wide">Breda kategorier</label>
+                </div>
+            </div>
+            <p className="originalSortButton" onClick={resetSorting}>Ursprungliga kategorier</p>
+        </div>
+
         <Modal
             content={<p>Markerar du dig som intresserad på en artikel delas dina mailadress med skaparen av artikeln, vill du detta?</p>}
             modalisOpen={modalisOpen}
