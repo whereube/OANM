@@ -33,6 +33,7 @@ const InfiniteCanvas = () => {
     const [autoSortActive, setAutoSortActive] = useState(false);
     const [currentArticleId, setCurrentArticleId] = useState(null);
     const [categoryClusters, setCategoryClusters] = useState([])
+    const [sliderChanged, setSliderChanged] = useState(false)
     const [epsilonSlider, setEpsilonSlider] = useState(0.5)
     const { user } = useAuth();
     const { getOffers, navigateToOfferArticle} = HandleOffers();
@@ -137,13 +138,6 @@ const InfiniteCanvas = () => {
         setOwnArticleInterest(objectOfOwnArticleInterests)
         setArticleInterestCounter(listOfArticleInterests)
     }, [allArticleInterests]);
-
-
-    useEffect(() => {
-        if(Object.keys(categoryClusters).length !== 0) {
-            console.log(categoryClusters)
-        }
-    }, [categoryClusters]);
 
     const getMeetingCategories = async () => {
         const response = await fetch(`${API_URL}/meetingCategory/byMeetingId/` + meetingId);
@@ -272,6 +266,7 @@ const InfiniteCanvas = () => {
         const results = await Promise.all(promises);
         setCategoryClusters(results)
         setAutoSortActive(true)
+        setSliderChanged(false)
     }
 
     const resetSorting = async() => {
@@ -279,6 +274,7 @@ const InfiniteCanvas = () => {
     }
 
     const handleSliderChange = (e) => {
+        setSliderChanged(true)
         setEpsilonSlider(Number(e.target.value));
     };
 
@@ -493,24 +489,26 @@ const InfiniteCanvas = () => {
         </ReactInfiniteCanvas>
         <div className="sortingDiv">
             <div className="autoSortDiv">
-                <p className="autoSortButton" onClick={computeSimilarity}> 
-                    Sortera automatiskt ✨
+                <p className={"autoSortButton " + (autoSortActive ? 'clicked' : '')} onClick={computeSimilarity}> 
+                    Sortera automatiskt {!autoSortActive && <>✨</>} {(autoSortActive && sliderChanged) && <>&#10227;</>}
                 </p>
-                <div class="slidecontainer">
-                    <label for="narrow">Smala kategorier</label>
-                    <input 
-                        type="range"
-                        min="0.2"
-                        max="0.8"
-                        step="0.1"
-                        value={epsilonSlider}
-                        onChange={handleSliderChange}
-                        class="slider"
-                    />
-                    <label for="wide">Breda kategorier</label>
-                </div>
+                <p className={"originalSortButton " + (!autoSortActive ? 'clicked' : '')} onClick={resetSorting}>
+                    Ursprungliga kategorier
+                </p>
             </div>
-            <p className="originalSortButton" onClick={resetSorting}>Ursprungliga kategorier</p>
+            <div className="slideContainer">
+                <label htmlFor="narrow">Smala kategorier</label>
+                <input 
+                    type="range"
+                    min="0.2"
+                    max="0.8"
+                    step="0.1"
+                    value={epsilonSlider}
+                    onChange={handleSliderChange}
+                    class="slider"
+                />
+                <label htmlFor="wide">Breda kategorier</label>
+            </div>
         </div>
 
         <Modal

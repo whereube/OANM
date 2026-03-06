@@ -60,6 +60,7 @@
     padding: 10px;
     align-items: center;
     overflow-wrap: break-word;
+    position: relative;
 }
 
 .offerCard{
@@ -74,6 +75,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 100%;
 }
 
 .addArticle{
@@ -102,6 +104,10 @@
     text-align: center;
 }
 
+.offerButton{
+    margin-top: auto;
+    margin-bottom: 10px;
+}
 
 .labels{
     display: flex;
@@ -136,23 +142,49 @@
     cursor: pointer;
 }
 
+.originalSortButton{
+    margin-left: 15px;
+}
+
 .autoSortButton, .originalSortButton{
+    background-color: white;
     border: 1px black solid;
     width: fit-content; 
     text-align: center;
+    height: 25px;
+    padding: 10px;
+    box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.629);
 }
 
 .sortingDiv{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
     max-width: 40%;
+    border: 1px black solid;
+    padding-bottom: 5px;
 }
 
 .autoSortDiv{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
+    margin: auto;
+}
+
+.slideContainer{
+    margin: auto;
+}
+
+.slideContainer > input {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.clicked{
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.25);
+    background-color: white;
+    filter: brightness(0.9);
 }
 
 
