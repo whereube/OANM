@@ -258,7 +258,6 @@ const InfiniteCanvas = () => {
                 'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({epsilon: epsilonSlider, category: meetingCategory.category.id, sentences: category_articles})
-                /*JSON.stringify({sentences:[{"id": 1, "text": "Många bäckar små"}, {"id": 2, "text": "Grönska är bra för världen"} , {"id": 3, "text": "Jag vill skapa en delad verkstad"}, {"id": 1666, "text": "Jag behöver en delad verkstad"}]}), */
             });
             return response.json();
             
@@ -404,7 +403,7 @@ const InfiniteCanvas = () => {
                                             const clusters = clusterObj?.[String(meetingCategory.category.id)] || [];
                                             return clusters.map((subCluster, subIndex) => (
                                                 <div className='subCategoryDiv' key={subIndex}>
-                                                    <h4 className="cardTitle">Kategori {subIndex + 1}</h4>
+                                                    <h4 className="cardTitle">{(subIndex + 1) !== clusters.length ? `Kategori ${subIndex + 1}` : "Övrigt"}</h4>
                                                     {allOffers.filter(offer => subCluster.includes(String(offer.id))).map(article =>
                                                         <ListCanvasArticles
                                                             article={article}
