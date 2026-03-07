@@ -5,7 +5,7 @@ let extractor = null;
 export async function loadModel() {
   extractor = await pipeline(
     'feature-extraction',
-    'Xenova/paraphrase-multilingual-MiniLM-L12-v2'
+    'Xenova/distiluse-base-multilingual-cased-v2'
   );
   console.log("Embedding model loaded");
 }

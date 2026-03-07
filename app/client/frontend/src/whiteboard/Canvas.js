@@ -504,7 +504,7 @@ const InfiniteCanvas = () => {
                     step="0.1"
                     value={epsilonSlider}
                     onChange={handleSliderChange}
-                    class="slider"
+                    className="slider"
                 />
                 <label htmlFor="wide">Breda kategorier</label>
             </div>

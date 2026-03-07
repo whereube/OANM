@@ -272,18 +272,48 @@ export const getOfferRoutes = () => {
         const dbscan = new clustering.DBSCAN();
 
         try {
+
+            if (!sentences || sentences.length === 0) {
+                return res.status(200).send({ [category]: [] });
+            }
+
             const embeddings = {};
             const embeddings_vec = []
             const id_index = []
+
+            /*            
             for (let sentence of sentences) {
-                console.log(sentence.title.concat(" ", sentence.description))
-                const output = await extractor(sentence.title.concat(sentence.description), {
+                const output = await extractor(sentence.title.concat(" ", sentence.description), {
                     pooling: 'mean',
                     normalize: true
                 });
                 embeddings[sentence.id] = (output.data);
                 embeddings_vec.push(output.data)
                 id_index.push(sentence.id)
+            }
+            */
+
+            for (let sentence of sentences) {
+                id_index.push(sentence.id)
+            }
+
+            const texts = sentences.map(
+            s => `${s.title} ${s.description}`
+            );
+
+            const outputs = await extractor(texts, {
+            pooling: "mean",
+            normalize: true
+            });
+
+            const embeddingSize = outputs.dims[1];
+
+            for (let i = 0; i < sentences.length; i++) {
+            const start = i * embeddingSize;
+            const end = start + embeddingSize;
+
+            embeddings_vec.push(outputs.data.slice(start, end));
+            id_index.push(sentences[i].id);
             }
 
             const clusters = dbscan.run(
