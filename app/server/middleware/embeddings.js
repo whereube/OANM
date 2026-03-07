@@ -1,4 +1,12 @@
-import { pipeline } from '@xenova/transformers';
+import { pipeline, env } from '@xenova/transformers';
+
+
+env.backends.onnx.wasm.numThreads = 1;
+env.backends.onnx.wasm.simd = true;
+env.backends.onnx.wasm.proxy = false;
+
+env.useBrowserCache = false;
+env.allowLocalModels = false;
 
 let extractor = null;
 

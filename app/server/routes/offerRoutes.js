@@ -293,10 +293,6 @@ export const getOfferRoutes = () => {
             }
             */
 
-            for (let sentence of sentences) {
-                id_index.push(sentence.id)
-            }
-
             const texts = sentences.map(
             s => `${s.title} ${s.description}`
             );
