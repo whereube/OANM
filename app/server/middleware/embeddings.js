@@ -13,7 +13,7 @@ let extractor = null;
 export async function loadModel() {
   extractor = await pipeline(
     'feature-extraction',
-    'Xenova/distiluse-base-multilingual-cased-v2'
+    'Xenova/all-MiniLM-L6-v2'
   );
   console.log("Embedding model loaded");
 }
